@@ -64,7 +64,7 @@ public class UserProfile {
     }
 
     public void removeMedicalTitle(MedicalTitle medicalTitle) {
-
+        // todo remove medical title
     }
 
     public void addExperience(Set<Hashtag> experience) {
