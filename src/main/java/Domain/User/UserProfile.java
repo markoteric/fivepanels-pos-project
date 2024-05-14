@@ -39,4 +39,73 @@ public class UserProfile {
         this.experienceScore = userProfile.experienceScore;
     }
 
+    public void setProfilePicture(Media profilePicture) {
+        // TODO Set profile picture
+    }
+
+    public void removeProfilePicture() {
+        // TODO Remove profile picture
+
+    }
+
+    public void addSpecialization(Set<Specialization> specializations) {
+        // TODO Add specialization
+
+    }
+
+
+    public void removeSpecialization(Specialization specialization) {
+        // TODO Remove specialization
+    }
+
+    public void addMedicalTitle(Set<MedicalTitle> medicalTitles) {
+        // TODO Add medical title
+
+    }
+
+    public void removeMedicalTitle(MedicalTitle medicalTitle) {
+
+    }
+
+    public void addExperience(Set<Hashtag> experience) {
+        // TODO Add experience
+    }
+
+    public void removeExperience(Hashtag experience) {
+        // TODO Remove experience
+    }
+
+    public void addCountry(String country) {
+        // TODO Add country
+    }
+
+    public void removeCountry(String country) {
+        // TODO Remove country
+    }
+
+    public void addCity(String city) {
+        // TODO Add city
+    }
+
+    public void removeCity(String city) {
+        // TODO Remove city
+    }
+
+    public void addLanguage(Set<Language> languages) {
+        // TODO Add language
+    }
+
+    public void removeLanguage(Language language) {
+        // TODO Remove language
+    }
+
+    // ---------------------------------------------------------------------Getters and Setters---------------------------------------------------------------------
+
+
+
+
+
 }
+
+
+
