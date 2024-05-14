@@ -1,5 +1,5 @@
 package Domain.Enum;
 
 public enum MessageStatus {
-    SENT, RECEIVED, READ
+    SENT, RECEIVED, DELIVERED, READ
 }
