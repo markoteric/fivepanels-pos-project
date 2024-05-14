@@ -1,13 +1,15 @@
 package Domain.User;
 
 import Domain.Media.Media;
+import Domain.Misc.Assertion;
 import Domain.Misc.Hashtag;
 import Domain.Misc.Language;
 import Domain.Enum.MedicalTitle;
 import Domain.Enum.Specialization;
 
-import java.util.HashSet;
 import java.util.Set;
+
+import static Domain.Misc.Assertion.isNotNull;
 
 public class UserProfile {
 
@@ -21,6 +23,9 @@ public class UserProfile {
     private Set<Language> languages;
     private Integer activityScore;
     private Integer experienceScore;
+
+
+    private User userProfile;
 
     public UserProfile() {
         super();
@@ -40,7 +45,8 @@ public class UserProfile {
     }
 
     public void setProfilePicture(Media profilePicture) {
-        // TODO Set profile picture
+        isNotNull(profilePicture, "profilePicture");
+        this.profilePicture = profilePicture;
     }
 
     public void removeProfilePicture() {
@@ -49,7 +55,8 @@ public class UserProfile {
     }
 
     public void addSpecialization(Set<Specialization> specializations) {
-        // TODO Add specialization
+        isNotNull(specializations, "specializations");
+        this.specializations.addAll(specializations);
 
     }
 
@@ -59,16 +66,17 @@ public class UserProfile {
     }
 
     public void addMedicalTitle(Set<MedicalTitle> medicalTitles) {
-        // TODO Add medical title
-
+        isNotNull(medicalTitles, "medicalTitles");
+        this.medicalTitles.addAll(medicalTitles);
     }
 
     public void removeMedicalTitle(MedicalTitle medicalTitle) {
-        // todo remove medical title
+       // Remove medical title
     }
 
     public void addExperience(Set<Hashtag> experience) {
-        // TODO Add experience
+        isNotNull(experience, "experience");
+        this.experience.addAll(experience);
     }
 
     public void removeExperience(Hashtag experience) {
@@ -76,7 +84,8 @@ public class UserProfile {
     }
 
     public void addCountry(String country) {
-        // TODO Add country
+        isNotNull(country, "country");
+        this.country = country;
     }
 
     public void removeCountry(String country) {
@@ -84,7 +93,8 @@ public class UserProfile {
     }
 
     public void addCity(String city) {
-        // TODO Add city
+        isNotNull(city, "city");
+        this.city = city;
     }
 
     public void removeCity(String city) {
@@ -92,7 +102,8 @@ public class UserProfile {
     }
 
     public void addLanguage(Set<Language> languages) {
-        // TODO Add language
+        Assertion.isNotNull(languages, "languages");
+        this.languages.addAll(languages);
     }
 
     public void removeLanguage(Language language) {
@@ -102,9 +113,81 @@ public class UserProfile {
     // ---------------------------------------------------------------------Getters and Setters---------------------------------------------------------------------
 
 
+    public Media getProfilePicture() {
+        return profilePicture;
+    }
 
+    public Set<Specialization> getSpecializations() {
+        return specializations;
+    }
 
+    public void setSpecializations(Set<Specialization> specializations) {
+        this.specializations = specializations;
+    }
 
+    public Set<MedicalTitle> getMedicalTitles() {
+        return medicalTitles;
+    }
+
+    public void setMedicalTitles(Set<MedicalTitle> medicalTitles) {
+        this.medicalTitles = medicalTitles;
+    }
+
+    public Set<Hashtag> getExperience() {
+        return experience;
+    }
+
+    public void setExperience(Set<Hashtag> experience) {
+        this.experience = experience;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Set<Language> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(Set<Language> languages) {
+        this.languages = languages;
+    }
+
+    public Integer getActivityScore() {
+        return activityScore;
+    }
+
+    public void setActivityScore(Integer activityScore) {
+        this.activityScore = activityScore;
+    }
+
+    public Integer getExperienceScore() {
+        return experienceScore;
+    }
+
+    public void setExperienceScore(Integer experienceScore) {
+        this.experienceScore = experienceScore;
+    }
+
+    public User getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(User userProfile) {
+        this.userProfile = userProfile;
+    }
 }
 
 
