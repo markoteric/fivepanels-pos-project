@@ -1,6 +1,6 @@
-package User;
-import Misc.Email;
-import Misc.Password;
+package Domain.User;
+import Domain.Misc.Email;
+import Domain.Misc.Password;
 
 public class UserIdentity {
 

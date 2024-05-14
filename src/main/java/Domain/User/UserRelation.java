@@ -1,5 +1,5 @@
-package User;
-import Misc.Relationship;
+package Domain.User;
+import Domain.Misc.Relationship;
 import java.util.HashMap;
 
 public class UserRelation {

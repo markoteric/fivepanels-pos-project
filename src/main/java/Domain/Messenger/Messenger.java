@@ -1,6 +1,6 @@
-package Messenger;
+package Domain.Messenger;
 
-import User.UserIdentity;
+import Domain.User.UserIdentity;
 
 import java.util.List;
 import java.util.UUID;

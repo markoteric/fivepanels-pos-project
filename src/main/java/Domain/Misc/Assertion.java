@@ -1,4 +1,4 @@
-package Assertion;
+package Domain.Misc;
 
 public class Assertion {
 }

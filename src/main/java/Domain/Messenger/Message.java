@@ -1,8 +1,8 @@
-package Messenger;
+package Domain.Messenger;
 
-import Media.MediaContent;
-import Media.TextContent;
-import Enum.MessageStatus;
+import Domain.Media.MediaContent;
+import Domain.Media.TextContent;
+import Domain.Enum.MessageStatus;
 import java.util.List;
 import java.util.UUID;
 

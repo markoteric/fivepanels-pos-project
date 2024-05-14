@@ -1,10 +1,9 @@
-package MedicalCase;
+package Domain.MedicalCase;
 
-import Misc.Hashtag;
-import User.UserIdentity;
-import Enum.MedicalCaseStatus;
+import Domain.Misc.Hashtag;
+import Domain.User.UserIdentity;
+import Domain.Enum.MedicalCaseStatus;
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.Set;
 
 public class MedicalCase {
@@ -17,6 +16,8 @@ public class MedicalCase {
     private Instant updatedAt;
     private MedicalCaseStatus status;
     private Integer likeCount;
+
+
 
 
 

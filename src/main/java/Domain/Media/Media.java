@@ -1,4 +1,4 @@
-package Media;
+package Domain.Media;
 
 import java.net.URL;
 import java.time.Instant;

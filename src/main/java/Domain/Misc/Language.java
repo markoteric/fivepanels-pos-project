@@ -1,4 +1,4 @@
-package Misc;
+package Domain.Misc;
 
 import java.util.Set;
 

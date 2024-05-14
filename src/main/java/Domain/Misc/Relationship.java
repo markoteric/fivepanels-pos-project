@@ -1,7 +1,7 @@
-package Misc;
+package Domain.Misc;
 
 import java.time.Instant;
-import Enum.TypeOfRelationship;
+import Domain.Enum.TypeOfRelationship;
 
 public class Relationship {
     private Instant createdAt;
