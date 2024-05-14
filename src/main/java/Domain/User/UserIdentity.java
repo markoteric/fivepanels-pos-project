@@ -54,7 +54,7 @@ public class UserIdentity {
 
     public void updatePassword(Password password){
         Assertion.isNotNull(password, "password");
-        Assertion.isNotBlank(password.getPassword(), "password");
+        Assertion.charsAreNotBlank(password.getPassword(), "password");
         this.password = password;
     }
 

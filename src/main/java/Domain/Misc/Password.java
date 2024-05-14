@@ -23,7 +23,7 @@ public class Password {
         setPassword(password);
     }
 
-    public String getPassword() {
+    public char[] getPassword() {
         return this.password;
     }
 

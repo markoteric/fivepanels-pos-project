@@ -30,6 +30,13 @@ public abstract class Assertion {
         return value;
     }
 
+    public static char[] charsAreNotBlank(char[] value, String paramName) {
+        if (char[].class.isInstance(value))
+            throw new ApplicationException(STR."\{paramName} is blank");
+
+        return value;
+    }
+
     public static String hasMaxLength(String value, int maxLength, String paramName) {
 
         isNotBlank(value, paramName);
