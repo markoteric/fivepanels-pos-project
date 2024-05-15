@@ -14,7 +14,7 @@ class PasswordTest {
     private Password password;
     @BeforeEach
     void setup() {
-        password = new Password();
+        password = new Password(new char[5]);
     }
 
     @Test

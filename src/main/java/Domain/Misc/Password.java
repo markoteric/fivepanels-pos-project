@@ -6,11 +6,22 @@ import com.nulabinc.zxcvbn.Strength;
 public class Password {
 
     // Password needs to be strong enough (isPwStrongEnough), saves us many if-statements / assertions
+    private String password;
     private char[] hashedPw;
 
     public Password(char[] pw) {
 
         setHashedPw(pw);
+    }
+
+    public void setPassword(String pw) {
+
+        this.password = pw;
+    }
+
+    public boolean isValid() {
+
+        return true;
     }
 
     public void setHashedPw(char[] actualPw) {
