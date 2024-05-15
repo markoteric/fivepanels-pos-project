@@ -78,4 +78,39 @@ public abstract class Assertion {
         }
         return value;
     }
+
+    public static boolean longerThan10Chars(String value, String valueName){
+        if(value.length() >= 10){
+            return true;
+        }else{
+            throw new ApplicationException(valueName + " is less than 10 characters");
+        }
+    }
+
+
+    public static boolean containsNumbers(String value, String valueName) {
+        if (value.matches(".*[0-9].*")) {
+            return true;
+        } else {
+            throw new ApplicationException(valueName + " does not contain numbers");
+        }
+    }
+
+
+
+    public static boolean containsLetters(String value, String valueName){
+        if(value.matches("[a-zA-Z]+")){
+            return true;
+        }else{
+            throw new ApplicationException(valueName + " does not contain letters");
+        }
+    }
+
+    public static boolean containsSymbols(String value, String valueName){
+        if(value.matches("[!@#$%^&*()_+{}|:\"<>?,./;'\\[\\]\\-=]")){
+            return true;
+        } else {
+            throw new ApplicationException(valueName + " does not contain symbols");
+        }
+    }
 }

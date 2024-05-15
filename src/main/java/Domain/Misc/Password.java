@@ -34,11 +34,13 @@ public class Password {
 
         Assertion.isNotNull(password, "password");
         Assertion.isNotBlank(password, "password");
+        Assertion.longerThan10Chars(password, "password");
+        Assertion.containsNumbers(password, "password");
         this.password = password.toCharArray();
     }
 
     // FOR DATABASE
-    public byte[] getHashedPassword() throws NoSuchAlgorithmException {
+    public byte[] getHashedPassword(String password) throws NoSuchAlgorithmException {
 
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
@@ -49,12 +51,16 @@ public class Password {
         return md.digest(new String(password).getBytes(StandardCharsets.UTF_8));
     }
 
-    public boolean isValid() {
+    public boolean isValid() throws NoSuchAlgorithmException {
         // TODO: Implement requirements for password validation
-        Assertion.isNotNull(password, "password");
+
         Assertion.isNotNull(hashedPassword, "hashedPassword");
-        Assertion.isNotBlank(password.toString(), "password");
+        Assertion.isNotNull(hashedPassword, "hashedPassword");
+        Assertion.isNotBlank(hashedPassword.toString(), "password");
         Assertion.isNotBlank(hashedPassword.toString(), "hashedPassword");
+        Assertion.longerThan10Chars(hashedPassword.toString(), "password");
+        Assertion.containsNumbers(hashedPassword.toString(), "password");
+
         return true;
     }
 }
