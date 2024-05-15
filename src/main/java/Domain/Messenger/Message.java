@@ -75,4 +75,8 @@ public class Message {
         Assertion.isNotBlank(mediaContent.toString(), "mediaContent");
         this.mediaContent = mediaContent;
     }
+
+    public String getContent() {
+        return textContent.getFirst().getContent();
+    }
 }
