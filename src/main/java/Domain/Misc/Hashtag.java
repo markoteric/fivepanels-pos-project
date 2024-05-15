@@ -3,6 +3,7 @@ package Domain.Misc;
 import java.util.Set;
 
 public class Hashtag {
+
     private String hashtag;
 
     public Hashtag(String hashtag) {

@@ -2,6 +2,7 @@ package Domain.MedicalCase;
 
 import Domain.Media.MediaContent;
 import Domain.Media.TextContent;
+import Domain.Misc.Assertion;
 import Domain.Misc.Hashtag;
 import Domain.User.User;
 import Domain.User.UserIdentity;
@@ -19,15 +20,14 @@ public class MedicalCase {
     private Integer id;
     private Set<Hashtag> hashtags;
     private UserIdentity owner;
-
     private TextContent headline;
     private TextContent content;
     private MediaContent attachment;
-    private Integer viewCount;
+    private Integer viewCount = 0;
     private Instant createdAt;
     private Instant updatedAt;
     private MedicalCaseStatus status;
-    private Integer likeCount;
+    private Integer likeCount = 0;
 
     public MedicalCase() {
 
@@ -131,10 +131,29 @@ public class MedicalCase {
     }
 
     public Integer getLikeCount() {
+
         return likeCount;
     }
 
-    public void setLikeCount(Integer likeCount) {
-        this.likeCount = likeCount;
+    public void addHashtag(String hashtag) {
+
+        this.hashtags.add(new Hashtag(hashtag));
+    }
+
+    public void addAttachment(List<MediaContent> attachments) {
+
+        this.attachment = (MediaContent) attachments;
+    }
+
+    public void removeAttachment(MediaContent attachment) {
+
+        Assertion.isNotNull(attachment, "attachment");
+        Assertion.isNotNull(attachment.getContent(), "attachment");
+        this.attachment = (MediaContent) attachment;
+    }
+
+    public void incrementViewCount() {
+
+        this.viewCount++;
     }
 }

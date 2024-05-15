@@ -4,13 +4,15 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 public class Password {
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
 
-        Password password1 = new Password("Noob");
+        Password password1 = new Password("1235!aB");
         System.out.println(password1);
+        System.out.println(password1.getHashedPassword());
     }
 
     private char[] password;
@@ -18,6 +20,7 @@ public class Password {
 
     public Password() {
 
+        setPassword("foobar");
     }
 
     public Password(String password) {
@@ -40,12 +43,7 @@ public class Password {
     // FOR DATABASE
     public byte[] getHashedPassword() throws NoSuchAlgorithmException {
 
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-
         MessageDigest md = MessageDigest.getInstance("SHA-512");
-        md.update(salt);
         return md.digest(new String(password).getBytes(StandardCharsets.UTF_8));
     }
 
@@ -53,8 +51,8 @@ public class Password {
         // TODO: Implement requirements for password validation
         Assertion.isNotNull(password, "password");
         Assertion.isNotNull(hashedPassword, "hashedPassword");
-        Assertion.isNotBlank(password.toString(), "password");
-        Assertion.isNotBlank(hashedPassword.toString(), "hashedPassword");
+        Assertion.isNotBlank(Arrays.toString(password), "password");
+        Assertion.isNotBlank(Arrays.toString(hashedPassword), "hashedPassword");
         return true;
     }
 }

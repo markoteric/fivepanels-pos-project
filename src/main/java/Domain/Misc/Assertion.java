@@ -1,7 +1,10 @@
 package Domain.Misc;
 
 import Domain.Exception.ApplicationException;
+import Domain.Exception.UserException;
+import Domain.User.User;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import static java.lang.StringTemplate.STR;
@@ -77,5 +80,10 @@ public abstract class Assertion {
             throw new ApplicationException(valueName + " and " + valueName2 + " are greater than 0.");
         }
         return value;
+    }
+
+    public static void equals(Integer id, UUID id1, String id2) {
+        if (id == null || id1 == null)
+            throw new UserException(id2 + " is null");
     }
 }
