@@ -1,4 +1,5 @@
 package Domain.User;
+
 import Domain.Misc.Relationship;
 import java.util.HashMap;
 

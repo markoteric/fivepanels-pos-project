@@ -1,5 +1,6 @@
 package Domain.Messenger;
 
+import Domain.BaseEntity;
 import Domain.Media.MediaContent;
 import Domain.Media.TextContent;
 import Domain.Enum.MessageStatus;
@@ -9,35 +10,18 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-public class Message {
-    private UUID id;
+public class Message extends BaseEntity {
+
     private MessageStatus status;
     private List<TextContent> textContent;
     private List<MediaContent> mediaContent;
 
-    private Instant createdAt;
-
-    private Instant updatedAt;
-
-
     public Message() {
 
-        this.id = new UUID(16, 16);
+        super();
         this.status = MessageStatus.SENT;
         setTextContent(textContent);
         setMediaContent(mediaContent);
-        createdAt = Instant.now();
-    }
-
-    public UUID getId() {
-
-        return id;
-    }
-
-    public void setId(UUID id) {
-
-        // UUID needs to be unique
-        this.id = id;
     }
 
     public MessageStatus getStatus() {
@@ -77,6 +61,7 @@ public class Message {
     }
 
     public String getContent() {
+
         return textContent.getFirst().getContent();
     }
 }

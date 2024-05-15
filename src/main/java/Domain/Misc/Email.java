@@ -1,8 +1,13 @@
 package Domain.Misc;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Email {
 
     private String email;
+    Pattern p = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+");
+    Matcher m = p.matcher(email);
 
     public Email() {
 
@@ -24,8 +29,10 @@ public class Email {
         Assertion.isNotNull(email, "email");
         Assertion.isNotBlank(email, "email");
         Assertion.hasMaxLength(email, 320, "email");
-        // Mail-Check: Not Null, Not Empty, maxlength of 320, maxlength of local part (before the @) of 64, maxlength of domain is 255, maybe external email-validation? (RFC3696)
-        this.email = email;
-    }
+        if (m.find()&&m.group().equals(email)) { // yes, we will do the assertion
 
+            this.email = email;
+        }
+        // Mail-Check: Not Null, Not Empty, maxlength of 320, maxlength of local part (before the @) of 64, maxlength of domain is 255, maybe external email-validation? (RFC3696)
+    }
 }

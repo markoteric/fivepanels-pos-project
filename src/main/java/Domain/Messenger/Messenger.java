@@ -1,5 +1,6 @@
 package Domain.Messenger;
 
+import Domain.BaseEntity;
 import Domain.Enum.MessageStatus;
 import Domain.Media.MediaContent;
 import Domain.Misc.Assertion;
@@ -9,21 +10,11 @@ import javax.swing.*;
 import java.util.*;
 
 
-public class Messenger {
-    private UUID id;
+public class Messenger extends BaseEntity {
+
     private Set<UserIdentity> members;
     private List<Message> messageHistory;
     private List<Group> groups;
-
-    public UUID getId() {
-
-        return id;
-    }
-
-    public void setId(UUID id) {
-
-        this.id = id;
-    }
 
     public Set<UserIdentity> getMembers() {
 
@@ -43,6 +34,7 @@ public class Messenger {
     }
 
     public void writeMessage(Message message, MediaContent mediaContent) {
+
         Assertion.isNotNull(message, "message");
         Assertion.isNotBlank(message.getContent(), "message");
         Message newMessage = new Message();
@@ -109,9 +101,4 @@ public class Messenger {
         Assertion.isNotBlank(userIdentity.toString(), "userIdentity");
         Assertion.isNotNull(userIdentity, "userIdentity");
     }
-
-
-
-
-
 }

@@ -23,21 +23,25 @@ import static Domain.Enum.MedicalCaseStatus.DELETED;
 
 public class User extends BaseEntity {
 
+    // NOT NULL, MIN-LENGTH, MAXLENGTH, @-SYMBOL
     private Email email;
+    // DONE IN PASSWORD.JAVA CLASS
     private Password password;
+    // NOT NULL
     private UserProfile userProfile;
     private MedicalCase medicalCase;
+    // NOT NULL
     private List<UUID> medicalCases;
 
     public User() {
 
         super();
         this.email = new Email("paricteric@gmail.com");
-        this.password = new Password("ParicTeric123!");
+        this.password = new Password("foobar");
         this.userProfile = new UserProfile();
     }
 
-    public User(String email, String password, UserProfile userProfile) {
+    public User(String email, char[] password, UserProfile userProfile) {
 
         super();
         this.email = new Email(email);

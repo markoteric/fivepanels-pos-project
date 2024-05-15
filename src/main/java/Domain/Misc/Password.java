@@ -1,65 +1,32 @@
 package Domain.Misc;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Arrays;
-
+import com.nulabinc.zxcvbn.Zxcvbn;
+import com.nulabinc.zxcvbn.Strength;
 public class Password {
 
-    public static void main(String[] args) throws NoSuchAlgorithmException {
+    // Password needs to be strong enough (isPwStrongEnough), saves us many if-statements / assertions
+    private char[] hashedPw;
 
-        Password password1 = new Password("foobar12345!A");
-        System.out.println(password1);
-        System.out.println(Arrays.toString(password1.getHashedPassword("foobar12345!A")));
+    public Password(char[] pw) {
+
+        setHashedPw(pw);
     }
 
-    private char[] password;
-    private byte[] hashedPassword;
+    public void setHashedPw(char[] actualPw) {
 
-    public Password() {
-
+        this.hashedPw = hashPassword(actualPw);
     }
 
-    public Password(String password) {
+    public char[] hashPassword(char[] otherPw) {
 
-        setPassword(password);
+        return hashedPw = BCrypt.withDefaults().hashToChar(12, otherPw);
     }
 
-    public char[] getPassword() {
+    public boolean isPwStrongEnough(CharSequence pw) {
 
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-
-        Assertion.isNotNull(password, "password");
-        Assertion.isNotBlank(password, "password");
-        Assertion.longerThan10Chars(password, "password");
-        Assertion.containsNumbers(password, "password");
-        this.password = password.toCharArray();
-    }
-
-    // FOR DATABASE
-    public byte[] getHashedPassword(String password) {
-
-        this.password = password.toCharArray();
-        byte[] bcryptHashBytes = BCrypt.withDefaults().hash(6, password.getBytes(StandardCharsets.UTF_8));
-        return bcryptHashBytes;
-    }
-
-    public boolean isValid() {
-        // TODO: Implement requirements for password validation
-
-        Assertion.isNotNull(password, "password");
-        Assertion.isNotNull(hashedPassword, "hashedPassword");
-        Assertion.isNotBlank(Arrays.toString(password), "password");
-        Assertion.isNotBlank(Arrays.toString(hashedPassword), "hashedPassword");
-        Assertion.longerThan10Chars(Arrays.toString(password), "password");
-        Assertion.containsNumbers(Arrays.toString(hashedPassword), "password");
-        return true;
+        Zxcvbn zxcvbn = new Zxcvbn();
+        Strength strength = zxcvbn.measure(pw);
+        return strength.getScore() >= 3;
     }
 }
