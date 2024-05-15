@@ -1,10 +1,7 @@
 package Domain.Misc;
 
 import Domain.Exception.ApplicationException;
-import Domain.Exception.UserException;
-import Domain.User.User;
 
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import static java.lang.StringTemplate.STR;
@@ -82,8 +79,38 @@ public abstract class Assertion {
         return value;
     }
 
-    public static void equals(Integer id, UUID id1, String id2) {
-        if (id == null || id1 == null)
-            throw new UserException(id2 + " is null");
+    public static boolean longerThan10Chars(String value, String valueName){
+        if(value.length() >= 10){
+            return true;
+        }else{
+            throw new ApplicationException(valueName + " is less than 10 characters");
+        }
+    }
+
+
+    public static boolean containsNumbers(String value, String valueName) {
+        if (value.matches(".*[0-9].*")) {
+            return true;
+        } else {
+            throw new ApplicationException(valueName + " does not contain numbers");
+        }
+    }
+
+
+
+    public static boolean containsLetters(String value, String valueName){
+        if(value.matches("[a-zA-Z]+")){
+            return true;
+        }else{
+            throw new ApplicationException(valueName + " does not contain letters");
+        }
+    }
+
+    public static boolean containsSymbols(String value, String valueName){
+        if(value.matches("[!@#$%^&*()_+{}|:\"<>?,./;'\\[\\]\\-=]")){
+            return true;
+        } else {
+            throw new ApplicationException(valueName + " does not contain symbols");
+        }
     }
 }

@@ -2,6 +2,7 @@ package Misc;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import Domain.Exception.ApplicationException;
 import Domain.Messenger.Messenger;
 import Domain.Misc.Password;
 import Domain.User.UserProfile;
@@ -13,55 +14,83 @@ class PasswordTest {
     private Password password;
     @BeforeEach
     void setup() {
-
         password = new Password();
     }
 
     @Test
+
     void testSetPassword_shouldFail_whenPasswordIsNull() {
 
-        password.setPassword(null);
-        assertFalse(password.isValid());
+        assertThrows(ApplicationException.class, () -> {
+            password.setPassword(null);
+        });
     }
+
 
     @Test
     void testSetPassword_shouldFail_whenPasswordIsBlank() {
 
-        password.setPassword("");
-        assertFalse(password.isValid());
+//        password.setPassword("");
+//        assertFalse(password.isValid());
+
+        assertThrows(ApplicationException.class, () -> {
+            password.setPassword("");
+        });
+
     }
 
     @Test
     void testSetPassword_shouldFail_whenPasswordIsTooShort() {
 
-        password.setPassword("1234");
-        assertFalse(password.isValid());
+//        password.setPassword("1234");
+//        assertFalse(password.isValid());
+
+        assertThrows(ApplicationException.class, () -> {
+            password.setPassword("1234");
+        });
     }
 
     @Test
     void testSetPassword_shouldFail_whenPasswordDoesNotContainNumbers() {
 
-        password.setPassword("password");
-        assertFalse(password.isValid());
+       /* password.setPassword("password");
+        assertFalse(password.isValid());*/
+
+        assertThrows(ApplicationException.class, () -> {
+            password.setPassword("password");
+        });
     }
     @Test
     void testSetPassword_shouldFail_whenPasswordDoesNotContainLetters() {
-
+        /*
         password.setPassword("12345");
-        assertFalse(password.isValid());
+        assertFalse(password.isValid());*/
+
+        assertThrows(ApplicationException.class, () -> {
+            password.setPassword("12345");
+        });
     }
 
     @Test
     void testSetPassword_shouldFail_whenPasswordDoesNotContainSymbols() {
 
-        password.setPassword("12345678Aa");
-        assertFalse(password.isValid());
+//        password.setPassword("12345678Aa");
+//        assertFalse(password.isValid());
+
+        assertThrows(ApplicationException.class, () -> {
+            password.setPassword("12345678Aa");
+        });
     }
 
     @Test
     void testSetPassword_shouldSucceed_whenPasswordMeetsAllCriteria() {
 
-        password.setPassword("12345678Aa!");
-        assertTrue(password.isValid());
+        //password.setPassword("12345678Aa!");
+        //assertTrue(password.isValid());
+
+        assertDoesNotThrow(() -> {
+            password.setPassword("12345678Aa!");
+            assertTrue(password.isValid());
+        });
     }
 }
