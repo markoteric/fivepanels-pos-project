@@ -5,8 +5,12 @@ import Domain.Media.TextContent;
 import Domain.Enum.MessageStatus;
 import Domain.Misc.Assertion;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.UUID;
 
 public class Message {
@@ -20,12 +24,19 @@ public class Message {
     private Instant updatedAt;
 
 
-    public Message() {
+
+    public Message() throws MalformedURLException {
+      ;
 
         this.id = new UUID(16, 16);
         this.status = MessageStatus.SENT;
-        setTextContent(textContent);
-        setMediaContent(mediaContent);
+        this.textContent = new ArrayList<>();
+        this.textContent.add(new TextContent("First text content"));
+        this.textContent.add(new TextContent("Second text content"));
+        this.mediaContent = new ArrayList<>();
+        this.mediaContent.add(new MediaContent("image/jpeg", "test.jpg", 1024L, new URL("https://www.google.com")));
+        this.mediaContent.add(new MediaContent());
+
         createdAt = Instant.now();
     }
 
@@ -46,11 +57,11 @@ public class Message {
     }
 
     public void setStatus(MessageStatus status) {
-
         Assertion.isNotNull(status, "status");
         Assertion.isNotBlank(status.toString(), "status");
-        this.status = MessageStatus.SENT;
+        this.status = status;
     }
+
 
     public List<TextContent> getTextContent() {
 

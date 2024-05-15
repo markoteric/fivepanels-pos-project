@@ -16,4 +16,14 @@ public class Group extends Messenger{
         this.messenger = messenger;
     }
 
+    public Group() {
+
+    }
+
+    public void setName(String groupName) {
+    }
+
+    public Object getName() {
+        return name;
+    }
 }

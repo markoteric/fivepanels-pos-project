@@ -11,6 +11,7 @@ import Domain.User.UserIdentity;
 import Domain.Enum.MedicalCaseStatus;
 import Domain.User.UserProfile;
 
+import java.net.MalformedURLException;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
@@ -34,7 +35,7 @@ public class MedicalCase extends BaseEntity {
     private UserIdentity owner;
     private Set<Hashtag> hashtags;
 
-    public MedicalCase() {
+    public MedicalCase() throws MalformedURLException {
 
         this.id = 0;
         this.headline = "foobar";

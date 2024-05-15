@@ -2,8 +2,6 @@ package Domain.Misc;
 
 import Domain.Exception.ApplicationException;
 
-import java.util.function.Supplier;
-
 import static java.lang.StringTemplate.STR;
 
 public abstract class Assertion {
@@ -51,10 +49,11 @@ public abstract class Assertion {
 
     // Expression Assertions -------------------------------------------------------
 
-    public static void isTrue(boolean expression, Supplier<String> errorMsg) {
+    public static void isTrue(boolean expression, String errorMsg) {
         if (!expression)
-            throw new ApplicationException(errorMsg.get());
+            throw new ApplicationException(errorMsg);
     }
+
 
     public static double isMin(double value, double min, String valueName, String valueName2){
         if (value < min){

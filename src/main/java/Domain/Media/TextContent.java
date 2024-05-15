@@ -2,16 +2,20 @@ package Domain.Media;
 
 import Domain.Misc.Assertion;
 
+import java.net.MalformedURLException;
+
 public class TextContent extends Media {
     
     private String content;
 
-    public TextContent() {
+    public TextContent() throws MalformedURLException {
+        super();
 
         this.content = "Paric Teric Test";
     }
 
-    public TextContent(String content) {
+    public TextContent(String content) throws MalformedURLException {
+        super();
 
         setContent(content);
     }
