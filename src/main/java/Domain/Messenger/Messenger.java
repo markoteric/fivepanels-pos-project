@@ -1,5 +1,6 @@
 package Domain.Messenger;
 
+import Domain.BaseEntity;
 import Domain.Misc.Assertion;
 import Domain.User.UserIdentity;
 
@@ -7,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Set;
 
-public class Messenger {
+public class Messenger extends BaseEntity {
     private UUID id;
     private Set<UserIdentity> members;
     private List<Message> messageHistory;

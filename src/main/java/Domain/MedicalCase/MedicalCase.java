@@ -1,5 +1,7 @@
 package Domain.MedicalCase;
 
+import Domain.BaseEntity;
+import Domain.Media.Media;
 import Domain.Media.MediaContent;
 import Domain.Media.TextContent;
 import Domain.Misc.Assertion;
@@ -15,103 +17,100 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class MedicalCase {
+import static Domain.Misc.Assertion.isNotBlank;
+import static Domain.Misc.Assertion.isNotNull;
+
+public class MedicalCase extends BaseEntity {
 
     private Integer id;
-    private Set<Hashtag> hashtags;
-    private UserIdentity owner;
-    private TextContent headline;
-    private TextContent content;
-    private MediaContent attachment;
+    private String headline;
+    private String content;
+    private Media attachment;
     private Integer viewCount = 0;
     private Instant createdAt;
     private Instant updatedAt;
     private MedicalCaseStatus status;
     private Integer likeCount = 0;
+    private UserIdentity owner;
+    private Set<Hashtag> hashtags;
 
     public MedicalCase() {
 
-        this.id = UUID.randomUUID().hashCode();
-        this.hashtags.add(new Hashtag("hashtagTest1"));
-        this.hashtags.add(new Hashtag("hashtagTest2"));
-        this.owner = UserIdentity.getUser();
+        this.id = 0;
+        this.headline = "foobar";
+        this.content = "foobar, lol";
+        this.attachment = new Media();
         this.viewCount = 0;
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
         this.status = MedicalCaseStatus.UNSOLVED;
         this.likeCount = 0;
-    }
-
-    public MedicalCase(Set<Hashtag> hashtags, TextContent headline, TextContent content, MediaContent attachment) {
-
-        this.hashtags = hashtags;
-        this.headline = headline;
-        this.content = content;
-        this.attachment = attachment;
+        this.owner = UserIdentity.getUser();
+        this.hashtags = new HashSet<Hashtag>();
     }
 
     public Integer getId() {
+
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId() {
+
+        this.id = UUID.randomUUID().hashCode();
     }
 
-    public Set<Hashtag> getHashtags() {
-        return hashtags;
-    }
+    public String getHeadline() {
 
-    public void setHashtags(Set<Hashtag> hashtags) {
-        this.hashtags = hashtags;
-    }
-
-    public UserIdentity getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserIdentity owner) {
-        this.owner = owner;
-    }
-
-    public TextContent getHeadline() {
         return headline;
     }
 
-    public void setHeadline(TextContent headline) {
+    public void setHeadline(String headline) {
+
+        isNotNull(headline, "headline");
+        isNotBlank(headline, "headline");
         this.headline = headline;
     }
 
-    public TextContent getContent() {
+    public String getContent() {
+
         return content;
     }
 
-    public void setContent(TextContent content) {
+    public void setContent(String content) {
+        isNotNull(content, "content");
+        isNotBlank(content, "content");
         this.content = content;
     }
 
-    public MediaContent getAttachment() {
+    public Media getAttachment() {
+
         return attachment;
     }
 
-    public void setAttachment(MediaContent attachment) {
+    public void setAttachment(Media attachment) {
+
+        isNotNull(attachment, "attachment");
         this.attachment = attachment;
     }
 
     public Integer getViewCount() {
+
         return viewCount;
     }
 
-    public void setViewCount(Integer viewCount) {
-        this.viewCount = viewCount;
+    public void updateViewCount() {
+
+        this.viewCount++;
     }
 
     public Instant getCreatedAt() {
+
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt() {
+
+        this.createdAt = Instant.now();
     }
 
     public Instant getUpdatedAt() {
@@ -131,29 +130,26 @@ public class MedicalCase {
     }
 
     public Integer getLikeCount() {
-
         return likeCount;
     }
 
-    public void addHashtag(String hashtag) {
-
-        this.hashtags.add(new Hashtag(hashtag));
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
     }
 
-    public void addAttachment(List<MediaContent> attachments) {
-
-        this.attachment = (MediaContent) attachments;
+    public UserIdentity getOwner() {
+        return owner;
     }
 
-    public void removeAttachment(MediaContent attachment) {
-
-        Assertion.isNotNull(attachment, "attachment");
-        Assertion.isNotNull(attachment.getContent(), "attachment");
-        this.attachment = (MediaContent) attachment;
+    public void setOwner(UserIdentity owner) {
+        this.owner = owner;
     }
 
-    public void incrementViewCount() {
+    public Set<Hashtag> getHashtags() {
+        return hashtags;
+    }
 
-        this.viewCount++;
+    public void setHashtags(Set<Hashtag> hashtags) {
+        this.hashtags = hashtags;
     }
 }

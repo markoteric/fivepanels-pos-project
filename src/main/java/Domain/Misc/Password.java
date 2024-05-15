@@ -1,16 +1,20 @@
 package Domain.Misc;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 public class Password {
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
 
-        Password password1 = new Password("Noob");
+        Password password1 = new Password("foobar12345!A");
         System.out.println(password1);
+        System.out.println(Arrays.toString(password1.getHashedPassword("foobar12345!A")));
     }
 
     private char[] password;
@@ -40,27 +44,22 @@ public class Password {
     }
 
     // FOR DATABASE
-    public byte[] getHashedPassword(String password) throws NoSuchAlgorithmException {
+    public byte[] getHashedPassword(String password) {
 
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-
-        MessageDigest md = MessageDigest.getInstance("SHA-512");
-        md.update(salt);
-        return md.digest(new String(password).getBytes(StandardCharsets.UTF_8));
+        this.password = password.toCharArray();
+        byte[] bcryptHashBytes = BCrypt.withDefaults().hash(6, password.getBytes(StandardCharsets.UTF_8));
+        return bcryptHashBytes;
     }
 
-    public boolean isValid() throws NoSuchAlgorithmException {
+    public boolean isValid() {
         // TODO: Implement requirements for password validation
 
+        Assertion.isNotNull(password, "password");
         Assertion.isNotNull(hashedPassword, "hashedPassword");
-        Assertion.isNotNull(hashedPassword, "hashedPassword");
-        Assertion.isNotBlank(hashedPassword.toString(), "password");
-        Assertion.isNotBlank(hashedPassword.toString(), "hashedPassword");
-        Assertion.longerThan10Chars(hashedPassword.toString(), "password");
-        Assertion.containsNumbers(hashedPassword.toString(), "password");
-
+        Assertion.isNotBlank(Arrays.toString(password), "password");
+        Assertion.isNotBlank(Arrays.toString(hashedPassword), "hashedPassword");
+        Assertion.longerThan10Chars(Arrays.toString(password), "password");
+        Assertion.containsNumbers(Arrays.toString(hashedPassword), "password");
         return true;
     }
 }

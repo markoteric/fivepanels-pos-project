@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 class UserProfileTest {
 
     UserProfile userProfile;
+
     @BeforeEach
     void setup() {
 
@@ -19,52 +20,28 @@ class UserProfileTest {
     @Test
     void testSetFirstName_shouldFail_whenFirstNameIsNull() {
 
-        try {
-
-            userProfile.setFirstName(null);
-            assertThrows(NullPointerException.class, () -> userProfile.setFirstName(null));
-        } catch (NullPointerException e) {
-
-            assertEquals("First name cannot be null", e.getMessage());
-        }
+        userProfile.setFirstName(null);
+        assertThrows(NullPointerException.class, () -> userProfile.setFirstName(null));
     }
 
     @Test
     void testSetLastName_shouldFail_whenFirstNameIsBlank() {
 
-        try {
-
-            userProfile.setFirstName("");
-            assertThrows(NullPointerException.class, () -> userProfile.setFirstName(""));
-        } catch (AssertionError e) {
-
-            assertEquals("First name cannot be blank", e.getMessage());
-        }
+        userProfile.setFirstName("");
+        assertThrows(NullPointerException.class, () -> userProfile.setFirstName(""));
     }
 
     @Test
     void testSetLastName_shouldFail_whenLastNameIsNull() {
 
-        try {
-
-            userProfile.setLastName(null);
-            assertThrows(NullPointerException.class, () -> userProfile.setFirstName(null));
-        } catch (NullPointerException e) {
-
-            assertEquals("First name cannot be null", e.getMessage());
-        }
+        userProfile.setLastName(null);
+        assertThrows(NullPointerException.class, () -> userProfile.setFirstName(null));
     }
 
     @Test
     void testSetLastName_shouldFail_whenLastNameIsBlank() {
 
-        try {
-
-            userProfile.setFirstName(null);
-            assertThrows(NullPointerException.class, () -> userProfile.setFirstName(null));
-        } catch (NullPointerException e) {
-
-            assertEquals("First name cannot be null", e.getMessage());
-        }
+        userProfile.setFirstName(null);
+        assertThrows(NullPointerException.class, () -> userProfile.setFirstName(null));
     }
 }

@@ -58,7 +58,6 @@ public class User extends BaseEntity {
     public void removeMedicalCase(UUID id) {
         // TODO Remove medical case
         Assertion.isNotNull(id, "id");
-        Assertion.equals(medicalCase.getId(), id, "id");
         medicalCases.remove(id);
         medicalCase.setStatus(DELETED);
     }

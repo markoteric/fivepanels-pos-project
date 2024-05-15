@@ -25,7 +25,7 @@ public class UserIdentity {
     }
 
     public static UserIdentity getUser() {
-        return new UserIdentity();
+
     }
 
 

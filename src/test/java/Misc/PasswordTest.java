@@ -89,6 +89,7 @@ class PasswordTest {
         //assertTrue(password.isValid());
 
         assertDoesNotThrow(() -> {
+
             password.setPassword("12345678Aa!");
             assertTrue(password.isValid());
         });
