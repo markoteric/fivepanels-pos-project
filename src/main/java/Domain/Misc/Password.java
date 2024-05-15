@@ -17,20 +17,23 @@ public class Password {
     private byte[] hashedPassword;
 
     public Password() {
+
     }
 
     public Password(String password) {
+
         setPassword(password);
     }
 
     public char[] getPassword() {
+
         return this.password;
     }
 
     public void setPassword(String password) {
+
        Assertion.isNotBlank(password, "password");
        this.password = password.toCharArray();
-
     }
 
     // FOR DATABASE

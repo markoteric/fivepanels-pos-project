@@ -1,5 +1,6 @@
 package Domain.Messenger;
 
+import Domain.Misc.Assertion;
 import Domain.User.UserIdentity;
 
 import java.util.List;
@@ -11,4 +12,30 @@ public class Messenger {
     private Set<UserIdentity> members;
     private List<Message> messageHistory;
 
+    public UUID getId() {
+
+        return id;
+    }
+
+    public void setId(UUID id) {
+
+        this.id = id;
+    }
+
+    public Set<UserIdentity> getMembers() {
+
+        return members;
+    }
+
+    public void setMembers(Set<UserIdentity> members) {
+
+        Assertion.isNotNull(members, "members");
+        Assertion.isNotBlank(members.toString(), "members");
+        this.members = members;
+    }
+
+    public List<Message> getMessageHistory() {
+
+        return messageHistory;
+    }
 }
