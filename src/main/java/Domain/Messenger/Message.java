@@ -5,6 +5,7 @@ import Domain.Media.TextContent;
 import Domain.Enum.MessageStatus;
 import Domain.Misc.Assertion;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +15,19 @@ public class Message {
     private List<TextContent> textContent;
     private List<MediaContent> mediaContent;
 
+    private Instant createdAt;
+
+    private Instant updatedAt;
+
+
+    public Message() {
+
+        this.id = new UUID(16, 16);
+        this.status = MessageStatus.SENT;
+        setTextContent(textContent);
+        setMediaContent(mediaContent);
+        createdAt = Instant.now();
+    }
 
     public UUID getId() {
 
@@ -35,7 +49,7 @@ public class Message {
 
         Assertion.isNotNull(status, "status");
         Assertion.isNotBlank(status.toString(), "status");
-        this.status = status;
+        this.status = MessageStatus.SENT;
     }
 
     public List<TextContent> getTextContent() {

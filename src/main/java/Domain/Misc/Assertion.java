@@ -1,6 +1,6 @@
 package Domain.Misc;
 
-import Domain.ApplicationException;
+import Domain.Exception.ApplicationException;
 
 import java.util.function.Supplier;
 
