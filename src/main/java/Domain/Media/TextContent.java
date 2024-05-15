@@ -3,6 +3,7 @@ package Domain.Media;
 import Domain.Misc.Assertion;
 
 public class TextContent extends Media {
+    
     private String content;
 
     public TextContent() {

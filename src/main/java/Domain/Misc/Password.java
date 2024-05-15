@@ -47,4 +47,9 @@ public class Password {
         md.update(salt);
         return md.digest(new String(password).getBytes(StandardCharsets.UTF_8));
     }
+
+    public boolean isValid() {
+        // TODO: Implement requirements
+        return true;
+    }
 }

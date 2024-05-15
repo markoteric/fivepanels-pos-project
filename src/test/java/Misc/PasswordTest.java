@@ -10,15 +10,53 @@ import org.junit.jupiter.api.Test;
 
 class PasswordTest {
 
+    private Password password;
     @BeforeEach
     void setup() {
 
-        Password password = new Password();
+        password = new Password();
     }
 
     @Test
-    void test() {
+    void testSetPassword_shouldFail_whenPasswordIsNull() {
 
+        password.setPassword(null);
+        assertFalse(password.isValid());
+    }
 
+    void testSetPassword_shouldFail_whenPasswordIsBlank() {
+
+        password.setPassword("");
+        assertFalse(password.isValid());
+    }
+
+    void testSetPassword_shouldFail_whenPasswordIsTooShort() {
+
+        password.setPassword("1234");
+        assertFalse(password.isValid());
+    }
+
+    void testSetPassword_shouldFail_whenPasswordDoesNotContainNumbers() {
+
+        password.setPassword("password");
+        assertFalse(password.isValid());
+    }
+
+    void testSetPassword_shouldFail_whenPasswordDoesNotContainLetters() {
+
+        password.setPassword("12345");
+        assertFalse(password.isValid());
+    }
+
+    void testSetPassword_shouldFail_whenPasswordDoesNotContainSymbols() {
+
+        password.setPassword("12345678Aa");
+        assertFalse(password.isValid());
+    }
+
+    void testSetPassword_shouldSucceed_whenPasswordMeetsAllCriteria() {
+
+        password.setPassword("12345678Aa!");
+        assertTrue(password.isValid());
     }
 }

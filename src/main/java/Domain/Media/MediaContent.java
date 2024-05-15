@@ -3,6 +3,7 @@ package Domain.Media;
 import Domain.Misc.Assertion;
 
 public class MediaContent extends Media {
+
     private Media content;
 
     public MediaContent() {
