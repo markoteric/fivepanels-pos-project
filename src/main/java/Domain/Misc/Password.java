@@ -32,8 +32,9 @@ public class Password {
 
     public void setPassword(String password) {
 
-       Assertion.isNotBlank(password, "password");
-       this.password = password.toCharArray();
+        Assertion.isNotNull(password, "password");
+        Assertion.isNotBlank(password, "password");
+        this.password = password.toCharArray();
     }
 
     // FOR DATABASE
@@ -49,7 +50,11 @@ public class Password {
     }
 
     public boolean isValid() {
-        // TODO: Implement requirements
+        // TODO: Implement requirements for password validation
+        Assertion.isNotNull(password, "password");
+        Assertion.isNotNull(hashedPassword, "hashedPassword");
+        Assertion.isNotBlank(password.toString(), "password");
+        Assertion.isNotBlank(hashedPassword.toString(), "hashedPassword");
         return true;
     }
 }

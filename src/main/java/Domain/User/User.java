@@ -42,7 +42,6 @@ public class User extends BaseEntity {
 
     public void addMedicalCase(Set<Hashtag> hashtags, TextContent headline, TextContent content, MediaContent attachment, MedicalCaseStatus status) {
         // TODO Assertions for hashtags, headline, content, attachment, status
-        MedicalCase mc = new MedicalCase(hashtags, headline, content, attachment, status);
 
     }
 
