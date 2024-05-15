@@ -1,4 +1,4 @@
-package Domain;
+package Domain.Exception;
 
 public class ApplicationException extends RuntimeException {
 

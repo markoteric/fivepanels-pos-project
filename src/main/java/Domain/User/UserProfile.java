@@ -14,7 +14,8 @@ import static Domain.Misc.Assertion.isNotNull;
 
 public class UserProfile {
 
-
+    private String firstName;
+    private String lastName;
     private Media profilePicture;
     private Set<Specialization> specializations;
     private Set<MedicalTitle> medicalTitles;
@@ -24,8 +25,6 @@ public class UserProfile {
     private Set<Language> languages;
     private Integer activityScore;
     private Integer experienceScore;
-
-
     private User userProfile;
 
     public UserProfile() {
@@ -226,6 +225,20 @@ public class UserProfile {
     public void setUserProfile(User userProfile) {
 
         this.userProfile = userProfile;
+    }
+
+    public void setFirstName(String name) {
+
+        isNotNull(name, "name");
+        isNotBlank(name, "name");
+        this.firstName = name;
+    }
+
+    public void setLastName(String lastName) {
+
+        isNotNull(lastName, "lastName");
+        isNotBlank(lastName, "lastName");
+        this.lastName = lastName;
     }
 }
 

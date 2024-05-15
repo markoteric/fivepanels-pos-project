@@ -1,5 +1,8 @@
 package Domain.Enum;
 
 public enum MedicalCaseStatus {
-    SOLVED, UNSOLVED, ARCHIVED, DELETED
+    SOLVED,
+    UNSOLVED,
+    ARCHIVED,
+    DELETED
 }

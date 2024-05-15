@@ -1,8 +1,6 @@
 package Domain.Misc;
 
-import Domain.ApplicationException;
-
-import java.util.function.Supplier;
+import Domain.Exception.ApplicationException;
 
 import static java.lang.StringTemplate.STR;
 
@@ -51,10 +49,11 @@ public abstract class Assertion {
 
     // Expression Assertions -------------------------------------------------------
 
-    public static void isTrue(boolean expression, Supplier<String> errorMsg) {
+    public static void isTrue(boolean expression, String errorMsg) {
         if (!expression)
-            throw new ApplicationException(errorMsg.get());
+            throw new ApplicationException(errorMsg);
     }
+
 
     public static double isMin(double value, double min, String valueName, String valueName2){
         if (value < min){
@@ -77,5 +76,40 @@ public abstract class Assertion {
             throw new ApplicationException(valueName + " and " + valueName2 + " are greater than 0.");
         }
         return value;
+    }
+
+    public static boolean longerThan10Chars(String value, String valueName){
+        if(value.length() >= 10){
+            return true;
+        }else{
+            throw new ApplicationException(valueName + " is less than 10 characters");
+        }
+    }
+
+
+    public static boolean containsNumbers(String value, String valueName) {
+        if (value.matches(".*[0-9].*")) {
+            return true;
+        } else {
+            throw new ApplicationException(valueName + " does not contain numbers");
+        }
+    }
+
+
+
+    public static boolean containsLetters(String value, String valueName){
+        if(value.matches("[a-zA-Z]+")){
+            return true;
+        }else{
+            throw new ApplicationException(valueName + " does not contain letters");
+        }
+    }
+
+    public static boolean containsSymbols(String value, String valueName){
+        if(value.matches("[!@#$%^&*()_+{}|:\"<>?,./;'\\[\\]\\-=]")){
+            return true;
+        } else {
+            throw new ApplicationException(valueName + " does not contain symbols");
+        }
     }
 }

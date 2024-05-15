@@ -11,15 +11,21 @@ public class UserIdentity {
     private Password password;
 
     public UserIdentity(){
+
         this.id = UUID.randomUUID();
         this.email = new Email("teric@fivepanels.at");
         this.password = new Password("123456");
     }
 
-    public UserIdentity(UUID id, Email email, Password password){
-        this.id = id;
+    public UserIdentity(Email email, Password password) {
+
+        this.id = UUID.randomUUID();
         this.email = email;
         this.password = password;
+    }
+
+    public static UserIdentity getUser() {
+        return getUser();
     }
 
 
