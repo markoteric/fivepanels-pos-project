@@ -4,6 +4,7 @@ import Domain.Enum.MedicalCaseStatus;
 import Domain.Media.MediaContent;
 import Domain.Media.TextContent;
 import Domain.MedicalCase.Answer;
+import Domain.MedicalCase.MedicalCase;
 import Domain.Misc.Email;
 import Domain.BaseEntity;
 import Domain.Misc.Hashtag;
@@ -11,6 +12,7 @@ import Domain.Misc.Password;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static Domain.Enum.MedicalCaseStatus.UNSOLVED;
@@ -38,10 +40,9 @@ public class User extends BaseEntity {
         this.userProfile = new UserProfile(userProfile);
     }
 
-    public void addMedicalCase(List<Hashtag> hashtags, TextContent headline, TextContent content, MediaContent attachment) {
+    public void addMedicalCase(Set<Hashtag> hashtags, TextContent headline, TextContent content, MediaContent attachment, MedicalCaseStatus status) {
         // TODO Assertions for hashtags, headline, content, attachment, status
-        MedicalCaseStatus status = UNSOLVED;
-
+        MedicalCase mc = new MedicalCase(hashtags, headline, content, attachment, status);
 
     }
 
@@ -109,16 +110,5 @@ public class User extends BaseEntity {
     }
 
     // ______________________________________________________getter and setter____________________________________________________
-
-
-
-
-
-
-
-
-
-
-
 }
 

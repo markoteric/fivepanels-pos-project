@@ -26,7 +26,6 @@ public class UserIdentity {
 
     public static UserIdentity getUser() {
 
-
     }
 
 
