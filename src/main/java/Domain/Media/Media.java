@@ -2,6 +2,7 @@ package Domain.Media;
 
 import Domain.Misc.Assertion;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
 
@@ -12,6 +13,15 @@ public class Media {
     private Long fileSize;
     private Instant createdAt;
     private URL url;
+
+    public Media() throws MalformedURLException {
+
+        this.mimeType = "image/jpeg";
+        this.fileName = "test.jpg";
+        this.fileSize = 1024L;
+        this.createdAt = Instant.now();
+        this.url = new URL("https://www.google.com");
+    }
 
     public String getMimeType() {
 
@@ -55,5 +65,13 @@ public class Media {
         Assertion.isNotNull(url, "url");
         Assertion.isNotBlank(url.toString(), "url");
         this.url = url;
+    }
+
+    public void setContentType(String contentType) {
+
+    }
+
+    public void setFileSize(long l) {
+
     }
 }

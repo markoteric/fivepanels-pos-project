@@ -2,21 +2,19 @@ package Domain.User;
 import Domain.Misc.Assertion;
 import Domain.Misc.Email;
 import Domain.Misc.Password;
-
-import java.util.Scanner;
 import java.util.UUID;
 
 public class UserIdentity {
 
-    private final UUID id;
+    private UUID id;
     private Email email;
     private Password password;
 
-    public UserIdentity () {
+    public UserIdentity(){
 
         this.id = UUID.randomUUID();
         this.email = new Email("teric@fivepanels.at");
-        this.password = new Password(new char[5]);
+        this.password = new Password("123456");
     }
 
     public UserIdentity(Email email, Password password) {
@@ -26,33 +24,27 @@ public class UserIdentity {
         this.password = password;
     }
 
+    public static UserIdentity getUser() {
+        return getUser();
+    }
+
+
     // -------------------------------------- SETTER & GETTER -----------------------------------------
 
 
-    public UUID getUUID() {
-
+    public UUID getUUID(){
         return id;
     }
 
-
-    public Email getEmail() {
-
+    public Email getEmail(){
         return email;
     }
 
-    // RFC3696, NOT NULL, MIN LENGTH, MAX LENGTH, CONTAINS @-SYMBOL, NOT EMPTY
-    public void setEmail() {
-
-    }
-
-    public Password getPassword() {
-
+    public Password getPassword(){
         return password;
     }
 
-    // Done in Password.java class
-    public void setPassword(Password password) {
-
+    public void setPassword(Password password){
         this.password = password;
     }
 
@@ -66,11 +58,11 @@ public class UserIdentity {
         this.email = email;
     }
 
-//    public void updatePassword(Password password){
-//        Assertion.isNotNull(password, "password");
-//        Assertion.charsAreNotBlank(password.getPassword(), "password");
-//        this.password = password;
-//    }
+    public void updatePassword(Password password){
+        Assertion.isNotNull(password, "password");
+        Assertion.charsAreNotBlank(password.getPassword(), "password");
+        this.password = password;
+    }
 
 
 

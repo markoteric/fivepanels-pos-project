@@ -7,9 +7,13 @@ import Domain.User.UserProfile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+<<<<<<< HEAD
+public class UserProfileTest {
+=======
 class UserProfileTest {
 
     UserProfile userProfile;
+>>>>>>> 0131cb25cc50e18fdc0b41d5be141023d3b53ff5
 
     @BeforeEach
     void setup() {
@@ -18,6 +22,13 @@ class UserProfileTest {
     }
 
     @Test
+<<<<<<< HEAD
+    void test() {
+
+
+    }
+}
+=======
     void testSetFirstName_shouldFail_whenFirstNameIsNull() {
 
         userProfile.setFirstName(null);
@@ -45,3 +56,4 @@ class UserProfileTest {
         assertThrows(NullPointerException.class, () -> userProfile.setFirstName(null));
     }
 }
+>>>>>>> 0131cb25cc50e18fdc0b41d5be141023d3b53ff5

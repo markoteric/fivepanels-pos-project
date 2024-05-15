@@ -11,6 +11,7 @@ import Domain.BaseEntity;
 import Domain.Misc.Hashtag;
 import Domain.Misc.Password;
 
+import java.net.MalformedURLException;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +38,7 @@ public class User extends BaseEntity {
 
         super();
         this.email = new Email("paricteric@gmail.com");
-        this.password = new Password("foobar");
+        this.password = new Password(new char[5]);
         this.userProfile = new UserProfile();
     }
 
@@ -49,12 +50,12 @@ public class User extends BaseEntity {
         this.userProfile = new UserProfile(userProfile);
     }
 
-    public void addMedicalCase(Set<Hashtag> hashtags, TextContent headline, TextContent content, Set<MediaContent> attachments, MedicalCaseStatus status) {
+    public void addMedicalCase(Set<Hashtag> hashtags, TextContent headline, TextContent content, Set<MediaContent> attachments, MedicalCaseStatus status) throws MalformedURLException {
         // TODO Assertions for hashtags, headline, content, attachment, status
         MedicalCase medicalCase = new MedicalCase();
         medicalCase.setHashtags(hashtags);
-        medicalCase.setHeadline(headline);
-        medicalCase.setContent(content);
+        //medicalCase.setHeadline(headline);
+        //medicalCase.setContent(content);
         medicalCase.setAttachment((MediaContent) attachments);
         medicalCase.setStatus(UNSOLVED);
     }
@@ -69,8 +70,8 @@ public class User extends BaseEntity {
     public void updateMedicalCase(Set<Hashtag> hashtags, TextContent headline, TextContent content, MediaContent attachment, MedicalCaseStatus status) {
         // TODO Update medical case
         medicalCase.setHashtags(hashtags);
-        medicalCase.setHeadline(headline);
-        medicalCase.setContent(content);
+        //medicalCase.setHeadline(headline);
+        //medicalCase.setContent(content);
         medicalCase.setAttachment((MediaContent) attachment);
         medicalCase.setStatus(status);
     }
@@ -80,7 +81,7 @@ public class User extends BaseEntity {
         // TODO Add hashtag
         Assertion.isNotNull(hashtag, "hashtag");
         Assertion.isNotBlank(hashtag, "hashtag");
-        medicalCase.addHashtag(hashtag);
+       // medicalCase.addHashtag(hashtag);
     }
 
     public void removeHashtag(String hashtag) {
@@ -93,13 +94,13 @@ public class User extends BaseEntity {
     public void addAttachment(MediaContent attachment) {
         // TODO Add attachment
         Assertion.isNotNull(attachment, "attachment");
-        medicalCase.addAttachment((List<MediaContent>) attachment);
+        //medicalCase.addAttachment((List<MediaContent>) attachment);
     }
 
     public void removeAttachment(MediaContent attachment) {
         // TODO Remove attachment
         Assertion.isNotNull(attachment, "attachment");
-        medicalCase.removeAttachment((MediaContent) attachment);
+       // medicalCase.removeAttachment((MediaContent) attachment);
     }
 
     public void addMember(UUID id) {
