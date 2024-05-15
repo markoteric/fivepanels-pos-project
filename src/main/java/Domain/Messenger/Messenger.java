@@ -5,6 +5,7 @@ import Domain.Media.MediaContent;
 import Domain.Misc.Assertion;
 import Domain.User.UserIdentity;
 
+import javax.swing.*;
 import java.util.*;
 
 
@@ -12,6 +13,7 @@ public class Messenger {
     private UUID id;
     private Set<UserIdentity> members;
     private List<Message> messageHistory;
+    private List<Group> groups;
 
     public UUID getId() {
 
@@ -82,6 +84,30 @@ public class Messenger {
             return message.getContent();
         }
         return null;
+    }
+
+    public void deleteMessage(Message message) {
+        Iterator<Message> iterator = messageHistory.iterator();
+        while (iterator.hasNext()) {
+            Message currentMessage = iterator.next();
+            if (currentMessage.getId().equals(message.getId())) {
+                iterator.remove();
+                break;
+            }
+        }
+    }
+
+    public void createGroup(String groupName) {
+        Assertion.isNotBlank(groupName, "groupName");
+        Assertion.isNotNull(groupName, "groupName");
+
+    }
+
+    public void addMemberToGroup(String groupName, UserIdentity userIdentity) {
+        Assertion.isNotBlank(groupName, "groupName");
+        Assertion.isNotNull(groupName, "groupName");
+        Assertion.isNotBlank(userIdentity.toString(), "userIdentity");
+        Assertion.isNotNull(userIdentity, "userIdentity");
     }
 
 
