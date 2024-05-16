@@ -1,7 +1,7 @@
 package Domain.User;
 
 import Domain.Media.Media;
-import Domain.Misc.Assertion;
+import Domain.Assertion.Assertion;
 import Domain.Misc.Hashtag;
 import Domain.Misc.Language;
 import Domain.Enum.MedicalTitle;
@@ -9,8 +9,8 @@ import Domain.Enum.Specialization;
 
 import java.util.Set;
 
-import static Domain.Misc.Assertion.isNotBlank;
-import static Domain.Misc.Assertion.isNotNull;
+import static Domain.Assertion.Assertion.isNotBlank;
+import static Domain.Assertion.Assertion.isNotNull;
 
 public class UserProfile {
 

@@ -1,6 +1,6 @@
 package Domain.MedicalCase;
 
-import Domain.Misc.Assertion;
+import Domain.Assertion.Assertion;
 
 public class Answer {
     private String answer;

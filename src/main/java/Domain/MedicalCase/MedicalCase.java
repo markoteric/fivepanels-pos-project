@@ -2,24 +2,18 @@ package Domain.MedicalCase;
 
 import Domain.BaseEntity;
 import Domain.Media.Media;
-import Domain.Media.MediaContent;
-import Domain.Media.TextContent;
-import Domain.Misc.Assertion;
 import Domain.Misc.Hashtag;
-import Domain.User.User;
 import Domain.User.UserIdentity;
 import Domain.Enum.MedicalCaseStatus;
-import Domain.User.UserProfile;
 
 import java.net.MalformedURLException;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static Domain.Misc.Assertion.isNotBlank;
-import static Domain.Misc.Assertion.isNotNull;
+import static Domain.Assertion.Assertion.isNotBlank;
+import static Domain.Assertion.Assertion.isNotNull;
 
 public class MedicalCase extends BaseEntity {
 

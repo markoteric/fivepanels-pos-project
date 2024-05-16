@@ -1,19 +1,20 @@
 package Domain.Messenger;
 
+import Domain.BaseEntity;
 import Domain.Media.MediaContent;
 import Domain.Media.TextContent;
 import Domain.Enum.MessageStatus;
-import Domain.Misc.Assertion;
+import Domain.Assertion.Assertion;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.UUID;
 
-public class Message {
+public class Message extends BaseEntity {
+
     private UUID id;
     private MessageStatus status;
     private List<TextContent> textContent;

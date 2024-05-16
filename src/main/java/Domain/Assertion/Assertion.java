@@ -1,6 +1,6 @@
-package Domain.Misc;
+package Domain.Assertion;
 
-import Domain.Exception.ApplicationException;
+import Domain.Exception.AssertionException;
 
 import static java.lang.StringTemplate.STR;
 
@@ -11,7 +11,7 @@ public abstract class Assertion {
     // public static Object isNotNull(Object value, String paramName) {
     public static <T> T isNotNull(T value, String paramName) {
         if (value == null)
-            throw new ApplicationException(STR."\{paramName} is null");
+            throw new AssertionException(STR."\{paramName} is null");
 
         return value;
     }
@@ -23,14 +23,14 @@ public abstract class Assertion {
         isNotNull(value, paramName);
 
         if (value.isBlank())
-            throw new ApplicationException(STR."\{paramName} is blank");
+            throw new AssertionException(STR."\{paramName} is blank");
 
         return value;
     }
 
     public static char[] charsAreNotBlank(char[] value, String paramName) {
         if (char[].class.isInstance(value))
-            throw new ApplicationException(STR."\{paramName} is blank");
+            throw new AssertionException(STR."\{paramName} is blank");
 
         return value;
     }
@@ -40,7 +40,7 @@ public abstract class Assertion {
         isNotBlank(value, paramName);
 
         if (value.length() > maxLength)
-            throw new ApplicationException(STR."\{paramName} is greater than \{maxLength}");
+            throw new AssertionException(STR."\{paramName} is greater than \{maxLength}");
 
         return value;
     }
@@ -51,21 +51,21 @@ public abstract class Assertion {
 
     public static void isTrue(boolean expression, String errorMsg) {
         if (!expression)
-            throw new ApplicationException(errorMsg);
+            throw new AssertionException(errorMsg);
     }
 
 
     public static double isMin(double value, double min, String valueName, String valueName2){
         if (value < min){
-            throw new ApplicationException(valueName + " is greater than " + min);
-        }// else if (value == value2){throw new ApplicationException(valueName + " is equal to " + value2);}
+            throw new AssertionException(valueName + " is greater than " + min);
+        }// else if (value == value2){throw new AssertionException(valueName + " is equal to " + value2);}
         return value;
     }
 
     public static double isMax(double value, double value2, String valueName, String valueName2){
         if (value < value2){
-            throw new ApplicationException(valueName2 + " is greater than " + valueName);
-        }else if (value == value2){throw new ApplicationException(valueName + " is equal to " + value2);}
+            throw new AssertionException(valueName2 + " is greater than " + valueName);
+        }else if (value == value2){throw new AssertionException(valueName + " is equal to " + value2);}
         return value;
     }
 
@@ -73,7 +73,7 @@ public abstract class Assertion {
         if ( value > 0.0 && value2 > 0.0) {
             return value;
         } else if (value == 0.0 && value2 < 0.0) {
-            throw new ApplicationException(valueName + " and " + valueName2 + " are greater than 0.");
+            throw new AssertionException(valueName + " and " + valueName2 + " are greater than 0.");
         }
         return value;
     }
@@ -82,7 +82,7 @@ public abstract class Assertion {
         if(value.length() >= 10){
             return true;
         }else{
-            throw new ApplicationException(valueName + " is less than 10 characters");
+            throw new AssertionException(valueName + " is less than 10 characters");
         }
     }
 
@@ -91,7 +91,7 @@ public abstract class Assertion {
         if (value.matches(".*[0-9].*")) {
             return true;
         } else {
-            throw new ApplicationException(valueName + " does not contain numbers");
+            throw new AssertionException(valueName + " does not contain numbers");
         }
     }
 
@@ -101,7 +101,7 @@ public abstract class Assertion {
         if(value.matches("[a-zA-Z]+")){
             return true;
         }else{
-            throw new ApplicationException(valueName + " does not contain letters");
+            throw new AssertionException(valueName + " does not contain letters");
         }
     }
 
@@ -109,7 +109,7 @@ public abstract class Assertion {
         if(value.matches("[!@#$%^&*()_+{}|:\"<>?,./;'\\[\\]\\-=]")){
             return true;
         } else {
-            throw new ApplicationException(valueName + " does not contain symbols");
+            throw new AssertionException(valueName + " does not contain symbols");
         }
     }
 }

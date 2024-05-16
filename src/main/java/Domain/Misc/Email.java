@@ -1,5 +1,7 @@
 package Domain.Misc;
 
+import Domain.Assertion.Assertion;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

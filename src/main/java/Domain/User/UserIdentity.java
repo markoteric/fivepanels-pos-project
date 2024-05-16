@@ -1,5 +1,5 @@
 package Domain.User;
-import Domain.Misc.Assertion;
+import Domain.Assertion.Assertion;
 import Domain.Misc.Email;
 import Domain.Misc.Password;
 import java.util.UUID;
@@ -14,7 +14,7 @@ public class UserIdentity {
 
         this.id = UUID.randomUUID();
         this.email = new Email("teric@fivepanels.at");
-        this.password = new Password("123456");
+        this.password = new Password("123456".toCharArray());
     }
 
     public UserIdentity(Email email, Password password) {
@@ -60,7 +60,7 @@ public class UserIdentity {
 
     public void updatePassword(Password password){
         Assertion.isNotNull(password, "password");
-        Assertion.charsAreNotBlank(password.getPassword(), "password");
+        Assertion.charsAreNotBlank(password.getPassword().toCharArray(), "password");
         this.password = password;
     }
 

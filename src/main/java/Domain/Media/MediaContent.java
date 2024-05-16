@@ -1,6 +1,6 @@
 package Domain.Media;
 
-import Domain.Misc.Assertion;
+import Domain.Assertion.Assertion;
 
 import java.net.MalformedURLException;
 import java.net.URL;

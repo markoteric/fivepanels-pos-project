@@ -2,10 +2,9 @@ package Domain.Messenger;
 
 import Domain.Enum.MessageStatus;
 import Domain.Media.MediaContent;
-import Domain.Misc.Assertion;
+import Domain.Assertion.Assertion;
 import Domain.User.UserIdentity;
 
-import javax.swing.*;
 import java.net.MalformedURLException;
 import java.util.*;
 

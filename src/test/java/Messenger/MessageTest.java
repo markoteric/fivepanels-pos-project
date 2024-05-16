@@ -2,22 +2,17 @@ package Messenger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import Domain.Exception.ApplicationException;
-import Domain.Exception.MessengerException;
+import Domain.Exception.AssertionException;
 import Domain.Media.MediaContent;
 import Domain.Messenger.Message;
-import Domain.Messenger.Messenger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -32,21 +27,21 @@ public class MessageTest {
 
     @Test
     void test_SetStatus_ShouldFAIL_WhenStatusIsNull() {
-        assertThrows(ApplicationException.class, () -> {
+        assertThrows(AssertionException.class, () -> {
             message.setStatus(null);
         });
     }
 
     @Test
     void test_SetTextContent_ShouldFAIL_WhenTextContentIsNull() {
-        assertThrows(ApplicationException.class, () -> {
+        assertThrows(AssertionException.class, () -> {
             message.setTextContent(null);
         });
     }
 
     @Test
     void test_SetMediaContent_ShouldFAIL_WhenMediaContentIsNull() {
-        assertThrows(ApplicationException.class, () -> {
+        assertThrows(AssertionException.class, () -> {
             message.setMediaContent(null);
         });
     }

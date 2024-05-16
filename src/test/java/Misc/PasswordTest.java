@@ -2,7 +2,8 @@ package Misc;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import Domain.Exception.ApplicationException;
+import Domain.Assertion.Assertion;
+import Domain.Exception.AssertionException;
 import Domain.Messenger.Messenger;
 import Domain.Misc.Password;
 import Domain.User.UserProfile;
@@ -21,7 +22,7 @@ class PasswordTest {
 
     void testSetPassword_shouldFail_whenPasswordIsNull() {
 
-        assertThrows(ApplicationException.class, () -> {
+        assertThrows(AssertionException.class, () -> {
             password.setPassword(null);
         });
     }
@@ -33,7 +34,7 @@ class PasswordTest {
 //        password.setPassword("");
 //        assertFalse(password.isValid());
 
-        assertThrows(ApplicationException.class, () -> {
+        assertThrows(AssertionException.class, () -> {
             password.setPassword("");
         });
 
@@ -45,7 +46,7 @@ class PasswordTest {
 //        password.setPassword("1234");
 //        assertFalse(password.isValid());
 
-        assertThrows(ApplicationException.class, () -> {
+        assertThrows(AssertionException.class, () -> {
             password.setPassword("1234");
         });
     }
@@ -56,7 +57,7 @@ class PasswordTest {
        /* password.setPassword("password");
         assertFalse(password.isValid());*/
 
-        assertThrows(ApplicationException.class, () -> {
+        assertThrows(AssertionException.class, () -> {
             password.setPassword("password");
         });
     }
@@ -66,7 +67,7 @@ class PasswordTest {
         password.setPassword("12345");
         assertFalse(password.isValid());*/
 
-        assertThrows(ApplicationException.class, () -> {
+        assertThrows(AssertionException.class, () -> {
             password.setPassword("12345");
         });
     }
@@ -77,7 +78,7 @@ class PasswordTest {
 //        password.setPassword("12345678Aa");
 //        assertFalse(password.isValid());
 
-        assertThrows(ApplicationException.class, () -> {
+        assertThrows(AssertionException.class, () -> {
             password.setPassword("12345678Aa");
         });
     }

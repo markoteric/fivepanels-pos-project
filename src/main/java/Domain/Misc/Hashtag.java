@@ -1,6 +1,6 @@
 package Domain.Misc;
 
-import java.util.Set;
+import Domain.Assertion.Assertion;
 
 public class Hashtag {
 

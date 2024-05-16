@@ -1,8 +1,11 @@
 package Domain.Misc;
 
+import Domain.Assertion.Assertion;
+
 import java.util.Set;
 
 public class Language {
+
     private Set<String> languages;
 
     public Set<String> getLanguages() {

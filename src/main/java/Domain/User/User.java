@@ -5,7 +5,7 @@ import Domain.Media.MediaContent;
 import Domain.Media.TextContent;
 import Domain.MedicalCase.Answer;
 import Domain.MedicalCase.MedicalCase;
-import Domain.Misc.Assertion;
+import Domain.Assertion.Assertion;
 import Domain.Misc.Email;
 import Domain.BaseEntity;
 import Domain.Misc.Hashtag;
@@ -18,8 +18,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import static Domain.Enum.MedicalCaseStatus.UNSOLVED;
-import static Domain.Enum.MedicalCaseStatus.SOLVED;
-import static Domain.Enum.MedicalCaseStatus.ARCHIVED;
 import static Domain.Enum.MedicalCaseStatus.DELETED;
 
 public class User extends BaseEntity {
