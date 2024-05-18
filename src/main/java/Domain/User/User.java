@@ -102,7 +102,8 @@ public class User extends BaseEntity {
     }
 
     public void addMember(UUID id) {
-        // TODO Add member
+        Assertion.isNotNull(id, "id");
+
     }
 
     public void removeMember(UUID id) {
