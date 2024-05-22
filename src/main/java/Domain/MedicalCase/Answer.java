@@ -3,6 +3,7 @@ package Domain.MedicalCase;
 import Foundation.Assertion.Assertion;
 
 public class Answer {
+
     private String answer;
 
     public Answer(String answer) {
@@ -19,7 +20,8 @@ public class Answer {
 
         Assertion.isNotNull(answer, "answer");
         Assertion.isNotBlank(answer, "answer");
-        Assertion.hasMaxLength(answer, 255, "answer");
+        Assertion.hasMinLength(answer, 1, "answer");
+        Assertion.hasMaxLength(answer, 128, "answer");
         this.answer = answer;
     }
 }
