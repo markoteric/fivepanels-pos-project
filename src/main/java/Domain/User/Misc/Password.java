@@ -1,52 +1,58 @@
 package Domain.User.Misc;
 
+import Foundation.Assertion.Assertion;
+import Foundation.Exception.UserException;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.nulabinc.zxcvbn.Zxcvbn;
 import com.nulabinc.zxcvbn.Strength;
 
+import java.util.Arrays;
+
 public class Password {
 
-    // Password needs to be strong enough (isPwStrongEnough), saves us many if-statements / assertions
-    private String password;
-    private char[] hashedPw;
+    private char[] password;
 
-    public String getPassword() {
+    public Password(char[] password) {
+
+        setPassword(password);
+    }
+
+    public Password() {
+
+        setPassword("StrongPassword123!FoobarLOL".toCharArray());
+    }
+
+    public char[] getPassword() {
+
         return password;
     }
 
-    public char[] getHashedPw() {
-        return hashedPw;
+    public void setPassword(char[] passwordToHash) {
+
+        Assertion.isNotNull(passwordToHash, "passwordToHash");
+        Assertion.isNotBlank(new String(passwordToHash), "passwordToHash");
+        String passwordStr = new String(passwordToHash);
+        Assertion.hasMinLength(passwordStr, 8, "passwordToHash");
+        Assertion.hasMaxLength(passwordStr, 128, "passwordToHash");
+        Assertion.containsLetter(passwordStr, "passwordToHash");
+        Assertion.containsNumber(passwordStr, "passwordToHash");
+        Assertion.containsSpecialCharacter(passwordStr, "passwordToHash");
+        if (!isPwStrongEnough(passwordStr)) {
+
+            throw new UserException("Password is not strong enough");
+        }
+        this.password = Arrays.copyOf(passwordToHash, passwordToHash.length);
     }
 
-    public Password(char[] pw) {
+    public char[] hashPassword(char[] password) {
 
-        setHashedPw(pw);
+        return password = BCrypt.withDefaults().hashToChar(12, password);
     }
 
-    public void setPassword(String pw) {
-
-        this.password = pw;
-    }
-
-    public boolean isValid() {
-
-        return true;
-    }
-
-    public void setHashedPw(char[] actualPw) {
-
-        this.hashedPw = hashPassword(actualPw);
-    }
-
-    public char[] hashPassword(char[] otherPw) {
-
-        return hashedPw = BCrypt.withDefaults().hashToChar(12, otherPw);
-    }
-
-    public boolean isPwStrongEnough(CharSequence pw) {
+    public boolean isPwStrongEnough(CharSequence password) {
 
         Zxcvbn zxcvbn = new Zxcvbn();
-        Strength strength = zxcvbn.measure(pw);
+        Strength strength = zxcvbn.measure(password);
         return strength.getScore() >= 3;
     }
 }
