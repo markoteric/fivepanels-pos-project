@@ -1,94 +1,98 @@
 package Domain.Messenger;
 
-import Foundation.BaseEntity;
-import Domain.Media.MediaContent;
-import Domain.Media.TextContent;
-import Domain.Enum.MessageStatus;
 import Foundation.Assertion.Assertion;
+import Foundation.BaseEntity;
+import Foundation.Exception.AssertionException;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.File;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Message extends BaseEntity {
 
-    private UUID id;
-    private MessageStatus status;
-    private List<TextContent> textContent;
-    private List<MediaContent> mediaContent;
+    private String content;
+    private File file;
 
-    private Instant createdAt;
+    public Message(String content, File file) {
 
-    private Instant updatedAt;
-
-
-
-    public Message() throws MalformedURLException {
-      ;
-
-        this.id = new UUID(16, 16);
-        this.status = MessageStatus.SENT;
-        this.textContent = new ArrayList<>();
-        this.textContent.add(new TextContent("First text content"));
-        this.textContent.add(new TextContent("Second text content"));
-        this.mediaContent = new ArrayList<>();
-        this.mediaContent.add(new MediaContent("image/jpeg", "test.jpg", 1024L, new URL("https://www.google.com")));
-        this.mediaContent.add(new MediaContent());
-
-        createdAt = Instant.now();
+        super();
+        this.setId(UUID.randomUUID());
+        setContent(content);
+        setFile(file);
     }
 
-    public UUID getId() {
+    public Message(File file) {
 
-        return id;
+        super();
+        this.setId(UUID.randomUUID());
+        setFile(file);
     }
 
-    public void setId(UUID id) {
+    public Message(String content) {
 
-        // UUID needs to be unique
-        this.id = id;
-    }
-
-    public MessageStatus getStatus() {
-
-        return status;
-    }
-
-    public void setStatus(MessageStatus status) {
-        Assertion.isNotNull(status, "status");
-        Assertion.isNotBlank(status.toString(), "status");
-        this.status = status;
-    }
-
-
-    public List<TextContent> getTextContent() {
-
-        return textContent;
-    }
-
-    public void setTextContent(List<TextContent> textContent) {
-
-        Assertion.isNotNull(textContent, "textContent");
-        Assertion.isNotBlank(textContent.toString(), "textContent");
-        this.textContent = textContent;
-    }
-
-    public List<MediaContent> getMediaContent() {
-
-        return mediaContent;
-    }
-
-    public void setMediaContent(List<MediaContent> mediaContent) {
-
-        Assertion.isNotNull(mediaContent, "mediaContent");
-        Assertion.isNotBlank(mediaContent.toString(), "mediaContent");
-        this.mediaContent = mediaContent;
+        super();
+        this.setId(UUID.randomUUID());
+        setContent(content);
     }
 
     public String getContent() {
-        return textContent.getFirst().getContent();
+
+        return content;
+    }
+
+    public void setContent(String content) {
+
+        Assertion.isNotNull(content, "content");
+        Assertion.isNotBlank(content, "content");
+        Assertion.hasMinLength(content, 1, "content");
+        this.content = content;
+        this.file = null;
+        updatedAt = Instant.now();
+    }
+
+    public File getFile() {
+
+        return file;
+    }
+
+    public void setFile(File file) {
+
+        Assertion.isNotNull(file, "file");
+        if (!file.exists() || !file.isFile()) {
+
+            throw new AssertionException("File must exist and be a file");
+        }
+
+        this.file = file;
+        this.content = content;
+        updatedAt = Instant.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Message message = (Message) o;
+        return Objects.equals(getId(), message.getId());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+
+        return "Message{" +
+                "id=" + getId() +
+                ", createdAt=" + getCreatedAt() +
+                ", updatedAt=" + getUpdatedAt() +
+                ", content='" + content + '\'' +
+                ", file=" + (file != null ? file.getName() : "null") +
+                '}';
     }
 }
