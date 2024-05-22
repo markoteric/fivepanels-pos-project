@@ -1,0 +1,50 @@
+Amharic
+Bengali
+Bhojpuri
+Burmese
+Dutch
+Eastern Punjabi
+Egyptian Arabic
+English
+Fula
+French
+Gan Chinese
+German
+Gujarati
+Hakka Chinese
+Hausa
+Hindi
+Indonesian
+Iranian Persian
+Italian
+Japanese
+Javanese
+Kannada
+Korean
+Maithili
+Malayalam
+Mandarin Chinese
+Marathi
+Nigerian Pidgin
+Odia
+Polish
+Portuguese
+Punjabi
+Romanian
+Russian
+Sindhi
+Southern Min
+Spanish
+Standard Arabic
+Tagalog
+Tamil
+Telugu
+Thai
+Turkish
+Ukrainian
+Urdu
+Uzbek
+Vietnamese
+Wu Chinese
+Xiang Chinese
+Yue Chinese
