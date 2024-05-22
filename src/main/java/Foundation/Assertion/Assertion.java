@@ -2,114 +2,185 @@ package Foundation.Assertion;
 
 import Foundation.Exception.AssertionException;
 
+import java.util.Collection;
+import java.util.function.Supplier;
+
 import static java.lang.StringTemplate.STR;
 
 public abstract class Assertion {
 
-    // NULL ASSERTIONS -----------------
-
-    // public static Object isNotNull(Object value, String paramName) {
+    // Null-Assertions
     public static <T> T isNotNull(T value, String paramName) {
-        if (value == null)
-            throw new AssertionException(STR."\{paramName} is null");
+
+        if (value == null) {
+
+            throw new AssertionException(STR. "\{ paramName } is null" );
+        }
 
         return value;
     }
 
+    public static <T> T isNull(T value, String paramName) {
 
-    // String Assertions -----------------------------------------------------------
+        if (value != null) {
 
+            throw new AssertionException(STR. "\{ paramName } is not null" );
+        }
+
+        return null;
+    }
+
+    // String-Assertions
     public static String isNotBlank(String value, String paramName) {
+
         isNotNull(value, paramName);
+        if (value.isBlank()) {
 
-        if (value.isBlank())
-            throw new AssertionException(STR."\{paramName} is blank");
-
-        return value;
-    }
-
-    public static char[] charsAreNotBlank(char[] value, String paramName) {
-        if (char[].class.isInstance(value))
-            throw new AssertionException(STR."\{paramName} is blank");
+            throw new AssertionException(STR. "\{ paramName } is blank" );
+        }
 
         return value;
     }
 
     public static String hasMaxLength(String value, int maxLength, String paramName) {
 
+        isNotNull(value, paramName);
         isNotBlank(value, paramName);
+        if (value.length() > maxLength) {
 
-        if (value.length() > maxLength)
-            throw new AssertionException(STR."\{paramName} is greater than \{maxLength}");
+            throw new AssertionException(STR. "\{ paramName } has max length of \{ maxLength }" );
+        }
 
         return value;
     }
 
+    public static String hasMinLength(String value, int minLength, String paramName) {
 
+        isNotNull(value, paramName);
+        isNotBlank(value, paramName);
+        if (value.length() < minLength) {
 
-    // Expression Assertions -------------------------------------------------------
+            throw new AssertionException(STR. "\{ paramName } has min length of \{ minLength }" );
+        }
 
-    public static void isTrue(boolean expression, String errorMsg) {
-        if (!expression)
-            throw new AssertionException(errorMsg);
-    }
-
-
-    public static double isMin(double value, double min, String valueName, String valueName2){
-        if (value < min){
-            throw new AssertionException(valueName + " is greater than " + min);
-        }// else if (value == value2){throw new AssertionException(valueName + " is equal to " + value2);}
         return value;
     }
 
-    public static double isMax(double value, double value2, String valueName, String valueName2){
-        if (value < value2){
-            throw new AssertionException(valueName2 + " is greater than " + valueName);
-        }else if (value == value2){throw new AssertionException(valueName + " is equal to " + value2);}
-        return value;
-    }
+    public static String containsNumber(String value, String paramName) {
 
-    public static double valuesGreater0orEqual(double value, double value2, String valueName, String valueName2){
-        if ( value > 0.0 && value2 > 0.0) {
-            return value;
-        } else if (value == 0.0 && value2 < 0.0) {
-            throw new AssertionException(valueName + " and " + valueName2 + " are greater than 0.");
+        isNotNull(value, paramName);
+        if (!value.matches(".*\\d.*")) {
+
+            throw new AssertionException(STR. "\{ paramName } must contain at least one number.");
         }
         return value;
     }
 
-    public static boolean longerThan10Chars(String value, String valueName){
-        if(value.length() >= 10){
-            return true;
-        }else{
-            throw new AssertionException(valueName + " is less than 10 characters");
+    public static String containsLetter(String value, String paramName) {
+
+        isNotNull(value, paramName);
+        if (!value.matches(".*[a-zA-Z].*")) {
+
+            throw new AssertionException(STR. "\{ paramName } must contain at least one letter.");
+        }
+
+        return value;
+    }
+
+    public static String containsSpecialCharacter(String value, String paramName) {
+
+        isNotNull(value, paramName);
+        if (!value.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+
+            throw new AssertionException(STR. "\{ paramName } must contain at least one special character.");
+        }
+
+        return value;
+    }
+
+    // Boolean-Assertions
+    public static void isTrue(boolean expression, Supplier<String> errorMsg) {
+
+        if (!expression) {
+
+            throw new AssertionException(errorMsg.get());
         }
     }
 
+    public static void isFalse(boolean expression, Supplier<String> errorMsg) {
 
-    public static boolean containsNumbers(String value, String valueName) {
-        if (value.matches(".*[0-9].*")) {
-            return true;
-        } else {
-            throw new AssertionException(valueName + " does not contain numbers");
+        if (expression) {
+
+            throw new AssertionException(errorMsg.get());
         }
     }
 
+    // Numeric-Assertions
+    public static <T extends Number & Comparable<T>> T isGreaterThan(T value, T minValue, String paramName) {
 
+        isNotNull(value, paramName);
+        if (value.compareTo(minValue) <= 0) {
 
-    public static boolean containsLetters(String value, String valueName){
-        if(value.matches("[a-zA-Z]+")){
-            return true;
-        }else{
-            throw new AssertionException(valueName + " does not contain letters");
+            throw new AssertionException(STR. "\{ paramName } must be greater than \{ minValue }" );
         }
+
+        return value;
     }
 
-    public static boolean containsSymbols(String value, String valueName){
-        if(value.matches("[!@#$%^&*()_+{}|:\"<>?,./;'\\[\\]\\-=]")){
-            return true;
-        } else {
-            throw new AssertionException(valueName + " does not contain symbols");
+    public static <T extends Number & Comparable<T>> T isLessThan(T value, T maxValue, String paramName) {
+
+        isNotNull(value, paramName);
+        if (value.compareTo(maxValue) >= 0) {
+
+            throw new AssertionException(STR. "\{ paramName } must be less than \{ maxValue }" );
         }
+
+        return value;
+    }
+
+    public static <T extends Number & Comparable<T>> T isInRange(T value, T minValue, T maxValue, String paramName) {
+
+        isNotNull(value, paramName);
+        if (value.compareTo(minValue) < 0 || value.compareTo(maxValue) > 0) {
+
+            throw new AssertionException(STR. "\{ paramName } must be between \{ minValue } and \{ maxValue }" );
+        }
+
+        return value;
+    }
+
+    // Collection-Assertions
+    public static <T> Collection<T> isNotEmpty(Collection<T> collection, String paramName) {
+
+        isNotNull(collection, paramName);
+        if (collection.isEmpty()) {
+
+            throw new AssertionException(STR. "\{ paramName } must not be empty" );
+        }
+
+        return collection;
+    }
+
+    public static <T> Collection<T> hasSize(Collection<T> collection, int size, String paramName) {
+
+        isNotNull(collection, paramName);
+        if (collection.size() != size) {
+
+            throw new AssertionException(STR. "\{ paramName } must have size \{ size }" );
+        }
+
+        return collection;
+    }
+
+    // Array-Assertions
+    public static <T> T[] isNotEmpty(T[] array, String paramName) {
+
+        isNotNull(array, paramName);
+        if (array.length == 0) {
+
+            throw new AssertionException(STR. "\{ paramName } must not be empty" );
+        }
+
+        return array;
     }
 }
