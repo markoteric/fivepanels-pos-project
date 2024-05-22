@@ -36,6 +36,7 @@ public class Messenger extends BaseEntity {
         if (members.size() < 3 || members.size() > 20) {
             throw new AssertionException("Group chat must have between 3 and 20 members. Given: " + members.size());
         }
+
         Chat chat = new Chat(groupName, members);
         addChat(chat);
         return chat;

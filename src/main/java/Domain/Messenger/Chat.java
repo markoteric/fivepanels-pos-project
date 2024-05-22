@@ -15,6 +15,7 @@ public class Chat extends BaseEntity {
     private List<Message> messageHistory;
 
     public Chat(String name, Set<User> members) {
+
         super();
         this.name = name;
         this.members = members;
