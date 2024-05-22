@@ -30,8 +30,9 @@ public class Password {
     public void setPassword(char[] passwordToHash) {
 
         Assertion.isNotNull(passwordToHash, "passwordToHash");
-        Assertion.isNotBlank(new String(passwordToHash), "passwordToHash");
         String passwordStr = new String(passwordToHash);
+
+        Assertion.isNotBlank(passwordStr, "passwordToHash");
         Assertion.hasMinLength(passwordStr, 8, "passwordToHash");
         Assertion.hasMaxLength(passwordStr, 128, "passwordToHash");
         Assertion.containsLetter(passwordStr, "passwordToHash");
@@ -41,6 +42,7 @@ public class Password {
 
             throw new UserException("Password is not strong enough");
         }
+
         this.password = Arrays.copyOf(passwordToHash, passwordToHash.length);
     }
 
