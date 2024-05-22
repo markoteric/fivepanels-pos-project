@@ -1,9 +1,8 @@
 package Domain.MedicalCase;
 
-import Domain.BaseEntity;
+import Foundation.BaseEntity;
 import Domain.Media.Media;
-import Domain.Misc.Hashtag;
-import Domain.User.UserIdentity;
+import Domain.User.Misc.Hashtag;
 import Domain.Enum.MedicalCaseStatus;
 
 import java.net.MalformedURLException;
@@ -12,8 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import static Domain.Assertion.Assertion.isNotBlank;
-import static Domain.Assertion.Assertion.isNotNull;
+import static Foundation.Assertion.Assertion.isNotBlank;
+import static Foundation.Assertion.Assertion.isNotNull;
 
 public class MedicalCase extends BaseEntity {
 

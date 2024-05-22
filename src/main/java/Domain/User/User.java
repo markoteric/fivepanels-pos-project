@@ -5,11 +5,11 @@ import Domain.Media.MediaContent;
 import Domain.Media.TextContent;
 import Domain.MedicalCase.Answer;
 import Domain.MedicalCase.MedicalCase;
-import Domain.Assertion.Assertion;
-import Domain.Misc.Email;
-import Domain.BaseEntity;
-import Domain.Misc.Hashtag;
-import Domain.Misc.Password;
+import Foundation.Assertion.Assertion;
+import Domain.User.Misc.Email;
+import Foundation.BaseEntity;
+import Domain.User.Misc.Hashtag;
+import Domain.User.Misc.Password;
 
 import java.net.MalformedURLException;
 import java.util.LinkedHashSet;

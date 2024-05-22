@@ -1,10 +1,10 @@
 package Domain.Messenger;
 
-import Domain.BaseEntity;
+import Foundation.BaseEntity;
 import Domain.Media.MediaContent;
 import Domain.Media.TextContent;
 import Domain.Enum.MessageStatus;
-import Domain.Assertion.Assertion;
+import Foundation.Assertion.Assertion;
 
 import java.net.MalformedURLException;
 import java.net.URL;

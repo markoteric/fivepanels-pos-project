@@ -2,8 +2,7 @@ package Domain.Messenger;
 
 import Domain.Enum.MessageStatus;
 import Domain.Media.MediaContent;
-import Domain.Assertion.Assertion;
-import Domain.User.UserIdentity;
+import Foundation.Assertion.Assertion;
 
 import java.net.MalformedURLException;
 import java.util.*;
@@ -13,7 +12,7 @@ public class Messenger {
     private UUID id;
     private Set<UserIdentity> members;
     private List<Message> messageHistory;
-    private List<Group> groups;
+    private List<Chat> groups;
 
     public UUID getId() {
 
@@ -100,7 +99,7 @@ public class Messenger {
     public void createGroup(String groupName) {
         Assertion.isNotBlank(groupName, "groupName");
         Assertion.isNotNull(groupName, "groupName");
-        Group group = new Group();
+        Chat group = new Chat();
         group.setId(UUID.randomUUID());
         group.setName(groupName);
         groups.add(group);
@@ -114,8 +113,8 @@ public class Messenger {
         Assertion.isTrue(!userIdentities.isEmpty(), "No more Users to add to the group");
         Assertion.isNotNull(selectedUUIDs, "selectedUUIDs");
 
-        Group groupToAddMembers = null;
-        for (Group group : groups) {
+        Chat groupToAddMembers = null;
+        for (Chat group : groups) {
             if (group.getName().equals(groupName)) {
                 groupToAddMembers = group;
                 break;

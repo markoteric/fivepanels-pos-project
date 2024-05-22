@@ -1,16 +1,16 @@
 package Domain.User;
 
 import Domain.Media.Media;
-import Domain.Assertion.Assertion;
-import Domain.Misc.Hashtag;
-import Domain.Misc.Language;
+import Foundation.Assertion.Assertion;
+import Domain.User.Misc.Hashtag;
+import Domain.User.Misc.Language;
 import Domain.Enum.MedicalTitle;
 import Domain.Enum.Specialization;
 
 import java.util.Set;
 
-import static Domain.Assertion.Assertion.isNotBlank;
-import static Domain.Assertion.Assertion.isNotNull;
+import static Foundation.Assertion.Assertion.isNotBlank;
+import static Foundation.Assertion.Assertion.isNotNull;
 
 public class UserProfile {
 
