@@ -1,136 +1,100 @@
 package Domain.Messenger;
 
-import Domain.Enum.MessageStatus;
-import Domain.Media.MediaContent;
+import Domain.User.User;
 import Foundation.Assertion.Assertion;
+import Foundation.BaseEntity;
+import Foundation.Exception.AssertionException;
 
-import java.net.MalformedURLException;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.UUID;
 
+public class Messenger extends BaseEntity {
 
-public class Messenger {
-    private UUID id;
-    private Set<UserIdentity> members;
-    private List<Message> messageHistory;
-    private List<Chat> groups;
+    private LinkedHashSet<Chat> chats;
 
-    public UUID getId() {
-
-        return id;
+    public Messenger() {
+        this.chats = new LinkedHashSet<>();
     }
 
-    public void setId(UUID id) {
-
-        this.id = id;
+    public Messenger(LinkedHashSet<Chat> chats) {
+        this.chats = chats;
     }
 
-    public Set<UserIdentity> getMembers() {
-
-        return members;
+    public LinkedHashSet<Chat> getChats() {
+        return chats;
     }
 
-    public void setMembers(Set<UserIdentity> members) {
+    public void addChat(Chat chat) {
+        Assertion.isNotNull(chat, "chat");
+        chats.add(chat);
+    }
 
+    public Chat createGroupChat(String groupName, Set<User> members) {
+        Assertion.isNotBlank(groupName, "groupName");
         Assertion.isNotNull(members, "members");
-        Assertion.isNotBlank(members.toString(), "members");
-        this.members = members;
+        if (members.size() < 3 || members.size() > 20) {
+            throw new AssertionException("Group chat must have between 3 and 20 members. Given: " + members.size());
+        }
+        Chat chat = new Chat(groupName, members);
+        addChat(chat);
+        return chat;
     }
 
-    public List<Message> getMessageHistory() {
+    public Chat createDirectChat(String groupName, Set<User> members) {
+        Assertion.isNotBlank(groupName, "groupName");
+        Assertion.isNotNull(members, "members");
 
-        return messageHistory;
+        // Check the size of the members set
+        if (members.size() != 2) {
+            throw new AssertionException("Direct chat must have exactly 2 members. Given: " + members.size());
+        }
+
+        Chat chat = new Chat(groupName, members);
+        addChat(chat);
+        return chat;
     }
 
-    public void writeMessage(Message message, MediaContent mediaContent) throws MalformedURLException {
+    public void sendMessage(UUID chatId, Message message) {
+        Assertion.isNotNull(chatId, "chatId");
         Assertion.isNotNull(message, "message");
-        Assertion.isNotBlank(message.getContent(), "message");
-        Message newMessage = new Message();
-        newMessage.setId(UUID.randomUUID());
-        newMessage.setStatus(MessageStatus.SENT);
-        newMessage.setTextContent(message.getTextContent());
-        newMessage.setMediaContent(message.getMediaContent());
-        messageHistory.add(newMessage);
-    }
 
-    public void pinMessage(Message message, UUID messageId) {
-        Iterator<Message> iterator = messageHistory.iterator();
-        while (iterator.hasNext()) {
-            Message currentMessage = iterator.next();
-            if (currentMessage.getId().equals(messageId)) {
-                currentMessage.setStatus(MessageStatus.PINNED);
-                break;
-            }
-        }
-    }
-
-    public String showMessageHistory() {
-        List<Message> pinnedMessages = new ArrayList<>();
-        List<Message> unpinnedMessages = new ArrayList<>();
-
-        for (Message messages : messageHistory) {
-            if (messages.getStatus().equals(MessageStatus.PINNED)) {
-                pinnedMessages.add(messages);
-            } else {
-                unpinnedMessages.add(messages);
+        // Find the chat with the given ID and add the message
+        for (Chat chat : chats) {
+            if (chat.getId().equals(chatId)) {
+                chat.addMessage(message);
+                return;
             }
         }
 
-        for (Message messages : pinnedMessages) {
-            return messages.getContent();
-        }
-
-        for (Message message : unpinnedMessages) {
-            return message.getContent();
-        }
-        return null;
+        throw new AssertionException("Chat not found with ID: " + chatId);
     }
 
-    public void deleteMessage(Message message) {
-        Iterator<Message> iterator = messageHistory.iterator();
-        while (iterator.hasNext()) {
-            Message currentMessage = iterator.next();
-            if (currentMessage.getId().equals(message.getId())) {
-                iterator.remove();
-                break;
-            }
-        }
-    }
+    public void deleteMessage(UUID chatId, UUID messageId) {
+        Assertion.isNotNull(chatId, "chatId");
+        Assertion.isNotNull(messageId, "messageId");
 
-    public void createGroup(String groupName) {
-        Assertion.isNotBlank(groupName, "groupName");
-        Assertion.isNotNull(groupName, "groupName");
-        Chat group = new Chat();
-        group.setId(UUID.randomUUID());
-        group.setName(groupName);
-        groups.add(group);
-    }
-
-    public void addMemberToGroup(String groupName, Set<UserIdentity> userIdentities, Set<UUID> selectedUUIDs) {
-        Assertion.isNotBlank(groupName, "groupName");
-        Assertion.isNotNull(groupName, "groupName");
-        Assertion.isNotBlank(userIdentities.toString(), "userIdentity");
-        Assertion.isNotNull(userIdentities, "userIdentity");
-        Assertion.isTrue(!userIdentities.isEmpty(), "No more Users to add to the group");
-        Assertion.isNotNull(selectedUUIDs, "selectedUUIDs");
-
-        Chat groupToAddMembers = null;
-        for (Chat group : groups) {
-            if (group.getName().equals(groupName)) {
-                groupToAddMembers = group;
-                break;
+        for (Chat chat : chats) {
+            if (chat.getId().equals(chatId)) {
+                chat.removeMessage(messageId);
+                return;
             }
         }
 
-        Assertion.isNotNull(groupToAddMembers, "Group '" + groupName + "' not found.");
-
-        for (UserIdentity newUser : userIdentities) {
-            Assertion.isTrue(selectedUUIDs.contains(newUser.getUUID()), "User with UUID " + newUser.getUUID() + " not selected.");
-            groupToAddMembers.getMembers().add(newUser);
-        }
+        throw new AssertionException("Chat not found with ID: " + chatId);
     }
 
+    public String showMessageHistory(UUID chatId) {
 
+        Assertion.isNotNull(chatId, "chatId");
+        for (Chat chat : chats) {
 
+            if (chat.getId().equals(chatId)) {
 
+                return chat.showMessageHistory();
+            }
+        }
 
+        throw new AssertionException("Chat not found with ID: " + chatId);
+    }
 }

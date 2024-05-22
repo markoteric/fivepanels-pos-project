@@ -20,7 +20,6 @@ public class Language {
         setLanguage(language);
     }
 
-    // kann man umschreiben
     public void loadValidLanguages() {
 
         if (validLanguages.isEmpty()) {

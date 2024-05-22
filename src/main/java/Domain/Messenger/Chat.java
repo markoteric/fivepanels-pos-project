@@ -1,29 +1,60 @@
 package Domain.Messenger;
-import java.util.List;
 
+import Domain.User.User;
+import Foundation.Assertion.Assertion;
+import Foundation.BaseEntity;
+import Foundation.Exception.AssertionException;
 
+import java.time.Instant;
+import java.util.*;
 
-public class Chat extends Messenger {
+public class Chat extends BaseEntity {
 
     private String name;
-    private List<UserIdentity> members;
-    private Messenger messenger;
+    private Set<User> members;
+    private List<Message> messageHistory;
 
-    public Chat(String name, List<UserIdentity> members, Messenger messenger) {
-
+    public Chat(String name, Set<User> members) {
+        super();
         this.name = name;
         this.members = members;
-        this.messenger = messenger;
+        this.messageHistory = new ArrayList<>();
     }
 
-    public Chat() {
-
-    }
-
-    public void setName(String groupName) {
-    }
-
-    public Object getName() {
+    public String getName() {
         return name;
+    }
+
+    public Set<User> getMembers() {
+        return members;
+    }
+
+    public List<Message> getMessageHistory() {
+        return new ArrayList<>(messageHistory); // Return a copy to avoid external modification
+    }
+
+    public void addMessage(Message message) {
+        Assertion.isNotNull(message, "message");
+        if (messageHistory.stream().anyMatch(m -> m.getId().equals(message.getId()))) {
+            throw new AssertionException("Duplicate message ID: " + message.getId());
+        }
+        message.setId(UUID.randomUUID());
+        message.setUpdatedAt(Instant.now());
+        messageHistory.add(message);
+    }
+
+    public void removeMessage(UUID messageId) {
+        boolean removed = messageHistory.removeIf(message -> message.getId().equals(messageId));
+        if (!removed) {
+            throw new AssertionException("Message not found with ID: " + messageId);
+        }
+    }
+
+    public String showMessageHistory() {
+        StringBuilder history = new StringBuilder();
+        for (Message message : messageHistory) {
+            history.append(message.toString()).append("\n");
+        }
+        return history.toString();
     }
 }
