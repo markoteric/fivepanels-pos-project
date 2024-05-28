@@ -37,6 +37,8 @@ public class User extends BaseEntity {
         this.relationships = new HashMap<>();
     }
 
+    // Getters and Setters //
+
     public void setEmail(Email email) {
         Assertion.isNotNull(email, "email");
         this.email = email;
@@ -46,6 +48,62 @@ public class User extends BaseEntity {
         Assertion.isNotNull(password, "password");
         this.password = password;
     }
+
+    public void setUserProfile(UserProfile userProfile) {
+        Assertion.isNotNull(userProfile, "userProfile");
+        this.userProfile = userProfile;
+    }
+
+    public void setUserRelationship(UUID userId, UserRelationship relationship) {
+        relationships.put(userId, relationship);
+    }
+    
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void verify() {
+        this.isVerified = true;
+    }
+
+    public Email getEmail() {
+        return email;
+    }
+
+
+    public Password getPassword() {
+        return password;
+    }
+
+    public Messenger getMessenger() {
+        return messenger;
+    }
+
+    public Set<MedicalCase> getIsMemberOfMedicalCases() {
+        return isMemberOfMedicalCases;
+    }
+
+    public Set<MedicalCase> getIsOwnerOfMedicalCases() {
+        return isOwnerOfMedicalCases;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public Map<UUID, UserRelationship> getRelationships() {
+        return relationships;
+    }
+
+    public UserRelationship getUserRelationship(UUID userId) {
+        return relationships.get(userId);
+    }
+
+
+
+
+
+
 
 
 }
