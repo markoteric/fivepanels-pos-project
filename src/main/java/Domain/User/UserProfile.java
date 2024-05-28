@@ -4,8 +4,7 @@ import Domain.Media.Media;
 import Foundation.Assertion.Assertion;
 import Domain.User.Misc.Hashtag;
 import Domain.User.Misc.Language;
-import Domain.Enum.MedicalTitle;
-import Domain.Enum.Specialization;
+import Domain.User.Misc.MedicalTitle;
 
 import java.util.Set;
 

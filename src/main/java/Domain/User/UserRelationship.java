@@ -1,8 +1,8 @@
 package Domain.User;
 
-import java.util.HashMap;
+public enum UserRelationship {
 
-public class UserRelationship {
-
-    private HashMap<UserIdentity, Relationship> relations;
+    ESTABLISHED,
+    INCOMING,
+    OUTGOING
 }
