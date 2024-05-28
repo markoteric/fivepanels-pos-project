@@ -1,145 +1,52 @@
 package Domain.User;
 
-import Domain.Enum.MedicalCaseStatus;
-import Domain.Media.MediaContent;
-import Domain.Media.TextContent;
-import Domain.MedicalCase.Answer;
+import Domain.Messenger.Chat;
+import Domain.Messenger.Messenger;
 import Domain.MedicalCase.MedicalCase;
-import Foundation.Assertion.Assertion;
 import Domain.User.Misc.Email;
-import Foundation.BaseEntity;
-import Domain.User.Misc.Hashtag;
 import Domain.User.Misc.Password;
-
-import java.net.MalformedURLException;
-import java.util.LinkedHashSet;
-import java.util.List;
+import Foundation.Assertion.Assertion;
+import Foundation.BaseEntity;
+import Foundation.Exception.UserException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import static Domain.Enum.MedicalCaseStatus.UNSOLVED;
-import static Domain.Enum.MedicalCaseStatus.DELETED;
-
 public class User extends BaseEntity {
 
-    // NOT NULL, MIN-LENGTH, MAXLENGTH, @-SYMBOL
+    private boolean isVerified;
     private Email email;
-    // DONE IN PASSWORD.JAVA CLASS
     private Password password;
-    // NOT NULL
+    private Messenger messenger;
+    private Set<MedicalCase> isMemberOfMedicalCases;
+    private Set<MedicalCase> isOwnerOfMedicalCases;
     private UserProfile userProfile;
-    private MedicalCase medicalCase;
-    // NOT NULL
-    private List<UUID> medicalCases;
+    private Map<UUID, UserRelationship> relationships;
 
-    public User() {
 
+    public User(Email email, Password password) {
         super();
-        this.email = new Email("paricteric@gmail.com");
-        this.password = new Password(new char[5]);
-        this.userProfile = new UserProfile();
+        setEmail(email);
+        setPassword(password);
+        this.isVerified = false;
+        this.messenger = new Messenger();
+        this.isMemberOfMedicalCases = new HashSet<>();
+        this.isOwnerOfMedicalCases = new HashSet<>();
+        this.relationships = new HashMap<>();
     }
 
-    public User(String email, char[] password, UserProfile userProfile) {
-
-        super();
-        this.email = new Email(email);
-        this.password = new Password(password);
-        this.userProfile = new UserProfile(userProfile);
+    public void setEmail(Email email) {
+        Assertion.isNotNull(email, "email");
+        this.email = email;
     }
 
-    public void addMedicalCase(Set<Hashtag> hashtags, TextContent headline, TextContent content, Set<MediaContent> attachments, MedicalCaseStatus status) throws MalformedURLException {
-        // TODO Assertions for hashtags, headline, content, attachment, status
-        MedicalCase medicalCase = new MedicalCase();
-        medicalCase.setHashtags(hashtags);
-        //medicalCase.setHeadline(headline);
-        //medicalCase.setContent(content);
-        medicalCase.setAttachment((MediaContent) attachments);
-        medicalCase.setStatus(UNSOLVED);
-    }
-
-    public void removeMedicalCase(UUID id) {
-        // TODO Remove medical case
-        Assertion.isNotNull(id, "id");
-        medicalCases.remove(id);
-        medicalCase.setStatus(DELETED);
-    }
-
-    public void updateMedicalCase(Set<Hashtag> hashtags, TextContent headline, TextContent content, MediaContent attachment, MedicalCaseStatus status) {
-        // TODO Update medical case
-        medicalCase.setHashtags(hashtags);
-        //medicalCase.setHeadline(headline);
-        //medicalCase.setContent(content);
-        medicalCase.setAttachment((MediaContent) attachment);
-        medicalCase.setStatus(status);
+    public void setPassword(Password password) {
+        Assertion.isNotNull(password, "password");
+        this.password = password;
     }
 
 
-    public void addHashtag(String hashtag) {
-        // TODO Add hashtag
-        Assertion.isNotNull(hashtag, "hashtag");
-        Assertion.isNotBlank(hashtag, "hashtag");
-       // medicalCase.addHashtag(hashtag);
-    }
-
-    public void removeHashtag(String hashtag) {
-        // TODO Remove hashtag
-        Assertion.isNotNull(hashtag, "hashtag");
-        Assertion.isNotBlank(hashtag, "hashtag");
-        medicalCase.getHashtags().remove(hashtag);
-    }
-
-    public void addAttachment(MediaContent attachment) {
-        // TODO Add attachment
-        Assertion.isNotNull(attachment, "attachment");
-        //medicalCase.addAttachment((List<MediaContent>) attachment);
-    }
-
-    public void removeAttachment(MediaContent attachment) {
-        // TODO Remove attachment
-        Assertion.isNotNull(attachment, "attachment");
-       // medicalCase.removeAttachment((MediaContent) attachment);
-    }
-
-    public void addMember(UUID id) {
-        Assertion.isNotNull(id, "id");
-
-    }
-
-    public void removeMember(UUID id) {
-        // TODO Remove member
-    }
-
-    public void removeAllMembers() {
-        // TODO Remove all members
-    }
-
-    public void addAnswer(LinkedHashSet<Answer> answers) {
-        // TODO Add answer
-    }
-
-    public void removeAnswer(Answer answer) {
-        // TODO Remove answer
-    }
-
-    public void addFriend(UUID id) {
-        // TODO Add friend
-    }
-
-    public void removeFriend(UUID id) {
-        // TODO Remove friend
-    }
-
-    public void acceptFriendRequest(UUID id) {
-        // TODO Accept friendrequest
-
-    }
-
-    public void declineFriendRequest(UUID id) {
-        // TODO Decline friendrequest
-
-    }
-
-    // ______________________________________________________getter and setter____________________________________________________
 }
 
