@@ -7,12 +7,10 @@ public class Answer {
     private String answer;
 
     public Answer(String answer) {
-
         setAnswer(answer);
     }
 
     public String getAnswer() {
-
         return answer;
     }
 
@@ -20,8 +18,15 @@ public class Answer {
 
         Assertion.isNotNull(answer, "answer");
         Assertion.isNotBlank(answer, "answer");
-        Assertion.hasMinLength(answer, 1, "answer");
+        Assertion.hasMinLength(answer, 2, "answer");
         Assertion.hasMaxLength(answer, 128, "answer");
         this.answer = answer;
+    }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "answer='" + answer + '\'' +
+                '}';
     }
 }
