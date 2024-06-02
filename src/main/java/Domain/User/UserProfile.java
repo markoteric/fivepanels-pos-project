@@ -1,245 +1,173 @@
 package Domain.User;
 
-import Domain.Media.Media;
-import Foundation.Assertion.Assertion;
+import Domain.User.Misc.Experience;
 import Domain.User.Misc.Hashtag;
 import Domain.User.Misc.Language;
 import Domain.User.Misc.MedicalTitle;
+import Foundation.Assertion.Assertion;
 
+import java.io.File;
+import java.util.List;
 import java.util.Set;
-
-import static Foundation.Assertion.Assertion.isNotBlank;
-import static Foundation.Assertion.Assertion.isNotNull;
 
 public class UserProfile {
 
     private String firstName;
     private String lastName;
-    private Media profilePicture;
-    private Set<Specialization> specializations;
-    private Set<MedicalTitle> medicalTitles;
-    private Set<Hashtag> experiences;
-    private String country;
+    private File profilePicture;
+    private List<MedicalTitle> medicalTitles;
+    private List<Hashtag> experiences;
     private String city;
     private Set<Language> languages;
     private Integer activityScore;
     private Integer experienceScore;
-    private User userProfile;
 
     public UserProfile() {
 
-        super();
+        this.firstName = null;
+        this.lastName = null;
+        this.profilePicture = null;
+        this.medicalTitles = null;
+        this.experiences = null;
+        this.city = null;
+        this.languages = null;
+        this.activityScore = 0;
+        this.experienceScore = 0;
     }
 
-
-    public UserProfile(UserProfile userProfile) {
-
-        this.profilePicture = userProfile.profilePicture;
-        this.specializations = userProfile.specializations;
-        this.medicalTitles = userProfile.medicalTitles;
-        this.experiences = userProfile.experiences;
-        this.country = userProfile.country;
-        this.city = userProfile.city;
-        this.languages = userProfile.languages;
-        this.activityScore = userProfile.activityScore;
-        this.experienceScore = userProfile.experienceScore;
-    }
-
-    public void setProfilePicture(Media profilePicture) {
-
-        isNotNull(profilePicture, "profilePicture");
+    public UserProfile(String firstName, String lastName, File profilePicture, List<MedicalTitle> medicalTitles, List<Hashtag> experiences, String city, Set<Language> languages, Integer activityScore, Integer experienceScore) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.profilePicture = profilePicture;
-    }
-
-    public void removeProfilePicture() {
-
-        // TODO Remove profile picture
-        // Method to show default profile picture?
-    }
-
-    public void addSpecialization(Set<Specialization> specializations) {
-
-        isNotNull(specializations, "specializations");
-        this.specializations.addAll(specializations);
-    }
-
-
-    public void removeSpecialization(Specialization specialization) {
-        // TODO Remove specialization
-    }
-
-    public void addMedicalTitle(Set<MedicalTitle> medicalTitles) {
-
-        isNotNull(medicalTitles, "medicalTitles");
-        isNotBlank(medicalTitles.toString(), "medicalTitles");
-        this.medicalTitles.addAll(medicalTitles);
-    }
-
-    public void removeMedicalTitle(MedicalTitle medicalTitle) {
-       // Remove medical title
-        isNotNull(medicalTitles, "medicalTitles");
-        isNotNull(medicalTitle, "medicalTitle");
-        isNotBlank(String.valueOf(medicalTitle), "medicalTitle");
-        this.medicalTitles.remove(medicalTitle);
-    }
-
-    public void addExperience(Set<Hashtag> experiences) {
-
-        isNotNull(experiences, "experiences");
-        isNotBlank(experiences.toString(), "experiences");
-        this.experiences.addAll(experiences);
-    }
-
-    public void removeExperience(Hashtag experience) {
-
-        // TODO Remove experience
-        isNotNull(experience, "experience");
-        experiences.remove(experience);
-        this.experiences = getExperience();
-    }
-
-    public void setCountry(String country) {
-
-        isNotNull(country, "country");
-        isNotBlank(country, "country");
-        this.country = country;
-    }
-
-    public void removeCountry() {
-
-        this.country = null;
-        this.city = null;
-        // Without country -> no city!
-    }
-
-    public void setCity(String city) {
-
-        isNotNull(city, "city");
+        this.medicalTitles = medicalTitles;
+        this.experiences = experiences;
         this.city = city;
+        this.languages = languages;
+        this.activityScore = activityScore;
+        this.experienceScore = experienceScore;
     }
 
-    public void removeCity(String city) {
+    public String getFirstName() {
 
-        isNotNull(city, "city");
-        isNotBlank(city, "city");
-        this.city = null;
+        return firstName;
     }
 
-    public void addLanguage(Set<Language> languages) {
+    public void setFirstName(String firstName) {
 
-        Assertion.isNotNull(languages, "languages");
-        this.languages.addAll(languages);
+        Assertion.isNotNull(firstName, "firstName");
+        Assertion.isNotBlank(firstName, "firstName");
+        this.firstName = firstName;
     }
 
-    public void removeLanguage(Language language) {
-        // TODO Remove language
-        isNotNull(language, "language");
-        this.languages.remove(language);
-        this.languages = getLanguages();
+    public String getLastName() {
+        return lastName;
     }
 
-    // ---------------------------------------------------------------------Getters and Setters---------------------------------------------------------------------
+    public void setLastName(String lastName) {
 
+        Assertion.isNotNull(lastName, "lastName");
+        Assertion.isNotBlank(lastName, "lastName");
+        this.lastName = lastName;
+    }
 
-    public Media getProfilePicture() {
-
+    public File getProfilePicture() {
         return profilePicture;
     }
 
-    public Set<Specialization> getSpecializations() {
+    public void setProfilePicture(File profilePicture) {
 
-        return specializations;
+        Assertion.isNotNull(profilePicture, "profilePicture");
+        this.profilePicture = profilePicture;
     }
 
-    public void setSpecializations(Set<Specialization> specializations) {
-
-        this.specializations = specializations;
-    }
-
-    public Set<MedicalTitle> getMedicalTitles() {
+    public List<MedicalTitle> getMedicalTitle() {
 
         return medicalTitles;
     }
 
-    public void setMedicalTitles(Set<MedicalTitle> medicalTitles) {
+    public void setMedicalTitle(List<MedicalTitle> medicalTitle) {
 
-        this.medicalTitles = medicalTitles;
+        Assertion.isNotNull(medicalTitle, "medicalTitle");
+        Assertion.isNotEmpty(medicalTitle, "medicalTitle");
+        this.medicalTitles = medicalTitle;
     }
 
-    public Set<Hashtag> getExperience() {
-
+    public List<Hashtag> getExperiences() {
         return experiences;
     }
 
-    public void setExperience(Set<Hashtag> experience) {
+    public void setExperiences(List<Hashtag> experiences) {
 
-        this.experiences = experience;
-    }
-
-    public String getCountry() {
-
-        return country;
+        Assertion.isNotNull(experiences, "experiences");
+        Assertion.isNotEmpty(experiences, "experiences");
+        Experience.isValidMedicalExperience(experiences.toString());
+        this.experiences = experiences;
     }
 
     public String getCity() {
-
         return city;
     }
 
-    public Set<Language> getLanguages() {
+    public void setCity(String city) {
+        this.city = city;
+    }
 
+    public Set<Language> getLanguages() {
         return languages;
     }
 
     public void setLanguages(Set<Language> languages) {
 
+        Assertion.isNotNull(languages, "languages");
+        Assertion.isNotEmpty(languages, "languages");
         this.languages = languages;
     }
 
     public Integer getActivityScore() {
-
         return activityScore;
     }
 
     public void setActivityScore(Integer activityScore) {
 
+        Assertion.isNotNull(activityScore, "activityScore");
         this.activityScore = activityScore;
     }
 
     public Integer getExperienceScore() {
-
         return experienceScore;
     }
 
     public void setExperienceScore(Integer experienceScore) {
 
+        Assertion.isNotNull(experienceScore, "experienceScore");
         this.experienceScore = experienceScore;
     }
 
-    public User getUserProfile() {
+    public void addMedicalExperience(Hashtag experience) {
 
-        return userProfile;
+        Assertion.isNotNull(experience, "experience");
+        Assertion.isNotBlank(experience.toString(), "experience");
+        this.experiences.add(experience);
     }
 
-    public void setUserProfile(User userProfile) {
+    public void removeMedicalExperience(Hashtag experience) {
 
-        this.userProfile = userProfile;
+        Assertion.isNotNull(experience, "experience");
+        Assertion.isNotBlank(experience.toString(), "experience");
+        this.experiences.remove(experience);
     }
 
-    public void setFirstName(String name) {
+    public void addLanguage(Language language) {
 
-        isNotNull(name, "name");
-        isNotBlank(name, "name");
-        this.firstName = name;
+        Assertion.isNotNull(language, "language");
+        Assertion.isNotBlank(language.toString(), "language");
+        this.languages.add(language);
     }
 
-    public void setLastName(String lastName) {
+    public void removeLanguage(Language language) {
 
-        isNotNull(lastName, "lastName");
-        isNotBlank(lastName, "lastName");
-        this.lastName = lastName;
+        Assertion.isNotNull(language, "language");
+        Assertion.isNotBlank(language.toString(), "language");
+        this.languages.remove(language);
     }
 }
-
-
-
