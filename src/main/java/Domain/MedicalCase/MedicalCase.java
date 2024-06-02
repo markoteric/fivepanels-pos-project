@@ -1,13 +1,11 @@
 package Domain.MedicalCase;
 
-import Domain.Messenger.Chat;
-import Domain.Messenger.Messenger;
 import Domain.User.Misc.Email;
 import Domain.User.Misc.Hashtag;
 import Domain.User.Misc.Password;
 import Domain.User.User;
 import Foundation.Assertion.Assertion;
-import Foundation.Exception.AssertionException;
+import Foundation.Exception.UserException;
 
 import java.io.File;
 import java.util.Collections;
@@ -27,20 +25,18 @@ public class MedicalCase {
     private Set<Hashtag> medicalCaseHashtags;
     private Set<Vote> votes;
     private Set<User> likedUsers;
-    private Messenger messenger;
 
     public MedicalCase() {
         this.medicalCaseName = "foobarlol";
-        this.owner = new User(new Email("owner@example.com"), new Password("foobar123!XD".toCharArray()));
+        this.owner = new User("John", "Doe", new Email("owner@example.com"), new Password("foobar123!XD".toCharArray()));
         this.textContent = List.of("This is a sample text content of medical case.");
         this.fileContent = List.of(new File("sample.txt"));
-        this.medicalCaseMembers = new HashSet<>(Collections.singleton(new User(new Email("member@example.com"), new Password("foobar123!XD".toCharArray()))));
+        this.medicalCaseMembers = new HashSet<>(Collections.singleton(new User("John", "Doe", new Email("member@example.com"), new Password("foobar123!XD".toCharArray()))));
         this.viewCount = 0;
         this.likeCount = 0;
         this.medicalCaseHashtags = new HashSet<>(Collections.singleton(new Hashtag("#sampleTag")));
         this.votes = new HashSet<>(Collections.singleton(new Vote()));
         this.likedUsers = new HashSet<>();
-        initializeMessenger();
     }
 
     public MedicalCase(String medicalCaseName, User owner, List<String> textContent, List<File> fileContent, Set<User> medicalCaseMembers, Set<Hashtag> medicalCaseHashtags, Set<Vote> votes) {
@@ -54,14 +50,6 @@ public class MedicalCase {
         setMedicalCaseHashtags(medicalCaseHashtags);
         setVotes(votes);
         this.likedUsers = new HashSet<>();
-        initializeMessenger();
-    }
-
-    public void initializeMessenger() {
-
-        this.messenger = new Messenger();
-        Chat chat = new Chat("MedicalCase Chat", new HashSet<>(getMedicalCaseMembers()));
-        this.messenger.addChat(chat);
     }
 
     public String getMedicalCaseName() {
@@ -112,7 +100,6 @@ public class MedicalCase {
     public void setMedicalCaseMembers(Set<User> medicalCaseMembers) {
         Assertion.isNotNull(medicalCaseMembers, "medicalCaseMembers");
         this.medicalCaseMembers = medicalCaseMembers;
-        initializeMessenger(); // Reinitialize the messenger when members change
     }
 
     public Integer getViewCount() {
@@ -152,10 +139,6 @@ public class MedicalCase {
         this.votes = votes;
     }
 
-    public Messenger getMessenger() {
-        return messenger;
-    }
-
     public void addView() {
         this.viewCount++;
     }
@@ -163,7 +146,7 @@ public class MedicalCase {
     public void addLike(User user) {
         Assertion.isNotNull(user, "user");
         if (likedUsers.contains(user)) {
-            throw new AssertionException("User has already liked this medical case");
+            throw new UserException("User has already liked this medical case");
         }
         likedUsers.add(user);
         this.likeCount++;
@@ -172,7 +155,6 @@ public class MedicalCase {
     public void addMedicalCaseMember(User member) {
         Assertion.isNotNull(member, "member");
         this.medicalCaseMembers.add(member);
-        initializeMessenger(); // Update the messenger when members change
     }
 
     public void removeMedicalCaseMember(User member) {
@@ -180,6 +162,5 @@ public class MedicalCase {
         Assertion.isNotNull(this.medicalCaseMembers, "medicalCaseMembers");
         Assertion.isTrue(this.medicalCaseMembers.contains(member), () -> "member is not in medical case");
         this.medicalCaseMembers.remove(member);
-        initializeMessenger(); // Update the messenger when members change
     }
 }
