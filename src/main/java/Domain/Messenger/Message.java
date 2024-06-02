@@ -1,5 +1,8 @@
 package Domain.Messenger;
 
+import Domain.User.Misc.Email;
+import Domain.User.Misc.Password;
+import Domain.User.User;
 import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
 import Foundation.Exception.AssertionException;
@@ -13,20 +16,20 @@ public class Message extends BaseEntity {
 
     private String content;
     private File file;
+    private User sender;
 
-    public Message(String content, File file) {
-
+    public Message(String content, User sender) {
         super();
         this.setId(UUID.randomUUID());
         setContent(content);
-        setFile(file);
+        setSender(sender);
     }
 
-    public Message(File file) {
-
+    public Message(File file, User sender) {
         super();
         this.setId(UUID.randomUUID());
         setFile(file);
+        setSender(sender);
     }
 
     public Message(String content) {
@@ -34,15 +37,21 @@ public class Message extends BaseEntity {
         super();
         this.setId(UUID.randomUUID());
         setContent(content);
+        setSender(new User("John", "Doe", new Email("johndoe.noob@example.com"), new Password("password123!XDLOFL".toCharArray())));
+    }
+
+    public Message(File testFile) {
+
+        super();
+        this.setId(UUID.randomUUID());
+        setFile(testFile);
     }
 
     public String getContent() {
-
         return content;
     }
 
     public void setContent(String content) {
-
         Assertion.isNotNull(content, "content");
         Assertion.isNotBlank(content, "content");
         Assertion.hasMinLength(content, 1, "content");
@@ -52,26 +61,30 @@ public class Message extends BaseEntity {
     }
 
     public File getFile() {
-
         return file;
     }
 
     public void setFile(File file) {
-
         Assertion.isNotNull(file, "file");
         if (!file.exists() || !file.isFile()) {
-
             throw new AssertionException("File must exist and be a file");
         }
-
         this.file = file;
-        this.content = content;
+        this.content = null;
         updatedAt = Instant.now();
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        Assertion.isNotNull(sender, "sender");
+        this.sender = sender;
     }
 
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message = (Message) o;
@@ -80,19 +93,18 @@ public class Message extends BaseEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(getId());
     }
 
     @Override
     public String toString() {
-
         return "Message{" +
                 "id=" + getId() +
                 ", createdAt=" + getCreatedAt() +
                 ", updatedAt=" + getUpdatedAt() +
-                ", content='" + content + '\'' +
+                ", content='" + (content != null ? content : "null") + '\'' +
                 ", file=" + (file != null ? file.getName() : "null") +
+                ", sender=" + sender.getFirstName() + " " + sender.getLastName() +
                 '}';
     }
 }
