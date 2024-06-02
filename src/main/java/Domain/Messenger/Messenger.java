@@ -1,13 +1,11 @@
 package Domain.Messenger;
 
+import java.util.*;
+
 import Domain.User.User;
 import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
 import Foundation.Exception.AssertionException;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
 
 public class Messenger extends BaseEntity {
 
@@ -33,6 +31,8 @@ public class Messenger extends BaseEntity {
     public Chat createGroupChat(String groupName, Set<User> members) {
         Assertion.isNotBlank(groupName, "groupName");
         Assertion.isNotNull(members, "members");
+
+        // Check the size of the members set
         if (members.size() < 3 || members.size() > 20) {
             throw new AssertionException("Group chat must have between 3 and 20 members. Given: " + members.size());
         }
