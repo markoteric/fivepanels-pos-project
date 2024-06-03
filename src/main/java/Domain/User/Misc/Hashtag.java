@@ -50,8 +50,6 @@ public class Hashtag {
     @Override
     public String toString() {
 
-        return "Hashtag{" +
-                "hashtag='" + hashtag + '\'' +
-                '}';
+        return hashtag;
     }
 }
