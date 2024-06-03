@@ -36,7 +36,7 @@ public class Vote {
 
         Assertion.isNotNull(percentage, "percentage");
         Assertion.isGreaterThan(percentage, -1, "percentage");
-        Assertion.isLessThan(percentage, 100, "percentage");
+        Assertion.isLessThan(percentage, 101, "percentage");
         this.percentage = percentage;
     }
 
