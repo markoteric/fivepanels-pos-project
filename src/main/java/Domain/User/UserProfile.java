@@ -116,13 +116,6 @@ public class UserProfile {
         return languages;
     }
 
-    public void setLanguages(Set<Language> languages) {
-
-        Assertion.isNotNull(languages, "languages");
-        Assertion.isNotEmpty(languages, "languages");
-        this.languages = languages;
-    }
-
     public Integer getActivityScore() {
         return activityScore;
     }
@@ -157,14 +150,14 @@ public class UserProfile {
         this.experiences.remove(experience);
     }
 
-    public void addLanguage(Language language) {
+    public void addLanguages(Language... language) {
 
         Assertion.isNotNull(language, "language");
         Assertion.isNotBlank(language.toString(), "language");
         this.languages.add(language);
     }
 
-    public void removeLanguage(Language language) {
+    public void removeLanguages(Language... language) {
 
         Assertion.isNotNull(language, "language");
         Assertion.isNotBlank(language.toString(), "language");
