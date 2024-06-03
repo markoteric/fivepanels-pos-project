@@ -9,7 +9,7 @@ import Foundation.Exception.AssertionException;
 
 public class Messenger extends BaseEntity {
 
-    private LinkedHashSet<Chat> chats;
+    private Set<Chat> chats;
 
     public Messenger() {
         this.chats = new LinkedHashSet<>();
@@ -19,7 +19,7 @@ public class Messenger extends BaseEntity {
         this.chats = chats;
     }
 
-    public LinkedHashSet<Chat> getChats() {
+    public Set<Chat> getChats() {
         return chats;
     }
 
