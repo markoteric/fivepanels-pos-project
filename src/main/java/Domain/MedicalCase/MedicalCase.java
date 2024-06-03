@@ -5,6 +5,7 @@ import Domain.User.Misc.Hashtag;
 import Domain.User.Misc.Password;
 import Domain.User.User;
 import Foundation.Assertion.Assertion;
+import Foundation.BaseEntity;
 import Foundation.Exception.UserException;
 
 import java.io.File;
@@ -13,7 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MedicalCase {
+public class MedicalCase extends BaseEntity {
 
     private String medicalCaseName;
     private User owner;
@@ -24,9 +25,10 @@ public class MedicalCase {
     private Integer likeCount;
     private Set<Hashtag> medicalCaseHashtags;
     private Set<Vote> votes;
-    private Set<User> likedUsers;
+    private Set<User> usersLiked;
 
     public MedicalCase() {
+        super();
         this.medicalCaseName = "foobarlol";
         this.owner = new User("John", "Doe", new Email("owner@example.com"), new Password("foobar123!XD".toCharArray()));
         this.textContent = List.of("This is a sample text content of medical case.");
@@ -36,10 +38,11 @@ public class MedicalCase {
         this.likeCount = 0;
         this.medicalCaseHashtags = new HashSet<>(Collections.singleton(new Hashtag("#sampleTag")));
         this.votes = new HashSet<>(Collections.singleton(new Vote()));
-        this.likedUsers = new HashSet<>();
+        this.usersLiked = new HashSet<>();
     }
 
     public MedicalCase(String medicalCaseName, User owner, List<String> textContent, List<File> fileContent, Set<User> medicalCaseMembers, Set<Hashtag> medicalCaseHashtags, Set<Vote> votes) {
+        super();
         setMedicalCaseName(medicalCaseName);
         setOwner(owner);
         setTextContent(textContent);
@@ -49,7 +52,7 @@ public class MedicalCase {
         this.likeCount = 0;
         setMedicalCaseHashtags(medicalCaseHashtags);
         setVotes(votes);
-        this.likedUsers = new HashSet<>();
+        this.usersLiked = new HashSet<>();
     }
 
     public String getMedicalCaseName() {
@@ -94,11 +97,15 @@ public class MedicalCase {
     }
 
     public Set<User> getMedicalCaseMembers() {
+
         return medicalCaseMembers;
     }
 
     public void setMedicalCaseMembers(Set<User> medicalCaseMembers) {
         Assertion.isNotNull(medicalCaseMembers, "medicalCaseMembers");
+        if (medicalCaseMembers.contains(this.owner)) {
+            throw new UserException("Owner cannot be a member of medical case");
+        }
         this.medicalCaseMembers = medicalCaseMembers;
     }
 
@@ -145,10 +152,10 @@ public class MedicalCase {
 
     public void addLike(User user) {
         Assertion.isNotNull(user, "user");
-        if (likedUsers.contains(user)) {
+        if (usersLiked.contains(user)) {
             throw new UserException("User has already liked this medical case");
         }
-        likedUsers.add(user);
+        usersLiked.add(user);
         this.likeCount++;
     }
 
@@ -162,5 +169,10 @@ public class MedicalCase {
         Assertion.isNotNull(this.medicalCaseMembers, "medicalCaseMembers");
         Assertion.isTrue(this.medicalCaseMembers.contains(member), () -> "member is not in medical case");
         this.medicalCaseMembers.remove(member);
+    }
+
+    public void assessVotes() {
+
+        // TODO
     }
 }
