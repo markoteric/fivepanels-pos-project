@@ -35,16 +35,16 @@ public class UserProfile {
         this.experienceScore = 0;
     }
 
-    public UserProfile(String firstName, String lastName, File profilePicture, List<MedicalTitle> medicalTitles, List<Hashtag> experiences, String city, Set<Language> languages, Integer activityScore, Integer experienceScore) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.profilePicture = profilePicture;
-        this.medicalTitles = medicalTitles;
-        this.experiences = experiences;
-        this.city = city;
-        this.languages = languages;
-        this.activityScore = activityScore;
-        this.experienceScore = experienceScore;
+    public UserProfile(String firstName, String lastName, File profilePicture, List<MedicalTitle> medicalTitles, List<Hashtag> experiences, String city, Set<Language> languages) {
+        setFirstName(firstName);
+        setLastName(lastName);
+        setProfilePicture(profilePicture);
+        setMedicalTitle(medicalTitles);
+        setExperiences(experiences);
+        setCity(city);
+        setLanguages(languages);
+        setActivityScore(0);
+        setExperienceScore(0);
     }
 
     public String getFirstName() {
@@ -116,6 +116,13 @@ public class UserProfile {
         return languages;
     }
 
+    public void setLanguages(Set<Language> languages) {
+
+        Assertion.isNotNull(languages, "languages");
+        Assertion.isNotEmpty(languages, "languages");
+        this.languages = languages;
+    }
+
     public Integer getActivityScore() {
         return activityScore;
     }
@@ -150,14 +157,14 @@ public class UserProfile {
         this.experiences.remove(experience);
     }
 
-    public void addLanguages(Language... language) {
+    public void addLanguage(Language language) {
 
         Assertion.isNotNull(language, "language");
         Assertion.isNotBlank(language.toString(), "language");
         this.languages.add(language);
     }
 
-    public void removeLanguages(Language... language) {
+    public void removeLanguage(Language language) {
 
         Assertion.isNotNull(language, "language");
         Assertion.isNotBlank(language.toString(), "language");
