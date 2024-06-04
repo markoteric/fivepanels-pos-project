@@ -25,7 +25,6 @@ public class Chat extends BaseEntity {
         this.name = name;
         this.members = members;
         this.messageHistory = new ArrayList<>();
-        messageHistory.add(new Message("Welcome!", new User("System", "User", new Email("johndoe@example.com"), new Password("password123!XDFOOBAR".toCharArray()))));
     }
 
     public String getName() {
@@ -73,6 +72,7 @@ public class Chat extends BaseEntity {
     public static void main(String[] args) {
 
         System.out.println("Group chat lore: ");
+        System.out.println();
         // Creating users
         User user1 = new User("John", "Doe", new Email("user1@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
         User user2 = new User("Jane", "Doe", new Email("user2@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
@@ -82,7 +82,7 @@ public class Chat extends BaseEntity {
 
         // Creating a chat with three users
         Set<User> members = new HashSet<>(Arrays.asList(user1, user2, user3));
-        Chat chat = new Chat("We love trolling!", members);
+        Chat chat = new Chat("We love fixing bugs!", members);
         System.out.println(chat.getName());
 
         // Creating messages
@@ -93,8 +93,8 @@ public class Chat extends BaseEntity {
         // Displaying message history
         System.out.println(chat.showMessageHistory());
 
-        // Deleting a message
-        System.out.println("Chat after message deletion:");
+        // Deleting the first message
+        System.out.println("Chat after deleting the first message: ");
         chat.removeMessage(chat.getMessageHistory().get(0).getId());
 
         // Displaying message history again
@@ -110,9 +110,11 @@ public class Chat extends BaseEntity {
         chat.getMembers().remove(user3);
         System.out.println("user3 has been removed from group chat!");
 
+        System.out.println();
         System.out.println("Remaining members in chat: ");
         System.out.println(chat.getMembers());
 
+        System.out.println();
         System.out.println("Remaining chat history: ");
         System.out.println(chat.showMessageHistory());
     }
