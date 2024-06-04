@@ -2,25 +2,12 @@ package OtherTests;
 
 import Domain.User.Misc.Language;
 import Foundation.Exception.AssertionException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LanguageTest {
-
-    @BeforeEach
-    public void setup() {
-
-        try {
-            new Language("dummy");
-
-        } catch (AssertionException e) {
-
-            System.out.println("Setup Exception: " + e.getMessage());
-        }
-    }
 
     @Test
     public void test_IsValidLanguage_ShouldReturnTrue_ForValidLanguage() {

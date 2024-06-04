@@ -41,7 +41,7 @@ public class MedicalCase extends BaseEntity {
         this.usersLiked = new HashSet<>();
     }
 
-    public MedicalCase(String medicalCaseName, User owner, List<String> textContent, List<File> fileContent, Set<User> medicalCaseMembers, Set<Hashtag> medicalCaseHashtags, Set<Vote> votes) {
+    public MedicalCase(String medicalCaseName, User owner, List<String> textContent, List<File> fileContent, Set<User> medicalCaseMembers, Set<Hashtag> medicalCaseHashtags) {
         super();
         setMedicalCaseName(medicalCaseName);
         setOwner(owner);
@@ -51,7 +51,7 @@ public class MedicalCase extends BaseEntity {
         this.viewCount = 0;
         this.likeCount = 0;
         setMedicalCaseHashtags(medicalCaseHashtags);
-        setVotes(votes);
+        this.votes = new HashSet<>();
         this.usersLiked = new HashSet<>();
     }
 

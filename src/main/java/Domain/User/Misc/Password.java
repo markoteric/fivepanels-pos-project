@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 public class Password {
 
+
+    // Not null, meet all criteria below
     private char[] password;
 
     public Password(char[] password) {

@@ -4,6 +4,7 @@ import Domain.User.Misc.Email;
 import Domain.User.Misc.Hashtag;
 import Domain.User.Misc.Password;
 import Foundation.Exception.AssertionException;
+import Foundation.Exception.UserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,39 +30,15 @@ public class MedicalCaseTest {
     private Vote vote;
 
     @BeforeEach
-    public void setUp() {
-        owner = new User(new Email("owner@example.com"), new Password("foobar123!XD".toCharArray()));
-        member = new User(new Email("member@example.com"), new Password("foobar123!XD".toCharArray()));
-        newMember = new User(new Email("newmember@example.com"), new Password("foobar123!XD".toCharArray()));
+    public void setup() {
+        owner = new User("Owner", "Sample", new Email("owner@example.com"), new Password("foobar123!XD".toCharArray()));
+        member = new User("Member", "Sample", new Email("member@example.com"), new Password("foobar123!XD".toCharArray()));
+        newMember = new User("New Member", "Sample", new Email("newmember@example.com"), new Password("foobar123!XD".toCharArray()));
         hashtag = new Hashtag("#sampleTag");
         vote = new Vote();
 
-        medicalCase = new MedicalCase(
-                "Sample Medical Case",
-                owner,
-                List.of("This is a sample text content."),
-                List.of(new File("sample.txt")),
-                new HashSet<>(Collections.singleton(member)),
-                new HashSet<>(Collections.singleton(hashtag)),
-                new HashSet<>(Collections.singleton(vote))
-        );
+        medicalCase = new MedicalCase();
     }
-
-    @Test
-    public void test_MedicalCase_ShouldInitializeCorrectly() {
-        assertNotNull(medicalCase);
-        assertEquals("Sample Medical Case", medicalCase.getMedicalCaseName());
-        assertEquals(owner, medicalCase.getOwner());
-        assertEquals(1, medicalCase.getTextContent().size());
-        assertEquals(1, medicalCase.getFileContent().size());
-        assertEquals(1, medicalCase.getMedicalCaseMembers().size());
-        assertEquals(0, medicalCase.getViewCount());
-        assertEquals(0, medicalCase.getLikeCount());
-        assertEquals(1, medicalCase.getMedicalCaseHashtags().size());
-        assertEquals(1, medicalCase.getVotes().size());
-        assertNotNull(medicalCase.getMessenger());
-    }
-
 
     @Test
     public void test_MedicalCase_ShouldThrowException_WhenNameIsNull() {
@@ -140,7 +117,7 @@ public class MedicalCaseTest {
 
     @Test
     public void test_MedicalCase_ShouldThrowException_WhenRemovingNonExistentMember() {
-        User nonExistentMember = new User(new Email("nonexistent@example.com"), new Password("foobar123!XD".toCharArray()));
+        User nonExistentMember = new User("Nonexistent", "Member", new Email("nonexistent@example.com"), new Password("foobar123!XD".toCharArray()));
         assertThrows(AssertionException.class, () -> medicalCase.removeMedicalCaseMember(nonExistentMember));
     }
 
@@ -183,7 +160,7 @@ public class MedicalCaseTest {
     @Test
     public void test_MedicalCase_ShouldThrowException_WhenUserAlreadyLiked() {
         medicalCase.addLike(member);
-        assertThrows(AssertionException.class, () -> medicalCase.addLike(member));
+        assertThrows(UserException.class, () -> medicalCase.addLike(member));
     }
 
     @Test
@@ -209,19 +186,6 @@ public class MedicalCaseTest {
     public void test_MedicalCase_ShouldThrowException_WhenVotesAreNull() {
         assertThrows(AssertionException.class, () -> medicalCase.setVotes(null));
     }
-
-    @Test
-    public void test_MedicalCase_ShouldInitializeMessenger() {
-        assertNotNull(medicalCase.getMessenger());
-        assertEquals(1, medicalCase.getMessenger().getChats().size());
-    }
-
-    @Test
-    public void test_MedicalCase_ShouldUpdateMessengerWhenMembersChange() {
-        medicalCase.addMedicalCaseMember(newMember);
-        assertTrue(medicalCase.getMessenger().getChats().iterator().next().getMembers().contains(newMember));
-    }
-
     @Test
     public void test_MedicalCase_ShouldInitializeWithDefaultValues() {
         MedicalCase defaultCase = new MedicalCase();
@@ -235,6 +199,5 @@ public class MedicalCaseTest {
         assertEquals(0, defaultCase.getLikeCount());
         assertEquals(1, defaultCase.getMedicalCaseHashtags().size());
         assertEquals(1, defaultCase.getVotes().size());
-        assertNotNull(defaultCase.getMessenger());
     }
 }

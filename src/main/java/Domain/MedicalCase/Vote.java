@@ -4,7 +4,9 @@ import Foundation.Assertion.Assertion;
 
 public class Vote {
 
+    // Not null, between 2 and 5 possible answers, not blank, minlength 2, max length 64
     private Answer answer;
+    // Not null, between 0 and 100 value total
     private Integer percentage;
 
     public Vote(Answer answer, Integer percentage) {

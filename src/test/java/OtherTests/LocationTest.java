@@ -2,24 +2,11 @@ package OtherTests;
 
 import Domain.User.Misc.Location;
 import Foundation.Exception.AssertionException;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LocationTest {
-
-    @BeforeEach
-    public void setup() {
-
-        try {
-
-            new Location("dummy");
-        } catch (AssertionException e) {
-
-            System.out.println("Exception in setup: " + e.getMessage());
-        }
-    }
 
     @Test
     public void test_IsValidCity_ShouldReturnTrue_ForValidCity() {

@@ -11,7 +11,10 @@ import java.util.Set;
 
 public class Language {
 
+
+    // Not null, be in list of valid languages
     private String language;
+    // Load from file
     private static final Set<String> validLanguages = new HashSet<>();
 
     public Language(String language) {

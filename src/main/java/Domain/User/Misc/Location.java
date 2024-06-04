@@ -11,7 +11,9 @@ import java.util.Set;
 
 public class Location {
 
+    // Not null, be in list of valid cities
     private String city;
+    // Load from file
     private static Set<String> validCities = new HashSet<>();
 
     public Location(String city) {

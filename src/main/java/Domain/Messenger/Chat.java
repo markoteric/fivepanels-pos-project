@@ -13,8 +13,11 @@ import java.util.*;
 
 public class Chat extends BaseEntity {
 
+    // Not null, Not blank, has min length, has max length
     private String name;
+    // Not null, exactly 2 for direct chat, max 20 for group chat
     private Set<User> members;
+    // Not null
     private List<Message> messageHistory;
 
     public Chat(String name, Set<User> members) {
@@ -22,7 +25,7 @@ public class Chat extends BaseEntity {
         this.name = name;
         this.members = members;
         this.messageHistory = new ArrayList<>();
-        messageHistory.add(new Message("Welcome to the chat!"));
+        messageHistory.add(new Message("Welcome!", new User("System", "User", new Email("johndoe@example.com"), new Password("password123!XDFOOBAR".toCharArray()))));
     }
 
     public String getName() {

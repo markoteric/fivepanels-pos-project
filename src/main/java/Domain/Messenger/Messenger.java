@@ -9,6 +9,7 @@ import Foundation.Exception.AssertionException;
 
 public class Messenger extends BaseEntity {
 
+    // Not null
     private Set<Chat> chats;
 
     public Messenger() {

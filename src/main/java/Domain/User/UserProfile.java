@@ -12,14 +12,23 @@ import java.util.Set;
 
 public class UserProfile {
 
+    // Not Null, Not Blank, Has Min Length, Has Max Length, no numbers or special symbols
     private String firstName;
+    // Not Null, Not Blank, Has Min Length, Has Max Length, no numbers or special symbols
     private String lastName;
+    // Not Null
     private File profilePicture;
+    // Not Null, Be in List Of Allowed Values
     private List<MedicalTitle> medicalTitles;
+    // Not Null, Must Contain # at beginning
     private List<Hashtag> experiences;
+    // Not Null, Be In List Of Allowed Values
     private String city;
+    // Not Null
     private Set<Language> languages;
+    // Not null, Greater than 0
     private Integer activityScore;
+    // Not Null, Greater than 0
     private Integer experienceScore;
 
     public UserProfile() {

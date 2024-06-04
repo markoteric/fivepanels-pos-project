@@ -1,6 +1,5 @@
 package UserTest;
 
-import Domain.Messenger.Chat;
 import Domain.Messenger.Messenger;
 import Domain.MedicalCase.MedicalCase;
 import Domain.User.Misc.Email;
@@ -13,7 +12,9 @@ import Foundation.Exception.UserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
+import java.io.File;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,10 +27,11 @@ public class UserTest {
     private Messenger messenger;
 
     @BeforeEach
-    public void setUp() {
-        user = new User(new Email("user@example.com"), new Password("foobar123!XD".toCharArray()));
-        friend = new User(new Email("friend@example.com"), new Password("foobar123!XD".toCharArray()));
-        anotherFriend = new User(new Email("anotherfriend@example.com"), new Password("foobar123!XD".toCharArray()));
+    public void setup() {
+
+        user = new User("John", "Doe", new Email("user@example.com"), new Password("foobar123!XD".toCharArray()));
+        friend = new User("Friend", "Doe", new Email("friend@example.com"), new Password("foobar123!XD".toCharArray()));
+        anotherFriend = new User("Another Friend", "Doe", new Email("anotherfriend@example.com"), new Password("foobar123!XD".toCharArray()));
         medicalCase = new MedicalCase();
         messenger = new Messenger();
     }
@@ -54,12 +56,10 @@ public class UserTest {
     }
 
     @Test
-    public void test_User_ShouldAddAndRemoveMedicalCase() {
-        user.createNewMedicalCase(medicalCase);
-        assertTrue(user.getIsOwnerOfMedicalCases().contains(medicalCase));
+    public void test_User_ShouldCreateNewMedicalCaseAndBeOwner() {
 
-        user.removeMedicalCase(medicalCase);
-        assertFalse(user.getIsOwnerOfMedicalCases().contains(medicalCase));
+        MedicalCase medicalCase = user.createNewMedicalCase("Sample Medical Case", List.of("This is a sample text content."), List.of(new File("sample.txt")), new HashSet<>(), new HashSet<>());
+        assertTrue(user.getIsOwnerOfMedicalCases().contains(medicalCase));
     }
 
     @Test
@@ -73,12 +73,12 @@ public class UserTest {
 
     @Test
     public void test_User_ShouldThrowException_WhenEmailIsNull() {
-        assertThrows(AssertionException.class, () -> new User(null, new Password("foobar123!XD".toCharArray())));
+        assertThrows(AssertionException.class, () -> new User("John", "Doe", null, new Password("foobar123!XD".toCharArray())));
     }
 
     @Test
     public void test_User_ShouldThrowException_WhenPasswordIsNull() {
-        assertThrows(AssertionException.class, () -> new User(new Email("user@example.com"), null));
+        assertThrows(AssertionException.class, () -> new User("John", "Doe", new Email("user@example.com"), null));
     }
 
     @Test
@@ -124,7 +124,6 @@ public class UserTest {
     @Test
     public void test_User_ShouldCreateDirectChatWhenFriendRequestIsAccepted() {
         user.addFriend(friend);
-        friend.addFriend(user);
 
         friend.acceptFriendRequest(user);
         assertEquals(UserRelationship.ESTABLISHED, user.getRelationships().get(friend.getId()));

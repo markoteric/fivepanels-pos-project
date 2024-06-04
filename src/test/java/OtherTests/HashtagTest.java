@@ -1,9 +1,7 @@
 package OtherTests;
 
 import Domain.User.Misc.Hashtag;
-import Foundation.Assertion.Assertion;
 import Foundation.Exception.AssertionException;
-import Foundation.Exception.UserException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,6 +61,6 @@ public class HashtagTest {
     public void test_Hashtag_ToString_ShouldReturnCorrectString() {
 
         Hashtag hashtag = new Hashtag("#Health");
-        assertEquals("Hashtag{hashtag='#Health'}", hashtag.toString());
+        assertEquals("#Health", hashtag.toString());
     }
 }

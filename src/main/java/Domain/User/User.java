@@ -1,8 +1,7 @@
 package Domain.User;
 
-import Domain.MedicalCase.Vote;
+
 import Domain.Messenger.Chat;
-import Domain.Messenger.Message;
 import Domain.Messenger.Messenger;
 import Domain.MedicalCase.MedicalCase;
 import Domain.User.Misc.Email;
@@ -19,14 +18,23 @@ import java.util.*;
 public class User extends BaseEntity {
 
     private boolean isVerified;
+    // Not Null, Not Blank, Has Min Length, Has Max Length, Matches Regex and Validator
     private Email email;
+    // Not Null, Not Blank, Has Min Length, Has Max Length, uppercase and lowercase letters, special symbol, number, meets Zxcvbn validator
     private Password password;
+    // Not Null
     private Messenger messenger;
+    // Not Null
     private Set<MedicalCase> isMemberOfMedicalCases;
+    // Not Null
     private Set<MedicalCase> isOwnerOfMedicalCases;
+    // Not Null
     private UserProfile userProfile;
+    // Not Null
     private Map<UUID, UserRelationship> relationships;
+    // Not Null, Not Blank, Has Min Length, Has Max Length, no numbers or special symbols
     private String firstName;
+    // Not Null, Not Blank, Has Min Length, Has Max Length, no numbers or special symbols
     private String lastName;
 
     public User(String firstName, String lastName, Email email, Password password) {
@@ -125,23 +133,28 @@ public class User extends BaseEntity {
         this.lastName = lastName;
     }
 
-    public MedicalCase createNewMedicalCase(String medicalCaseName, List<String> textContent, List<File> fileContent, Set<User> medicalCaseMembers, Set<Hashtag> medicalCaseHashtags, Set<Vote> votes) {
-
-        // ASSERTIONS
+    public MedicalCase createNewMedicalCase(String medicalCaseName, List<String> textContent, List<File> fileContent, Set<User> medicalCaseMembers, Set<Hashtag> medicalCaseHashtags) {
+        Assertion.isNotNull(medicalCaseName, "medicalCaseName");
+        Assertion.isNotBlank(medicalCaseName, "medicalCaseName");
+        Assertion.isNotNull(textContent, "textContent");
+        Assertion.hasMinLength(medicalCaseName, 8, "medicalCaseName");
+        Assertion.hasMaxLength(medicalCaseName, 128, "medicalCaseName");
         // TODO
-        MedicalCase mc = new MedicalCase(medicalCaseName, this, textContent, fileContent, medicalCaseMembers, medicalCaseHashtags, votes);
+        MedicalCase mc = new MedicalCase(medicalCaseName, this, textContent, fileContent, medicalCaseMembers, medicalCaseHashtags);
         this.isOwnerOfMedicalCases.add(mc);
-        // TODO
+        // TODO votes lol
 
         return mc;
     }
 
+    // How remove?
     public void deleteMedicalCase(MedicalCase medicalCase) {
         Assertion.isNotNull(medicalCase, "medicalCase");
         if (!isOwnerOfMedicalCases.contains(medicalCase)) {
             throw new UserException("User is not an owner of medical case");
         }
-        isOwnerOfMedicalCases.remove(medicalCase);
+
+        isOwnerOfMedicalCases.remove(medicalCase);;
     }
 
     public void joinMedicalCase(MedicalCase medicalCase) {
@@ -308,7 +321,7 @@ public class User extends BaseEntity {
         System.out.println("-----------------------------------------------------------");
         System.out.println("MedicalCases:");
 
-        MedicalCase mc = user1.createNewMedicalCase("John's Medical Case", List.of("John's Test Case"), List.of(new File("/resources/cities.txt")), Set.of(user2, user3), Set.of(new Hashtag("#Strabology")), Set.of());
+        MedicalCase mc = user1.createNewMedicalCase("John's Medical Case", List.of("John's Test Case"), List.of(new File("/resources/cities.txt")), Set.of(user2, user3), Set.of(new Hashtag("#Strabology")));
         System.out.println();
         System.out.println("Information of a test medical case!");
         System.out.println();

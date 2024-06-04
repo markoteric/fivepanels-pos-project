@@ -12,10 +12,12 @@ import java.util.Set;
 
 public class Experience {
 
+
+    // Not null, be in list of valid experiences
     private String experience;
+    // Load from file
     private static final Set<String> validExperiences = new HashSet<>();
 
-    // Static block to load experiences from file
     static {
         loadValidMedicalExperiences();
     }

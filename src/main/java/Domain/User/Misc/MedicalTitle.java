@@ -2,6 +2,7 @@ package Domain.User.Misc;
 
 import Foundation.Assertion.Assertion;
 import Foundation.Exception.AssertionException;
+import Foundation.Exception.MedicalCaseException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +13,9 @@ import java.util.Set;
 
 public class MedicalTitle {
 
+    // Not null, be in list of valid titles, maximum 5
     private String medicalTitle;
+    // Load from file
     private static Set<String> validTitles;
 
     public MedicalTitle() {
@@ -70,7 +73,7 @@ public class MedicalTitle {
         Assertion.hasMinLength(medicalTitle, 2, "medicalTitle");
         if (!isValidMedicalTitle(medicalTitle)) {
 
-            throw new AssertionException("Invalid medical title: " + medicalTitle);
+            throw new MedicalCaseException("Invalid medical title: " + medicalTitle);
         }
 
         this.medicalTitle = medicalTitle;

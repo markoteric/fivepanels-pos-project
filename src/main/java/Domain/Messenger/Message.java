@@ -1,7 +1,5 @@
 package Domain.Messenger;
 
-import Domain.User.Misc.Email;
-import Domain.User.Misc.Password;
 import Domain.User.User;
 import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
@@ -14,8 +12,11 @@ import java.util.UUID;
 
 public class Message extends BaseEntity {
 
+    // Not null, not blank, min length 1, max length 1000,
     private String content;
+    // Not null, be a file
     private File file;
+    // Not null
     private User sender;
 
     public Message(String content, User sender) {
@@ -32,21 +33,6 @@ public class Message extends BaseEntity {
         setSender(sender);
     }
 
-    public Message(String content) {
-
-        super();
-        this.setId(UUID.randomUUID());
-        setContent(content);
-        setSender(new User("John", "Doe", new Email("johndoe.noob@example.com"), new Password("password123!XDLOFL".toCharArray())));
-    }
-
-    public Message(File testFile) {
-
-        super();
-        this.setId(UUID.randomUUID());
-        setFile(testFile);
-    }
-
     public String getContent() {
         return content;
     }
@@ -55,9 +41,11 @@ public class Message extends BaseEntity {
         Assertion.isNotNull(content, "content");
         Assertion.isNotBlank(content, "content");
         Assertion.hasMinLength(content, 1, "content");
-        this.content = content;
-        this.file = null;
-        updatedAt = Instant.now();
+        if (!content.equals(this.content)) {
+            this.content = content;
+            this.file = null;
+            updatedAt = Instant.now();
+        }
     }
 
     public File getFile() {

@@ -4,6 +4,7 @@ import Foundation.Assertion.Assertion;
 
 public class Answer {
 
+    // Not null, not blank, minLength = 2, maxLength = 64,
     private String answer;
 
     public Answer(String answer) {

@@ -7,6 +7,8 @@ import java.util.Objects;
 
 public class Hashtag {
 
+
+    // Not null, start with #, not blank
     private String hashtag;
 
     public Hashtag(String hashtag) {

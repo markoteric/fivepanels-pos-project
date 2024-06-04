@@ -5,6 +5,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 public class Email {
 
+    // Not Null, Not Blank, Has Min Length, Has Max Length, Matches Regex and Validator
     private String email;
 
     public Email(String email) {

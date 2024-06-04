@@ -1,6 +1,7 @@
 package OtherTests;
 
 import Domain.User.Misc.Password;
+import Foundation.Assertion.Assertion;
 import Foundation.Exception.AssertionException;
 import Foundation.Exception.UserException;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,31 +40,31 @@ public class PasswordTest {
     @Test
     public void test_SetPassword_ShouldThrowException_WhenPasswordIsTooShort() {
 
-        assertThrows(UserException.class, () -> password.setPassword("password".toCharArray()));
+        assertThrows(AssertionException.class, () -> password.setPassword("password".toCharArray()));
     }
 
     @Test
     public void test_SetPassword_ShouldThrowException_WhenPasswordDoesNotContainNumbers() {
 
-        assertThrows(UserException.class, () -> password.setPassword("password".toCharArray()));
+        assertThrows(AssertionException.class, () -> password.setPassword("password".toCharArray()));
     }
 
     @Test
     public void test_SetPassword_ShouldThrowException_WhenPasswordDoesNotContainLetters() {
 
-        assertThrows(UserException.class, () -> password.setPassword("12345".toCharArray()));
+        assertThrows(AssertionException.class, () -> password.setPassword("12345".toCharArray()));
     }
 
     @Test
     public void test_SetPassword_ShouldThrowException_WhenPasswordDoesNotContainSpecialCharacters() {
 
-        assertThrows(UserException.class, () -> password.setPassword("password123".toCharArray()));
+        assertThrows(AssertionException.class, () -> password.setPassword("password123".toCharArray()));
     }
 
     @Test
     public void test_SetPassword_ShouldThrowException_WhenPasswordDoesNotHaveMinLength() {
 
-        assertThrows(UserException.class, () -> password.setPassword("1234".toCharArray()));
+        assertThrows(AssertionException.class, () -> password.setPassword("1234".toCharArray()));
     }
 
     @Test
