@@ -4,9 +4,7 @@ package Domain.User;
 import Domain.Messenger.Chat;
 import Domain.Messenger.Messenger;
 import Domain.MedicalCase.MedicalCase;
-import Domain.User.Misc.Email;
-import Domain.User.Misc.Hashtag;
-import Domain.User.Misc.Password;
+import Domain.User.Misc.*;
 import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
 import Foundation.Exception.UserException;
@@ -32,17 +30,12 @@ public class User extends BaseEntity {
     private UserProfile userProfile;
     // Not Null
     private Map<UUID, UserRelationship> relationships;
-    // Not Null, Not Blank, Has Min Length, Has Max Length, no numbers or special symbols
-    private String firstName;
-    // Not Null, Not Blank, Has Min Length, Has Max Length, no numbers or special symbols
-    private String lastName;
 
-    public User(String firstName, String lastName, Email email, Password password) {
+    public User(String firstName, String lastName, String city, Email email, Password password) {
         super();
         setEmail(email);
         setPassword(password);
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.userProfile = new UserProfile(firstName, lastName, city);
         this.isVerified = false;
         this.messenger = new Messenger();
         this.isMemberOfMedicalCases = new HashSet<>();
@@ -108,29 +101,6 @@ public class User extends BaseEntity {
 
     public void setUserRelationship(UUID userId, UserRelationship relationship) {
         relationships.put(userId, relationship);
-    }
-
-    public String getFirstName() {
-
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-
-        Assertion.isNotNull(firstName, "firstName");
-        Assertion.isNotBlank(firstName, "firstName");
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-
-        Assertion.isNotNull(lastName, "lastName");
-        Assertion.isNotBlank(lastName, "lastName");
-        this.lastName = lastName;
     }
 
     public MedicalCase createNewMedicalCase(String medicalCaseName, List<String> textContent, List<File> fileContent, Set<User> medicalCaseMembers, Set<Hashtag> medicalCaseHashtags) {
@@ -223,9 +193,23 @@ public class User extends BaseEntity {
 
     public void removeFriend(User friend) {
         Assertion.isNotNull(friend, "friend");
+
+        // Remove relationship
         this.relationships.remove(friend.getId());
         friend.getRelationships().remove(this.getId());
+
+        // Find and remove the chat
+        Chat chat = this.messenger.getChats().stream()
+                .filter(c -> c.getMembers().contains(this) && c.getMembers().contains(friend))
+                .findFirst()
+                .orElse(null);
+
+        if (chat != null) {
+            this.messenger.removeChat(chat);
+            friend.getMessenger().removeChat(chat);
+        }
     }
+
 
     public void acceptFriendRequest(User friend) {
         Assertion.isNotNull(friend, "friend");
@@ -274,29 +258,51 @@ public class User extends BaseEntity {
         }
     }
 
+    public void addAnswerToMedicalCase(MedicalCase medicalCase, String answerText, boolean isCorrect) {
+        Assertion.isNotNull(medicalCase, "medicalCase");
+        if (!this.equals(medicalCase.getOwner())) {
+            throw new UserException("Only the owner can add answers to the medical case");
+        }
+        medicalCase.addAnswer(answerText, isCorrect);
+    }
+
+    public void voteOnMedicalCase(MedicalCase medicalCase, UUID answerId, int percentage) {
+        Assertion.isNotNull(medicalCase, "medicalCase");
+        if (!medicalCase.getMedicalCaseMembers().contains(this)) {
+            throw new UserException("Only members can vote on the medical case");
+        }
+        medicalCase.vote(this, answerId, percentage);
+    }
+
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return userProfile.getFirstName() + " " + userProfile.getLastName();
     }
 
     public static void main(String[] args) {
+
+        System.out.println("User Relation Test: ");
         // Creating users
-        User user1 = new User("John", "Doe", new Email("user1@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
-        User user2 = new User("Jane", "Smith", new Email("user2@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
-        User user3 = new User("Michael", "Johnson", new Email("user3@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
+        User user1 = new User("John", "Doe", "New York", new Email("user1@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
+        User user2 = new User("Jane", "Smith", "New York", new Email("user2@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
+        User user3 = new User("Michael", "Johnson", "New York", new Email("user3@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
+        User user4 = new User("Sarah", "Williams", "New York", new Email("user4@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
 
         // Adding friends
         System.out.println(user1.toString() + " adds " + user2.toString() + "!");
         System.out.println(user3.toString() + " adds " + user2.toString() + "!");
         user1.addFriend(user2);
         user3.addFriend(user2);
+        user3.addFriend(user4);
 
         // Accepting friend requests
         System.out.println();
         System.out.println(user2.toString() + " accepts " + user1.toString() + "'s friend request!");
         System.out.println(user2.toString() + " accepts " + user3.toString() + "'s friend request!");
+        System.out.println(user4.toString() + " declines " + user3.toString() + "'s friend request!");
         user2.acceptFriendRequest(user1);
         user2.acceptFriendRequest(user3);
+        user4.declineFriendRequest(user3);
 
         // Printing all chats
         System.out.println();
@@ -304,11 +310,28 @@ public class User extends BaseEntity {
         System.out.println(user1.getMessenger().getId() + " is John's messenger");
         System.out.println(user2.getMessenger().getId() + " is Jane's messenger");
         System.out.println(user3.getMessenger().getId() + " is Michael's messenger");
+        System.out.println(user4.getMessenger().getId() + " is Sarah's messenger");
 
         Chat groupChat = new Chat("Group Chat Test", new HashSet<>(Arrays.asList(user1, user2, user3)));
         user1.getMessenger().addChat(groupChat);
         user2.getMessenger().addChat(groupChat);
         user3.getMessenger().addChat(groupChat);
+        user4.getMessenger().addChat(groupChat);
+        System.out.println();
+
+        // Get Relations to other users
+        System.out.println("Relationships: ");
+        System.out.println("John's friends: " + user1.getRelationships());
+        System.out.println("Jane's friends: " + user2.getRelationships());
+        System.out.println("Michael's friends: " + user3.getRelationships());
+        System.out.println("Sarah's friends: " + user4.getRelationships());
+
+        // Removing a friend
+        System.out.println();
+        System.out.println(user1.toString() + " removes " + user2.toString() + "!");
+        user1.removeFriend(user2);
+        System.out.println("John's friends: " + user1.getRelationships());
+        System.out.println("Jane's friends: " + user2.getRelationships());
 
         // Messenger Chat List
         System.out.println();
@@ -321,7 +344,7 @@ public class User extends BaseEntity {
         System.out.println("-----------------------------------------------------------");
         System.out.println("MedicalCases:");
 
-        MedicalCase mc = user1.createNewMedicalCase("John's Medical Case", List.of("John's Test Case"), List.of(new File("/resources/cities.txt")), Set.of(user2, user3), Set.of(new Hashtag("#Strabology")));
+        MedicalCase mc = user1.createNewMedicalCase("John's Medical Case", List.of("John's Test Case"), List.of(new File("/resources/cities.txt")), Set.of(user2, user3, user4), Set.of(new Hashtag("#Strabology"), new Hashtag("#Health")));
         System.out.println();
         System.out.println("Information of a test medical case!");
         System.out.println();
@@ -335,5 +358,40 @@ public class User extends BaseEntity {
         System.out.println("Description: " + mc.getTextContent());
         System.out.println("Hashtags: " + mc.getMedicalCaseHashtags());
         System.out.println("Files: " + mc.getFileContent());
+
+        // Adding answers and votes
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("MedicalCase Votes Test:");
+
+        // Adding answers
+        user1.addAnswerToMedicalCase(mc, "Answer A", false);
+        user1.addAnswerToMedicalCase(mc, "Answer B", true);
+
+        UUID answerAId = mc.getAnswers().stream().filter(a -> a.getAnswerText().equals("Answer A")).findFirst().get().getId();
+        UUID answerBId = mc.getAnswers().stream().filter(a -> a.getAnswerText().equals("Answer B")).findFirst().get().getId();
+
+        // Users voting
+        user2.voteOnMedicalCase(mc, answerAId, 70);
+        user2.voteOnMedicalCase(mc, answerBId, 30);
+        user3.voteOnMedicalCase(mc, answerBId, 20);
+        user4.voteOnMedicalCase(mc, answerAId, 50);
+        user4.voteOnMedicalCase(mc, answerBId, 50);
+
+        // Displaying live vote results
+        System.out.println();
+        System.out.println("Live Vote Results:");
+        mc.getLiveVoteResults().forEach((answerId, average) -> {
+            String answerText = mc.getAnswers().stream().filter(a -> a.getId().equals(answerId)).findFirst().get().getAnswerText();
+            System.out.println(answerText + ": " + average + "%");
+        });
+
+        // Attempting to exceed voting limit
+        System.out.println();
+        System.out.println("Attempting to exceed voting limit:");
+        try {
+            user3.voteOnMedicalCase(mc, answerBId, 101); // This should throw an exception
+        } catch (UserException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
     }
 }

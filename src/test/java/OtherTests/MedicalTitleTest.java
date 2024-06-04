@@ -2,6 +2,7 @@ package OtherTests;
 
 import Domain.User.Misc.MedicalTitle;
 import Foundation.Exception.AssertionException;
+import Foundation.Exception.UserException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,7 +30,7 @@ public class MedicalTitleTest {
     @Test
     public void test_MedicalTitle_ShouldThrowException_WhenTitleIsInvalid() {
 
-        assertThrows(AssertionException.class, () -> new MedicalTitle("INVALID"));
+        assertThrows(UserException.class, () -> new MedicalTitle("INVALID"));
     }
 
     @Test

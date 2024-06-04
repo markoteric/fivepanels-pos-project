@@ -7,6 +7,7 @@ import Domain.User.Misc.Email;
 import Domain.User.Misc.Password;
 import Domain.User.User;
 import Foundation.Exception.AssertionException;
+import Foundation.Exception.MessengerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,9 +34,8 @@ public class MessengerTest {
     public void setUp() throws Exception {
         messenger = new Messenger();
 
-        // Initialize users
-        user1 = new User("John", "Doe", new Email("user1@example.com"), new Password("password1XD!FOOBARLOL".toCharArray()));
-        user2 = new User("Jane", "Doe", new Email("user2@example.com"), new Password("password2XD!FOOBARLOL".toCharArray()));
+        user1 = new User("John", "Doe", "New York", new Email("user1@example.com"), new Password("password1XD!FOOBARLOL".toCharArray()));
+        user2 = new User("Jane", "Doe", "New York", new Email("user2@example.com"), new Password("password2XD!FOOBARLOL".toCharArray()));
 
         Set<User> members = new HashSet<>();
         members.add(user1);
@@ -43,16 +43,13 @@ public class MessengerTest {
 
         chat = new Chat("Test Chat", members);
 
-        // Create a temporary file for testing
         Path tempFilePath = Files.createTempFile("testfile", ".txt");
         Files.writeString(tempFilePath, "This is a test file.");
         testFile = tempFilePath.toFile();
 
-        // Initialize messages
         textMessage = new Message("Hello, this is a text message!", user1);
         fileMessage = new Message(testFile, user2);
 
-        // Add chat to messenger
         messenger.addChat(chat);
     }
 
@@ -103,7 +100,7 @@ public class MessengerTest {
     @Test
     public void test_Messenger_ShouldThrowException_WhenChatNotFound() {
         UUID fakeChatId = UUID.randomUUID();
-        assertThrows(AssertionException.class, () -> messenger.sendMessage(fakeChatId, textMessage));
+        assertThrows(MessengerException.class, () -> messenger.sendMessage(fakeChatId, textMessage));
     }
 
     @Test

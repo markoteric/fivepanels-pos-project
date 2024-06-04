@@ -32,8 +32,8 @@ public class ChatTest {
     @BeforeEach
     public void setup() throws Exception {
 
-        user1 = new User("John", "Doe", new Email("user1@example.com"), new Password("foobar123!XD".toCharArray()));
-        user2 = new User("Jane", "Doe", new Email("user2@example.com"), new Password("foobar123!XD".toCharArray()));
+        user1 = new User("John", "Doe", "New York", new Email("user1@example.com"), new Password("foobar123!XD".toCharArray()));
+        user2 = new User("Jane", "Doe", "New York", new Email("user2@example.com"), new Password("foobar123!XD".toCharArray()));
 
         Set<User> members = new HashSet<>();
         members.add(user1);
@@ -84,7 +84,7 @@ public class ChatTest {
     @Test
     public void test_Chat_ShouldShowMessageHistory() throws IOException {
         Chat chat = new Chat("Test Chat", new HashSet<>());
-        User user = new User("Test", "User", new Email("test@example.com"), new Password("password123!XDDDKJGSKJGS".toCharArray()));
+        User user = new User("Test", "User", "New York", new Email("test@example.com"), new Password("password123!XDDDKJGSKJGS".toCharArray()));
         Message textMessage = new Message("Hello, this is a text message!", user);
 
         // Create a temporary file for testing purposes

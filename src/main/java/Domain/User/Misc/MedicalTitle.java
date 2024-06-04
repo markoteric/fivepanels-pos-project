@@ -1,8 +1,10 @@
 package Domain.User.Misc;
 
+import Domain.User.User;
 import Foundation.Assertion.Assertion;
 import Foundation.Exception.AssertionException;
 import Foundation.Exception.MedicalCaseException;
+import Foundation.Exception.UserException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -73,7 +75,7 @@ public class MedicalTitle {
         Assertion.hasMinLength(medicalTitle, 2, "medicalTitle");
         if (!isValidMedicalTitle(medicalTitle)) {
 
-            throw new MedicalCaseException("Invalid medical title: " + medicalTitle);
+            throw new UserException("Invalid medical title: " + medicalTitle);
         }
 
         this.medicalTitle = medicalTitle;

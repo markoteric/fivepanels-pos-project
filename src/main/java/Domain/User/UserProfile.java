@@ -7,6 +7,8 @@ import Domain.User.Misc.MedicalTitle;
 import Foundation.Assertion.Assertion;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -52,6 +54,17 @@ public class UserProfile {
         setExperiences(experiences);
         setCity(city);
         setLanguages(languages);
+        setActivityScore(0);
+        setExperienceScore(0);
+    }
+
+    public UserProfile(String firstName, String lastName, String city) {
+        setFirstName(firstName);
+        setLastName(lastName);
+        this.medicalTitles = new ArrayList<>();
+        this.experiences = new ArrayList<>();
+        setCity(city);
+        this.languages = new HashSet<>();
         setActivityScore(0);
         setExperienceScore(0);
     }

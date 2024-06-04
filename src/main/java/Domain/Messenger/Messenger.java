@@ -6,6 +6,7 @@ import Domain.User.User;
 import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
 import Foundation.Exception.AssertionException;
+import Foundation.Exception.MessengerException;
 
 public class Messenger extends BaseEntity {
 
@@ -29,11 +30,16 @@ public class Messenger extends BaseEntity {
         chats.add(chat);
     }
 
+    public void removeChat(Chat chat) {
+
+        Assertion.isNotNull(chat, "chat");
+        chats.remove(chat);
+    }
+
     public Chat createGroupChat(String groupName, Set<User> members) {
         Assertion.isNotBlank(groupName, "groupName");
         Assertion.isNotNull(members, "members");
 
-        // Check the size of the members set
         if (members.size() < 3 || members.size() > 20) {
             throw new AssertionException("Group chat must have between 3 and 20 members. Given: " + members.size());
         }
@@ -43,16 +49,15 @@ public class Messenger extends BaseEntity {
         return chat;
     }
 
-    public Chat createDirectChat(String groupName, Set<User> members) {
-        Assertion.isNotBlank(groupName, "groupName");
+    public Chat createDirectChat(String chatName, Set<User> members) {
+        Assertion.isNotBlank(chatName, "groupName");
         Assertion.isNotNull(members, "members");
 
-        // Check the size of the members set
         if (members.size() != 2) {
             throw new AssertionException("Direct chat must have exactly 2 members. Given: " + members.size());
         }
 
-        Chat chat = new Chat(groupName, members);
+        Chat chat = new Chat(chatName, members);
         addChat(chat);
         return chat;
     }
@@ -61,7 +66,6 @@ public class Messenger extends BaseEntity {
         Assertion.isNotNull(chatId, "chatId");
         Assertion.isNotNull(message, "message");
 
-        // Find the chat with the given ID and add the message
         for (Chat chat : chats) {
             if (chat.getId().equals(chatId)) {
                 chat.addMessage(message);
@@ -69,7 +73,7 @@ public class Messenger extends BaseEntity {
             }
         }
 
-        throw new AssertionException("Chat not found with ID: " + chatId);
+        throw new MessengerException("Chat not found with ID: " + chatId);
     }
 
     public void deleteMessage(UUID chatId, UUID messageId) {

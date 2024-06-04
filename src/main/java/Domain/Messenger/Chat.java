@@ -74,10 +74,10 @@ public class Chat extends BaseEntity {
         System.out.println("Group chat lore: ");
         System.out.println();
         // Creating users
-        User user1 = new User("John", "Doe", new Email("user1@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
-        User user2 = new User("Jane", "Doe", new Email("user2@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
-        User user3 = new User("Josh", "Doe", new Email("user3@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
-        User user4 = new User("Jack", "Doe", new Email("user4@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
+        User user1 = new User("John", "Doe", "New York", new Email("user1@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
+        User user2 = new User("Jane", "Doe", "New York", new Email("user2@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
+        User user3 = new User("Josh", "Doe", "New York", new Email("user3@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
+        User user4 = new User("Jack", "Doe", "New York", new Email("user4@example.com"), new Password("password123!XDFOOBAR".toCharArray()));
 
 
         // Creating a chat with three users

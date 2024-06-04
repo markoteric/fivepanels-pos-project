@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageTest {
 
-    private User sender = new User("John", "Doe", new Email("john.doe@example.com"), new Password("password123!XDLOLFWDGSKJGSD".toCharArray()));
+    private User sender = new User("John", "Doe", "New York", new Email("john.doe@example.com"), new Password("password123!XDLOLFWDGSKJGSD".toCharArray()));
 
     @Test
     public void test_Message_ShouldCreateValidMessage() {

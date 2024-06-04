@@ -1,5 +1,7 @@
 package Domain.Messenger;
 
+import Domain.User.Misc.Email;
+import Domain.User.Misc.Password;
 import Domain.User.User;
 import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
@@ -86,13 +88,19 @@ public class Message extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Message{" +
-                "id=" + getId() +
-                ", createdAt=" + getCreatedAt() +
-                ", updatedAt=" + getUpdatedAt() +
-                ", content='" + (content != null ? content : "null") + '\'' +
-                ", file=" + (file != null ? file.getName() : "null") +
-                ", sender=" + sender.getFirstName() + " " + sender.getLastName() +
-                '}';
+        return "Message-Content: " + getContent() + " --- Message-File: " + getFile() + " --- Message-Sender: " + getSender();
+    }
+
+    public static void main(String[] args) {
+
+        Message textMessage = new Message("Hello", new User("John", "Doe", "New York", new Email("user1@example.com"), new Password("password123!XDFOOBAR".toCharArray())));
+        Message fileMessage = new Message(new File("src\\main\\resources\\languages.txt"), new User("Jack", "Doe", "New York", new Email("user1@example.com"), new Password("password123!XDFOOBAR".toCharArray())));
+
+        System.out.println("Printing the text message!");
+        System.out.println(textMessage);
+        System.out.println();
+
+        System.out.println("Printing the file message!");
+        System.out.println(fileMessage);
     }
 }

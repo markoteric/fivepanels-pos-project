@@ -29,10 +29,10 @@ public class UserTest {
     @BeforeEach
     public void setup() {
 
-        user = new User("John", "Doe", new Email("user@example.com"), new Password("foobar123!XD".toCharArray()));
-        friend = new User("Friend", "Doe", new Email("friend@example.com"), new Password("foobar123!XD".toCharArray()));
-        anotherFriend = new User("Another Friend", "Doe", new Email("anotherfriend@example.com"), new Password("foobar123!XD".toCharArray()));
-        medicalCase = new MedicalCase();
+        user = new User("John", "Doe", "New York", new Email("user@example.com"), new Password("foobar123!XD".toCharArray()));
+        friend = new User("Friend", "Doe", "New York", new Email("friend@example.com"), new Password("foobar123!XD".toCharArray()));
+        anotherFriend = new User("Another Friend", "Doe", "New York", new Email("anotherfriend@example.com"), new Password("foobar123!XD".toCharArray()));
+        medicalCase = new MedicalCase("Sample Medical Case", user, List.of("This is a sample text content."), List.of(new File("sample.txt")), new HashSet<>(List.of(friend, anotherFriend)), new HashSet<>());
         messenger = new Messenger();
     }
 
@@ -73,12 +73,12 @@ public class UserTest {
 
     @Test
     public void test_User_ShouldThrowException_WhenEmailIsNull() {
-        assertThrows(AssertionException.class, () -> new User("John", "Doe", null, new Password("foobar123!XD".toCharArray())));
+        assertThrows(UserException.class, () -> new User("John", "Doe", "New York", new Email(null), new Password("foobar123!XD".toCharArray())));
     }
 
     @Test
     public void test_User_ShouldThrowException_WhenPasswordIsNull() {
-        assertThrows(AssertionException.class, () -> new User("John", "Doe", new Email("user@example.com"), null));
+        assertThrows(AssertionException.class, () -> new User("John", "Doe","New York", new Email("user@example.com"), null));
     }
 
     @Test

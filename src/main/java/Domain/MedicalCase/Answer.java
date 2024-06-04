@@ -1,33 +1,23 @@
 package Domain.MedicalCase;
 
-import Foundation.Assertion.Assertion;
+import Foundation.BaseEntity;
 
-public class Answer {
+import java.util.UUID;
 
-    // Not null, not blank, minLength = 2, maxLength = 64,
-    private String answer;
+public class Answer extends BaseEntity {
+    private String answerText;
+    private boolean isCorrect;
 
-    public Answer(String answer) {
-        setAnswer(answer);
+    public Answer(String answerText, boolean isCorrect) {
+        this.answerText = answerText;
+        this.isCorrect = isCorrect;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getAnswerText() {
+        return answerText;
     }
 
-    public void setAnswer(String answer) {
-
-        Assertion.isNotNull(answer, "answer");
-        Assertion.isNotBlank(answer, "answer");
-        Assertion.hasMinLength(answer, 2, "answer");
-        Assertion.hasMaxLength(answer, 128, "answer");
-        this.answer = answer;
-    }
-
-    @Override
-    public String toString() {
-        return "Answer{" +
-                "answer='" + answer + '\'' +
-                '}';
+    public boolean isCorrect() {
+        return isCorrect;
     }
 }

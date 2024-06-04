@@ -1,52 +1,34 @@
 package Domain.MedicalCase;
 
+import Domain.User.User;
 import Foundation.Assertion.Assertion;
 
 public class Vote {
 
-    // Not null, between 2 and 5 possible answers, not blank, minlength 2, max length 64
+    private User user;
     private Answer answer;
-    // Not null, between 0 and 100 value total
     private Integer percentage;
 
-    public Vote(Answer answer, Integer percentage) {
-
-        setAnswer(answer);
+    public Vote(User user, Answer answer, Integer percentage) {
+        this.user = user;
+        this.answer = answer;
         setPercentage(percentage);
     }
 
-    public Vote() {
-
-        setAnswer(null);
-        setPercentage(0);
+    public User getUser() {
+        return user;
     }
 
     public Answer getAnswer() {
         return answer;
     }
 
-    public void setAnswer(Answer answer) {
-
-        this.answer = answer;
-    }
-
     public Integer getPercentage() {
         return percentage;
     }
 
-    public void setPercentage(Integer percentage) {
-
-        Assertion.isNotNull(percentage, "percentage");
-        Assertion.isGreaterThan(percentage, -1, "percentage");
-        Assertion.isLessThan(percentage, 101, "percentage");
+    public void setPercentage(int percentage) {
+        Assertion.isTrue(percentage >= 0 && percentage <= 100, () -> "Percentage must be between 0 and 100");
         this.percentage = percentage;
-    }
-
-    @Override
-    public String toString() {
-        return "Vote{" +
-                "answer=" + answer +
-                ", percentage=" + percentage +
-                '}';
     }
 }
