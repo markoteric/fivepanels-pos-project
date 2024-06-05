@@ -1,10 +1,11 @@
 package Domain.User;
 
-
 import Domain.Messenger.Chat;
 import Domain.Messenger.Messenger;
 import Domain.MedicalCase.MedicalCase;
-import Domain.User.Misc.*;
+import Domain.User.Misc.Email;
+import Domain.User.Misc.Hashtag;
+import Domain.User.Misc.Password;
 import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
 import Foundation.Exception.UserException;
@@ -16,19 +17,12 @@ import java.util.*;
 public class User extends BaseEntity {
 
     private boolean isVerified;
-    // Not Null, Not Blank, Has Min Length, Has Max Length, Matches Regex and Validator
     private Email email;
-    // Not Null, Not Blank, Has Min Length, Has Max Length, uppercase and lowercase letters, special symbol, number, meets Zxcvbn validator
     private Password password;
-    // Not Null
     private Messenger messenger;
-    // Not Null
     private Set<MedicalCase> isMemberOfMedicalCases;
-    // Not Null
     private Set<MedicalCase> isOwnerOfMedicalCases;
-    // Not Null
     private UserProfile userProfile;
-    // Not Null
     private Map<UUID, UserRelationship> relationships;
 
     public User(String firstName, String lastName, String city, Email email, Password password) {
@@ -109,22 +103,21 @@ public class User extends BaseEntity {
         Assertion.isNotNull(textContent, "textContent");
         Assertion.hasMinLength(medicalCaseName, 8, "medicalCaseName");
         Assertion.hasMaxLength(medicalCaseName, 128, "medicalCaseName");
-        // TODO
+
         MedicalCase mc = new MedicalCase(medicalCaseName, this, textContent, fileContent, medicalCaseMembers, medicalCaseHashtags);
         this.isOwnerOfMedicalCases.add(mc);
-        // TODO votes lol
+        this.userProfile.addActivityScore(10);
 
         return mc;
     }
 
-    // How remove?
     public void deleteMedicalCase(MedicalCase medicalCase) {
         Assertion.isNotNull(medicalCase, "medicalCase");
         if (!isOwnerOfMedicalCases.contains(medicalCase)) {
             throw new UserException("User is not an owner of medical case");
         }
 
-        isOwnerOfMedicalCases.remove(medicalCase);;
+        isOwnerOfMedicalCases.remove(medicalCase);
     }
 
     public void joinMedicalCase(MedicalCase medicalCase) {
@@ -133,6 +126,7 @@ public class User extends BaseEntity {
             throw new UserException("User is already a member of medical case");
         }
         this.isMemberOfMedicalCases.add(medicalCase);
+        this.userProfile.addActivityScore(5);
     }
 
     public void leaveMedicalCase(MedicalCase medicalCase) {
@@ -166,22 +160,6 @@ public class User extends BaseEntity {
         userToRemove.getIsMemberOfMedicalCases().remove(medicalCase);
     }
 
-    public void joinMedicalCaseAsMember(MedicalCase medicalCase) {
-        Assertion.isNotNull(medicalCase, "medicalCase");
-        if (this.isMemberOfMedicalCases.contains(medicalCase)) {
-            throw new UserException("User is already a member of medical case");
-        }
-        this.isMemberOfMedicalCases.add(medicalCase);
-    }
-
-    public void leaveMedicalCaseAsMember(MedicalCase medicalCase) {
-        Assertion.isNotNull(medicalCase, "medicalCase");
-        if (!this.isMemberOfMedicalCases.contains(medicalCase)) {
-            throw new UserException("User is not a member of medical case");
-        }
-        this.isMemberOfMedicalCases.remove(medicalCase);
-    }
-
     public void addFriend(User friend) {
         Assertion.isNotNull(friend, "friend");
         if (friend.equals(this)) {
@@ -209,7 +187,6 @@ public class User extends BaseEntity {
             friend.getMessenger().removeChat(chat);
         }
     }
-
 
     public void acceptFriendRequest(User friend) {
         Assertion.isNotNull(friend, "friend");
@@ -272,6 +249,29 @@ public class User extends BaseEntity {
             throw new UserException("Only members can vote on the medical case");
         }
         medicalCase.vote(this, answerId, percentage);
+        this.userProfile.addActivityScore(5);
+    }
+
+    public double getAverageExpertScore() {
+        return this.userProfile.getAverageExpertScore();
+    }
+
+    public void receiveVoteFeedback(int score, boolean isCorrect) {
+        this.userProfile.addExpertScore(score, isCorrect);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId()) &&
+                Objects.equals(getEmail(), user.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getEmail());
     }
 
     @Override
@@ -389,9 +389,18 @@ public class User extends BaseEntity {
         System.out.println();
         System.out.println("Attempting to exceed voting limit:");
         try {
-            user3.voteOnMedicalCase(mc, answerBId, 101); // This should throw an exception
+            user3.voteOnMedicalCase(mc, answerBId, 88); // This should throw an exception
         } catch (UserException e) {
             System.out.println("Exception: " + e.getMessage());
         }
+
+        // Displaying user scores
+        System.out.println();
+        System.out.println("User Scores:");
+        System.out.println(user1.toString() + " - Activity Score: " + user1.getUserProfile().getActivityScore() + ", Expert Score: " + user1.getUserProfile().getExpertScore() + ", Average Expert Score: " + user1.getAverageExpertScore() + "%");
+        System.out.println(user2.toString() + " - Activity Score: " + user2.getUserProfile().getActivityScore() + ", Expert Score: " + user2.getUserProfile().getExpertScore() + ", Average Expert Score: " + user2.getAverageExpertScore() + "%");
+        System.out.println(user3.toString() + " - Activity Score: " + user3.getUserProfile().getActivityScore() + ", Expert Score: " + user3.getUserProfile().getExpertScore() + ", Average Expert Score: " + user3.getAverageExpertScore() + "%");
+        System.out.println(user4.toString() + " - Activity Score: " + user4.getUserProfile().getActivityScore() + ", Expert Score: " + user4.getUserProfile().getExpertScore() + ", Average Expert Score: " + user4.getAverageExpertScore() + "%");
     }
+
 }

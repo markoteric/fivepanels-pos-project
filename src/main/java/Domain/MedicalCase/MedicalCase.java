@@ -31,12 +31,12 @@ public class MedicalCase extends BaseEntity {
 
         this.medicalCaseName = medicalCaseName;
         this.owner = owner;
-        this.textContent = textContent;
-        this.fileContent = fileContent;
-        this.medicalCaseMembers = medicalCaseMembers;
+        this.textContent = textContent != null ? textContent : new ArrayList<>();
+        this.fileContent = fileContent != null ? fileContent : new ArrayList<>();
+        this.medicalCaseMembers = medicalCaseMembers != null ? medicalCaseMembers : new HashSet<>();
         this.viewCount = 0;
         this.likeCount = 0;
-        this.medicalCaseHashtags = medicalCaseHashtags;
+        this.medicalCaseHashtags = medicalCaseHashtags != null ? medicalCaseHashtags : new HashSet<>();
         this.answers = new HashSet<>();
         this.votes = new HashMap<>();
     }
@@ -128,5 +128,21 @@ public class MedicalCase extends BaseEntity {
         }
 
         return results;
+    }
+
+    public void updateExpertScores() {
+        Answer correctAnswer = answers.stream().filter(Answer::isCorrect).findFirst().orElseThrow(() -> new UserException("No correct answer found"));
+        Map<User, Integer> correctVotes = votes.get(correctAnswer.getId());
+
+        if (correctVotes != null) {
+            int totalPercentage = correctVotes.values().stream().mapToInt(Integer::intValue).sum();
+            if (totalPercentage > 0) {
+                for (Map.Entry<User, Integer> entry : correctVotes.entrySet()) {
+                    int percentage = entry.getValue();
+                    int expertScore = (percentage * 20) / totalPercentage;
+                    entry.getKey().getUserProfile().addExpertScore(expertScore, true);
+                }
+            }
+        }
     }
 }
