@@ -20,8 +20,7 @@ public class UserProfile {
     private Set<Language> languages;
     private Integer activityScore;
     private Integer expertScore;
-    private Double averageExpertScore;
-    private int correctAnswersCount;
+    private List<Integer> correctAnswerPercentages;
 
     public UserProfile() {
         this.firstName = null;
@@ -33,8 +32,7 @@ public class UserProfile {
         this.languages = null;
         this.activityScore = 0;
         this.expertScore = 0;
-        this.averageExpertScore = 0.0;
-        this.correctAnswersCount = 0;
+        this.correctAnswerPercentages = new ArrayList<>();
     }
 
     public UserProfile(String firstName, String lastName, File profilePicture, List<MedicalTitle> medicalTitles, List<Hashtag> experiences, String city, Set<Language> languages) {
@@ -47,8 +45,7 @@ public class UserProfile {
         setLanguages(languages);
         setActivityScore(0);
         setExpertScore(0);
-        setAverageExpertScore(0.0);
-        this.correctAnswersCount = 0;
+        this.correctAnswerPercentages = new ArrayList<>();
     }
 
     public UserProfile(String firstName, String lastName, String city) {
@@ -60,8 +57,7 @@ public class UserProfile {
         this.languages = new HashSet<>();
         setActivityScore(0);
         setExpertScore(0);
-        setAverageExpertScore(0.0);
-        this.correctAnswersCount = 0;
+        this.correctAnswerPercentages = new ArrayList<>();
     }
 
     public String getFirstName() {
@@ -137,6 +133,9 @@ public class UserProfile {
     }
 
     public void setActivityScore(Integer activityScore) {
+        Assertion.isNotNull(activityScore, "activityScore");
+        Assertion.isTrue(activityScore >= 0, () -> "Activity score must be a positive integer");
+        Assertion.isTrue(activityScore <= 100, () -> "Activity score must be below 100");
         this.activityScore = activityScore;
     }
 
@@ -149,23 +148,14 @@ public class UserProfile {
     }
 
     public Double getAverageExpertScore() {
-        return averageExpertScore;
-    }
-
-    public void setAverageExpertScore(Double averageExpertScore) {
-        this.averageExpertScore = averageExpertScore;
+        return correctAnswerPercentages.isEmpty() ? 0.0 : correctAnswerPercentages.stream().mapToInt(Integer::intValue).average().orElse(0.0);
     }
 
     public void addExpertScore(int percentage, boolean correct) {
         if (correct) {
-            this.correctAnswersCount++;
-            this.expertScore += percentage;
-            updateAverageExpertScore();
+            correctAnswerPercentages.add(percentage);
+            expertScore += percentage;
         }
-    }
-
-    private void updateAverageExpertScore() {
-        this.averageExpertScore = correctAnswersCount > 0 ? (double) expertScore / correctAnswersCount : 0.0;
     }
 
     public void addActivityScore(Integer activityScoreToAdd) {

@@ -106,7 +106,7 @@ public class User extends BaseEntity {
 
         MedicalCase mc = new MedicalCase(medicalCaseName, this, textContent, fileContent, medicalCaseMembers, medicalCaseHashtags);
         this.isOwnerOfMedicalCases.add(mc);
-        this.userProfile.addActivityScore(10);
+        this.userProfile.addActivityScore(40);
 
         return mc;
     }
@@ -249,19 +249,11 @@ public class User extends BaseEntity {
             throw new UserException("Only members can vote on the medical case");
         }
         medicalCase.vote(this, answerId, percentage);
-        this.userProfile.addActivityScore(5);
+        this.userProfile.addActivityScore(10);
     }
 
     public double getAverageExpertScore() {
         return this.userProfile.getAverageExpertScore();
-    }
-
-    public void receiveVoteFeedback(int score, boolean isCorrect) {
-        this.userProfile.addExpertScore(score, isCorrect);
-    }
-
-    public void updateExpertScores(MedicalCase medicalCase) {
-        medicalCase.updateExpertScores();
     }
 
     @Override
@@ -365,11 +357,11 @@ public class User extends BaseEntity {
 
         // Adding answers and votes
         System.out.println("-----------------------------------------------------------");
-        System.out.println("MedicalCase Votes Test:");
+        System.out.println("MedicalCase Votes Test for " + mc.getId());
 
         // Adding answers
-        user1.addAnswerToMedicalCase(mc, "Answer A", false);
-        user1.addAnswerToMedicalCase(mc, "Answer B", true);
+        user1.addAnswerToMedicalCase(mc, "Answer A", true);
+        user1.addAnswerToMedicalCase(mc, "Answer B", false);
 
         UUID answerAId = mc.getAnswers().stream().filter(a -> a.getAnswerText().equals("Answer A")).findFirst().get().getId();
         UUID answerBId = mc.getAnswers().stream().filter(a -> a.getAnswerText().equals("Answer B")).findFirst().get().getId();
@@ -378,9 +370,8 @@ public class User extends BaseEntity {
         user2.voteOnMedicalCase(mc, answerAId, 70);
         user2.voteOnMedicalCase(mc, answerBId, 30);
         user3.voteOnMedicalCase(mc, answerBId, 20);
-        user4.voteOnMedicalCase(mc, answerAId, 60);
-        user4.voteOnMedicalCase(mc, answerBId, 40);
-
+        user4.voteOnMedicalCase(mc, answerAId, 100);
+        user4.voteOnMedicalCase(mc, answerBId, 0);
 
         // Displaying live vote results
         System.out.println();
@@ -390,26 +381,16 @@ public class User extends BaseEntity {
             System.out.println(answerText + ": " + average + "%");
         });
 
-
-        // Attempting to exceed voting limit
-        System.out.println();
-        System.out.println("Attempting to exceed voting limit:");
-        try {
-            user3.voteOnMedicalCase(mc, answerBId, 88); // This should throw an exception
-        } catch (UserException e) {
-            System.out.println("Exception: " + e.getMessage());
-        }
-
         // Updating and displaying expert scores
         mc.updateExpertScores();
+        System.out.println();
+        System.out.println("User Scores after John's Medical Case:");
+        displayUserScores(user1, user2, user3, user4);
+
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("MedicalCases:");
 
         MedicalCase mc2 = user2.createNewMedicalCase("Jane's Medical Case", List.of("Jane's Test Case"), List.of(new File("/resources/cities.txt")), Set.of(user1, user3, user4), Set.of(new Hashtag("#Cardiology"), new Hashtag("#Health")));
-        user1.voteOnMedicalCase(mc2, answerAId, 71);
-        user1.voteOnMedicalCase(mc2, answerBId, 19);
-        user3.voteOnMedicalCase(mc2, answerBId, 90);
-        user4.voteOnMedicalCase(mc2, answerAId, 66);
-        user4.voteOnMedicalCase(mc2, answerBId, 34);
-
         System.out.println();
         System.out.println("Information of a test medical case!");
         System.out.println();
@@ -424,32 +405,42 @@ public class User extends BaseEntity {
         System.out.println("Hashtags: " + mc2.getMedicalCaseHashtags());
         System.out.println("Files: " + mc2.getFileContent());
 
+        // Adding answers and votes
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("MedicalCase Votes Test for " + mc2.getId());
+
+        // Adding answers
         user2.addAnswerToMedicalCase(mc2, "Answer A", true);
         user2.addAnswerToMedicalCase(mc2, "Answer B", false);
 
-        UUID answerAIdmc2 = mc2.getAnswers().stream().filter(a -> a.getAnswerText().equals("Answer A")).findFirst().get().getId();
-        UUID answerBIdmc2 = mc2.getAnswers().stream().filter(a -> a.getAnswerText().equals("Answer B")).findFirst().get().getId();
+        UUID answerAId2 = mc2.getAnswers().stream().filter(a -> a.getAnswerText().equals("Answer A")).findFirst().get().getId();
+        UUID answerBId2 = mc2.getAnswers().stream().filter(a -> a.getAnswerText().equals("Answer B")).findFirst().get().getId();
 
+        // Users voting
+        user1.voteOnMedicalCase(mc2, answerAId2, 70);
+        user1.voteOnMedicalCase(mc2, answerBId2, 30);
+        user3.voteOnMedicalCase(mc2, answerBId2, 20);
+        user4.voteOnMedicalCase(mc2, answerAId2, 0);
+        user4.voteOnMedicalCase(mc2, answerBId2, 100);
 
         // Displaying live vote results
         System.out.println();
-        System.out.println("Live Vote Results for: " + mc2.getId());
+        System.out.println("Live Vote Results:");
         mc2.getLiveVoteResults().forEach((answerId, average) -> {
-            String answerText = mc2.getAnswers().stream().filter(a -> a.getId().equals(answerId)).findFirst().get().getAnswerText();
-            System.out.println(answerText + ": " + average + "%");
+            String answerText2 = mc2.getAnswers().stream().filter(a -> a.getId().equals(answerId)).findFirst().get().getAnswerText();
+            System.out.println(answerText2 + ": " + average + "%");
         });
 
-
-        // Displaying user scores MC 2 (Jane)
-
-
-
-        // Displaying user scores
+        // Updating and displaying expert scores
+        mc2.updateExpertScores();
         System.out.println();
-        System.out.println("User Scores:");
-        System.out.println(user1.toString() + " - Activity Score: " + user1.getUserProfile().getActivityScore() + ", Expert Score: " + user1.getUserProfile().getExpertScore() + ", Average Expert Score: " + user1.getAverageExpertScore() + "%");
-        System.out.println(user2.toString() + " - Activity Score: " + user2.getUserProfile().getActivityScore() + ", Expert Score: " + user2.getUserProfile().getExpertScore() + ", Average Expert Score: " + user2.getAverageExpertScore() + "%");
-        System.out.println(user3.toString() + " - Activity Score: " + user3.getUserProfile().getActivityScore() + ", Expert Score: " + user3.getUserProfile().getExpertScore() + ", Average Expert Score: " + user3.getAverageExpertScore() + "%");
-        System.out.println(user4.toString() + " - Activity Score: " + user4.getUserProfile().getActivityScore() + ", Expert Score: " + user4.getUserProfile().getExpertScore() + ", Average Expert Score: " + user4.getAverageExpertScore() + "%");
+        System.out.println("User Scores after Jane's Medical Case:");
+        displayUserScores(user1, user2, user3, user4);
+    }
+
+    private static void displayUserScores(User... users) {
+        for (User user : users) {
+            System.out.println(user.toString() + " - Activity Score: " + user.getUserProfile().getActivityScore() + ", Expert Score: " + user.getUserProfile().getExpertScore() + ", Average Expert Score: " + user.getAverageExpertScore() + "%");
+        }
     }
 }

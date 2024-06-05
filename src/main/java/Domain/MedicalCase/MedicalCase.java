@@ -1,15 +1,14 @@
 package Domain.MedicalCase;
 
-import Domain.MedicalCase.Answer;
-import Domain.User.Misc.Hashtag;
 import Domain.User.User;
+import Domain.User.Misc.Hashtag;
+
 import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
 import Foundation.Exception.UserException;
 
 import java.io.File;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MedicalCase extends BaseEntity {
 
@@ -124,21 +123,33 @@ public class MedicalCase extends BaseEntity {
         for (Map.Entry<UUID, Map<User, Integer>> entry : votes.entrySet()) {
             UUID answerId = entry.getKey();
             Map<User, Integer> userVotes = entry.getValue();
-            double average = userVotes.values().stream().mapToInt(Integer::intValue).average().orElse(0);
-            results.put(answerId, average);
+
+            double total = 0;
+            for (int vote : userVotes.values()) {
+                total += vote;
+            }
+            results.put(answerId, total / userVotes.size());
         }
 
         return results;
     }
 
     public void updateExpertScores() {
-        Answer correctAnswer = answers.stream().filter(Answer::isCorrect).findFirst().orElseThrow(() -> new UserException("No correct answer found"));
-        Map<User, Integer> correctVotes = votes.get(correctAnswer.getId());
-
-        if (correctVotes != null) {
-            for (Map.Entry<User, Integer> entry : correctVotes.entrySet()) {
-                int percentage = entry.getValue();
-                entry.getKey().getUserProfile().addExpertScore(percentage, true);
+        for (Answer answer : answers) {
+            if (answer.isCorrect()) {
+                Map<User, Integer> answerVotes = votes.get(answer.getId());
+                if (answerVotes != null) {
+                    for (Map.Entry<User, Integer> entry : answerVotes.entrySet()) {
+                        entry.getKey().getUserProfile().addExpertScore(entry.getValue(), true);
+                    }
+                }
+            } else {
+                Map<User, Integer> answerVotes = votes.get(answer.getId());
+                if (answerVotes != null) {
+                    for (Map.Entry<User, Integer> entry : answerVotes.entrySet()) {
+                        entry.getKey().getUserProfile().addExpertScore(entry.getValue(), false);
+                    }
+                }
             }
         }
     }
