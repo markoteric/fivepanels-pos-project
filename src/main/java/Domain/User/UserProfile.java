@@ -7,37 +7,21 @@ import Domain.User.Misc.MedicalTitle;
 import Foundation.Assertion.Assertion;
 
 import java.io.File;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
-public class UserProfile implements Serializable {
+public class UserProfile {
 
-    // Not Null, Not Blank, Has Min Length, Has Max Length, no numbers or special symbols
     private String firstName;
-    // Not Null, Not Blank, Has Min Length, Has Max Length, no numbers or special symbols
     private String lastName;
-    // Not Null
     private File profilePicture;
-    // Not Null, Be in List Of Allowed Values
     private List<MedicalTitle> medicalTitles;
-    // Not Null, Must Contain # at beginning
     private List<Hashtag> experiences;
-    // Not Null, Be In List Of Allowed Values
     private String city;
-    // Not Null
     private Set<Language> languages;
-    // Not null, Greater than 0
     private Integer activityScore;
-    // Not Null, Greater than 0
     private Integer expertScore;
-    // Not Null, Greater than 0
-    private Integer totalVotes;
-    // Not Null, Greater than 0
-    private Integer totalCorrectAnswers;
+    private Double averageExpertScore;
+    private int correctAnswersCount;
 
     public UserProfile() {
         this.firstName = null;
@@ -49,8 +33,8 @@ public class UserProfile implements Serializable {
         this.languages = null;
         this.activityScore = 0;
         this.expertScore = 0;
-        this.totalVotes = 0;
-        this.totalCorrectAnswers = 0;
+        this.averageExpertScore = 0.0;
+        this.correctAnswersCount = 0;
     }
 
     public UserProfile(String firstName, String lastName, File profilePicture, List<MedicalTitle> medicalTitles, List<Hashtag> experiences, String city, Set<Language> languages) {
@@ -63,8 +47,8 @@ public class UserProfile implements Serializable {
         setLanguages(languages);
         setActivityScore(0);
         setExpertScore(0);
-        this.totalVotes = 0;
-        this.totalCorrectAnswers = 0;
+        setAverageExpertScore(0.0);
+        this.correctAnswersCount = 0;
     }
 
     public UserProfile(String firstName, String lastName, String city) {
@@ -76,8 +60,8 @@ public class UserProfile implements Serializable {
         this.languages = new HashSet<>();
         setActivityScore(0);
         setExpertScore(0);
-        this.totalVotes = 0;
-        this.totalCorrectAnswers = 0;
+        setAverageExpertScore(0.0);
+        this.correctAnswersCount = 0;
     }
 
     public String getFirstName() {
@@ -135,8 +119,6 @@ public class UserProfile implements Serializable {
     }
 
     public void setCity(String city) {
-        Assertion.isNotNull(city, "city");
-        Assertion.isNotBlank(city, "city");
         this.city = city;
     }
 
@@ -155,7 +137,6 @@ public class UserProfile implements Serializable {
     }
 
     public void setActivityScore(Integer activityScore) {
-        Assertion.isNotNull(activityScore, "activityScore");
         this.activityScore = activityScore;
     }
 
@@ -164,67 +145,30 @@ public class UserProfile implements Serializable {
     }
 
     public void setExpertScore(Integer expertScore) {
-        Assertion.isNotNull(expertScore, "expertScore");
         this.expertScore = expertScore;
     }
 
-    public void addActivityScore(int score) {
-        this.activityScore += score;
+    public Double getAverageExpertScore() {
+        return averageExpertScore;
     }
 
-    public void addExpertScore(int score, boolean isCorrect) {
-        if (isCorrect) {
-            totalCorrectAnswers++;
+    public void setAverageExpertScore(Double averageExpertScore) {
+        this.averageExpertScore = averageExpertScore;
+    }
+
+    public void addExpertScore(int percentage, boolean correct) {
+        if (correct) {
+            this.correctAnswersCount++;
+            this.expertScore += percentage;
+            updateAverageExpertScore();
         }
-        totalVotes++;
-        this.expertScore += score;
     }
 
-    public double getAverageExpertScore() {
-        return totalVotes == 0 ? 0 : (double) expertScore / totalVotes;
+    private void updateAverageExpertScore() {
+        this.averageExpertScore = correctAnswersCount > 0 ? (double) expertScore / correctAnswersCount : 0.0;
     }
 
-    public void addMedicalExperience(Hashtag experience) {
-        Assertion.isNotNull(experience, "experience");
-        Assertion.isNotBlank(experience.toString(), "experience");
-        this.experiences.add(experience);
-    }
-
-    public void removeMedicalExperience(Hashtag experience) {
-        Assertion.isNotNull(experience, "experience");
-        Assertion.isNotBlank(experience.toString(), "experience");
-        this.experiences.remove(experience);
-    }
-
-    public void addLanguage(Language language) {
-        Assertion.isNotNull(language, "language");
-        Assertion.isNotBlank(language.toString(), "language");
-        this.languages.add(language);
-    }
-
-    public void removeLanguage(Language language) {
-        Assertion.isNotNull(language, "language");
-        Assertion.isNotBlank(language.toString(), "language");
-        this.languages.remove(language);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserProfile that = (UserProfile) o;
-        return Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName) &&
-                Objects.equals(city, that.city);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, city);
-    }
-
-    @Override
-    public String toString() {
-        return firstName + " " + lastName;
+    public void addActivityScore(Integer activityScoreToAdd) {
+        this.activityScore += activityScoreToAdd;
     }
 }

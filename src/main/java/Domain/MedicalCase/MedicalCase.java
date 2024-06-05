@@ -135,13 +135,9 @@ public class MedicalCase extends BaseEntity {
         Map<User, Integer> correctVotes = votes.get(correctAnswer.getId());
 
         if (correctVotes != null) {
-            int totalPercentage = correctVotes.values().stream().mapToInt(Integer::intValue).sum();
-            if (totalPercentage > 0) {
-                for (Map.Entry<User, Integer> entry : correctVotes.entrySet()) {
-                    int percentage = entry.getValue();
-                    int expertScore = (percentage * 20) / totalPercentage;
-                    entry.getKey().getUserProfile().addExpertScore(expertScore, true);
-                }
+            for (Map.Entry<User, Integer> entry : correctVotes.entrySet()) {
+                int percentage = entry.getValue();
+                entry.getKey().receiveVoteFeedback(percentage, true);
             }
         }
     }

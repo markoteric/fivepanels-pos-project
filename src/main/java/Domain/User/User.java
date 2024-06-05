@@ -260,6 +260,10 @@ public class User extends BaseEntity {
         this.userProfile.addExpertScore(score, isCorrect);
     }
 
+    public void updateExpertScores(MedicalCase medicalCase) {
+        medicalCase.updateExpertScores();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -374,8 +378,8 @@ public class User extends BaseEntity {
         user2.voteOnMedicalCase(mc, answerAId, 70);
         user2.voteOnMedicalCase(mc, answerBId, 30);
         user3.voteOnMedicalCase(mc, answerBId, 20);
-        user4.voteOnMedicalCase(mc, answerAId, 50);
-        user4.voteOnMedicalCase(mc, answerBId, 50);
+        user4.voteOnMedicalCase(mc, answerAId, 60);
+        user4.voteOnMedicalCase(mc, answerBId, 40);
 
         // Displaying live vote results
         System.out.println();
@@ -394,6 +398,9 @@ public class User extends BaseEntity {
             System.out.println("Exception: " + e.getMessage());
         }
 
+        // Updating and displaying expert scores
+        mc.updateExpertScores();
+
         // Displaying user scores
         System.out.println();
         System.out.println("User Scores:");
@@ -402,5 +409,4 @@ public class User extends BaseEntity {
         System.out.println(user3.toString() + " - Activity Score: " + user3.getUserProfile().getActivityScore() + ", Expert Score: " + user3.getUserProfile().getExpertScore() + ", Average Expert Score: " + user3.getAverageExpertScore() + "%");
         System.out.println(user4.toString() + " - Activity Score: " + user4.getUserProfile().getActivityScore() + ", Expert Score: " + user4.getUserProfile().getExpertScore() + ", Average Expert Score: " + user4.getAverageExpertScore() + "%");
     }
-
 }
