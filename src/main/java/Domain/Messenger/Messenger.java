@@ -7,6 +7,7 @@ import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
 import Foundation.Exception.AssertionException;
 import Foundation.Exception.MessengerException;
+import Repository.MessengerRepository;
 
 public class Messenger extends BaseEntity {
 
@@ -14,11 +15,15 @@ public class Messenger extends BaseEntity {
     private Set<Chat> chats;
 
     public Messenger() {
+        super();
         this.chats = new LinkedHashSet<>();
+        MessengerRepository.save(this);
     }
 
     public Messenger(LinkedHashSet<Chat> chats) {
+        super();
         this.chats = chats;
+        MessengerRepository.save(this);
     }
 
     public Set<Chat> getChats() {

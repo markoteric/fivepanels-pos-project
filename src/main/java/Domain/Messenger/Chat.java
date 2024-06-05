@@ -7,6 +7,7 @@ import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
 import Foundation.Exception.AssertionException;
 import Foundation.Exception.MessengerException;
+import Repository.ChatRepository;
 
 import java.time.Instant;
 import java.util.*;
@@ -25,6 +26,7 @@ public class Chat extends BaseEntity {
         this.name = name;
         this.members = members;
         this.messageHistory = new ArrayList<>();
+        ChatRepository.save(this);
     }
 
     public String getName() {

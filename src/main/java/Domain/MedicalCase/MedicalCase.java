@@ -6,6 +6,7 @@ import Domain.User.Misc.Hashtag;
 import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
 import Foundation.Exception.UserException;
+import Repository.MedicalCaseRepository;
 
 import java.io.File;
 import java.util.*;
@@ -39,6 +40,7 @@ public class MedicalCase extends BaseEntity {
         this.medicalCaseHashtags = medicalCaseHashtags != null ? medicalCaseHashtags : new HashSet<>();
         this.answers = new HashSet<>();
         this.votes = new HashMap<>();
+        MedicalCaseRepository.save(this);
     }
 
     public String getMedicalCaseName() {
