@@ -43,7 +43,7 @@ public class Experience {
     private static void loadValidMedicalExperiences() {
 
         try (InputStream is = Experience.class.getResourceAsStream("/medicalexperiences.txt")) {
-
+                // Loads resource as stream from relative classpath
             if (is == null) {
 
                 throw new AssertionException("Resource not found: medicalexperiences.txt");
