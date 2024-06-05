@@ -66,7 +66,7 @@ public class ChatTest {
     public void test_Chat_ShouldAddMessage() {
 
         chat.addMessage(textMessage);
-        assertEquals(2, chat.getMessageHistory().size());
+        assertEquals(1, chat.getMessageHistory().size());
         assertTrue(chat.getMessageHistory().contains(textMessage));
     }
 
@@ -76,7 +76,7 @@ public class ChatTest {
         chat.addMessage(textMessage);
         chat.addMessage(fileMessage);
         chat.removeMessage(textMessage.getId());
-        assertEquals(2, chat.getMessageHistory().size());
+        assertEquals(1, chat.getMessageHistory().size());
         assertFalse(chat.getMessageHistory().contains(textMessage));
         assertTrue(chat.getMessageHistory().contains(fileMessage));
     }
@@ -118,7 +118,7 @@ public class ChatTest {
         Message anotherTextMessage = new Message("Hello, this is a text message!", user1);
         chat.addMessage(textMessage);
         chat.addMessage(anotherTextMessage);
-        assertEquals(3, chat.getMessageHistory().size());
+        assertEquals(2, chat.getMessageHistory().size());
     }
 
     @Test

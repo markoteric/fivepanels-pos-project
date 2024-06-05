@@ -1,15 +1,15 @@
 package Domain.MedicalCase;
 
-import Domain.User.User;
+import Domain.MedicalCase.Answer;
 import Domain.User.Misc.Hashtag;
-
+import Domain.User.User;
 import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
 import Foundation.Exception.UserException;
-import Repository.MedicalCaseRepository;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MedicalCase extends BaseEntity {
 
@@ -40,7 +40,6 @@ public class MedicalCase extends BaseEntity {
         this.medicalCaseHashtags = medicalCaseHashtags != null ? medicalCaseHashtags : new HashSet<>();
         this.answers = new HashSet<>();
         this.votes = new HashMap<>();
-        MedicalCaseRepository.save(this);
     }
 
     public String getMedicalCaseName() {
@@ -139,7 +138,7 @@ public class MedicalCase extends BaseEntity {
         if (correctVotes != null) {
             for (Map.Entry<User, Integer> entry : correctVotes.entrySet()) {
                 int percentage = entry.getValue();
-                entry.getKey().receiveVoteFeedback(percentage, true);
+                entry.getKey().getUserProfile().addExpertScore(percentage, true);
             }
         }
     }

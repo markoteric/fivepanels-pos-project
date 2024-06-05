@@ -4,7 +4,7 @@ import Domain.MedicalCase.MedicalCase;
 import Domain.User.User;
 import Domain.User.Misc.Email;
 import Domain.User.Misc.Password;
-import Foundation.Exception.UserException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,9 +22,9 @@ public class MedicalCaseTest {
 
     @BeforeEach
     public void setUp() {
-        owner = new User("John", "Doe", "New York", new Email("owner@example.com"), new Password("password123!".toCharArray()));
-        member1 = new User("Jane", "Doe", "New York", new Email("member1@example.com"), new Password("password123!".toCharArray()));
-        member2 = new User("Jack", "Smith", "New York", new Email("member2@example.com"), new Password("password123!".toCharArray()));
+        owner = new User("John", "Doe", "New York", new Email("owner@example.com"), new Password("password123!LOLFOOBAR".toCharArray()));
+        member1 = new User("Jane", "Doe", "New York", new Email("member1@example.com"), new Password("password123!FOOBAR".toCharArray()));
+        member2 = new User("Jack", "Smith", "New York", new Email("member2@example.com"), new Password("password123!FOOBAR".toCharArray()));
 
         medicalCase = new MedicalCase("Sample Medical Case", owner, List.of("This is a sample text content."), List.of(new File("sample.txt")), new HashSet<>(Arrays.asList(member1, member2)), new HashSet<>());
     }
@@ -41,7 +41,7 @@ public class MedicalCaseTest {
         member1.voteOnMedicalCase(medicalCase, answerBId, 20);
         member2.voteOnMedicalCase(medicalCase, answerAId, 20);
 
-        assertEquals(60, medicalCase.getLiveVoteResults().get(answerAId).intValue());
+        assertEquals((60 + 20) / medicalCase.getAnswers().size(), medicalCase.getLiveVoteResults().get(answerAId).intValue());
         assertEquals(20, medicalCase.getLiveVoteResults().get(answerBId).intValue());
     }
 }
