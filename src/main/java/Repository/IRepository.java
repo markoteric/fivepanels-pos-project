@@ -9,7 +9,15 @@ public interface IRepository<T> {
 
     public void delete(T baseEntity);
 
+    public void deleteById(UUID uuid);
+
+    public int count();
+
+    public boolean idDoesExist(UUID uuid);
+
     public T findById(UUID id);
 
     public List<T> findAll();
+
+
 }

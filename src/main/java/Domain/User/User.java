@@ -9,6 +9,7 @@ import Domain.User.Misc.Password;
 import Foundation.Assertion.Assertion;
 import Foundation.BaseEntity;
 import Foundation.Exception.UserException;
+import Repository.IRepository;
 import Repository.UserRepository;
 
 import java.io.File;
@@ -118,8 +119,9 @@ public class User extends BaseEntity {
         if (!isOwnerOfMedicalCases.contains(medicalCase)) {
             throw new UserException("User is not an owner of medical case");
         }
-
         isOwnerOfMedicalCases.remove(medicalCase);
+        UserRepository.deleteById(medicalCase.getId());
+        // IRepository.deleteById(medicalCase.getId());
     }
 
     public void joinMedicalCase(MedicalCase medicalCase) {
