@@ -110,7 +110,7 @@ public class User extends BaseEntity {
         MedicalCase mc = new MedicalCase(medicalCaseName, this, textContent, fileContent, medicalCaseMembers, medicalCaseHashtags);
         this.isOwnerOfMedicalCases.add(mc);
         this.userProfile.addActivityScore(40);
-
+        UserRepository.save(this);
         return mc;
     }
 
