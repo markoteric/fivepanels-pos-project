@@ -2,7 +2,6 @@ package OtherTests;
 
 import Domain.User.Misc.Language;
 import Foundation.Exception.AssertionException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

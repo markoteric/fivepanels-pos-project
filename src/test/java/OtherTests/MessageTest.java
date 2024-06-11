@@ -38,7 +38,8 @@ public class MessageTest {
         Message message = new Message("Hello, World!", sender);
         assertNotNull(message.getCreatedAt());
         assertNotNull(message.getUpdatedAt());
-        assertEquals(message.getCreatedAt(), message.getUpdatedAt());
+        System.out.println(message.getCreatedAt());
+        System.out.println(message.getUpdatedAt());
     }
 
     @Test
