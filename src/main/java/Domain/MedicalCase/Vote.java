@@ -28,7 +28,7 @@ public class Vote {
     }
 
     public void setPercentage(int percentage) {
-        Assertion.isTrue(percentage >= 0 && percentage <= 100, () -> "Percentage must be between 0 and 100");
+        Assertion.isTrue((percentage == 100), () -> "Percentage must be exactly 100");
         this.percentage = percentage;
     }
 }

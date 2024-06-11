@@ -96,25 +96,27 @@ public class MedicalCase extends BaseEntity {
             throw new UserException("User is not a member of this medical case");
         }
 
-        votes.putIfAbsent(answerId, new HashMap<>());
-        votes.get(answerId).put(user, percentage);
+        Map<User, Integer> userVotes = votes.getOrDefault(answerId, new HashMap<>());
+        userVotes.put(user, percentage);
+        votes.put(answerId, userVotes);
 
-        validateVotes();
+        // Remove immediate validation
+        // validateVotes(user);
     }
 
-    private void validateVotes() {
-        Map<User, Integer> totalVotesByUser = new HashMap<>();
-        for (Map<User, Integer> userVotes : votes.values()) {
-            for (Map.Entry<User, Integer> entry : userVotes.entrySet()) {
-                totalVotesByUser.merge(entry.getKey(), entry.getValue(), Integer::sum);
+    public void validateAllVotes() {
+        for (User user : medicalCaseMembers) {
+            int totalPercentage = getTotalVotePercentageForUser(user);
+            if (totalPercentage != 100) {
+                throw new UserException("Total votes by " + user + " must be exactly 100%");
             }
         }
+    }
 
-        for (Map.Entry<User, Integer> entry : totalVotesByUser.entrySet()) {
-            if (entry.getValue() > 100) {
-                throw new UserException("Total votes by " + entry.getKey() + " exceed 100%");
-            }
-        }
+    public int getTotalVotePercentageForUser(User user) {
+        return votes.values().stream()
+                .mapToInt(userVotes -> userVotes.getOrDefault(user, 0))
+                .sum();
     }
 
     public Map<UUID, Double> getLiveVoteResults() {
@@ -135,6 +137,8 @@ public class MedicalCase extends BaseEntity {
     }
 
     public void updateExpertScores() {
+        validateAllVotes(); // Validate votes before updating scores
+
         for (Answer answer : answers) {
             if (answer.isCorrect()) {
                 Map<User, Integer> answerVotes = votes.get(answer.getId());
@@ -153,4 +157,5 @@ public class MedicalCase extends BaseEntity {
             }
         }
     }
+
 }

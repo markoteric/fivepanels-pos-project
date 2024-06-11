@@ -14,6 +14,8 @@ import Repository.UserRepository;
 import java.io.File;
 import java.util.*;
 
+import static Domain.User.UserRelationship.ESTABLISHED;
+
 public class User extends BaseEntity {
 
     private boolean isVerified;
@@ -165,12 +167,15 @@ public class User extends BaseEntity {
         if (friend.equals(this)) {
             throw new UserException("Cannot add yourself as a friend");
         }
+
         if (this.relationships.containsKey(friend.getId()) && this.relationships.get(friend.getId()) == UserRelationship.ESTABLISHED) {
             throw new UserException("You are already friends with this user");
         }
+
         if (this.relationships.containsKey(friend.getId()) && this.relationships.get(friend.getId()) == UserRelationship.OUTGOING) {
             throw new UserException("Friend request already sent to this user");
         }
+
         this.relationships.put(friend.getId(), UserRelationship.OUTGOING);
         friend.getRelationships().put(this.getId(), UserRelationship.INCOMING);
     }
@@ -198,8 +203,8 @@ public class User extends BaseEntity {
         Assertion.isNotNull(friend, "friend");
         if (this.relationships.get(friend.getId()) == UserRelationship.INCOMING &&
                 friend.getRelationships().get(this.getId()) == UserRelationship.OUTGOING) {
-            this.relationships.put(friend.getId(), UserRelationship.ESTABLISHED);
-            friend.getRelationships().put(this.getId(), UserRelationship.ESTABLISHED);
+            this.relationships.put(friend.getId(), ESTABLISHED);
+            friend.getRelationships().put(this.getId(), ESTABLISHED);
             createDirectChat(friend);
         } else {
             throw new UserException("Friend request not found");
@@ -253,6 +258,10 @@ public class User extends BaseEntity {
         Assertion.isNotNull(medicalCase, "medicalCase");
         if (!medicalCase.getMedicalCaseMembers().contains(this)) {
             throw new UserException("Only members can vote on the medical case");
+        }
+        // Validate total votes for the user
+        if (medicalCase.getTotalVotePercentageForUser(this) + percentage > 100) {
+            throw new UserException("Total voting percentage exceeds 100%");
         }
         medicalCase.vote(this, answerId, percentage);
         this.userProfile.addActivityScore(10);
@@ -376,6 +385,7 @@ public class User extends BaseEntity {
         user2.voteOnMedicalCase(mc, answerAId, 70);
         user2.voteOnMedicalCase(mc, answerBId, 30);
         user3.voteOnMedicalCase(mc, answerBId, 20);
+        user3.voteOnMedicalCase(mc, answerAId, 80);
         user4.voteOnMedicalCase(mc, answerAId, 100);
         user4.voteOnMedicalCase(mc, answerBId, 0);
 
@@ -426,8 +436,9 @@ public class User extends BaseEntity {
         user1.voteOnMedicalCase(mc2, answerAId2, 70);
         user1.voteOnMedicalCase(mc2, answerBId2, 30);
         user3.voteOnMedicalCase(mc2, answerBId2, 20);
-        user4.voteOnMedicalCase(mc2, answerAId2, 0);
-        user4.voteOnMedicalCase(mc2, answerBId2, 100);
+        user3.voteOnMedicalCase(mc2, answerAId2, 80);
+        user4.voteOnMedicalCase(mc2, answerAId2, 1);
+        user4.voteOnMedicalCase(mc2, answerBId2, 99);
 
         // Displaying live vote results
         System.out.println();

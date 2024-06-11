@@ -2,8 +2,6 @@ package Domain.MedicalCase;
 
 import Foundation.BaseEntity;
 
-import java.util.UUID;
-
 public class Answer extends BaseEntity {
     private String answerText;
     private boolean isCorrect;
