@@ -165,6 +165,12 @@ public class User extends BaseEntity {
         if (friend.equals(this)) {
             throw new UserException("Cannot add yourself as a friend");
         }
+        if (this.relationships.containsKey(friend.getId()) && this.relationships.get(friend.getId()) == UserRelationship.ESTABLISHED) {
+            throw new UserException("You are already friends with this user");
+        }
+        if (this.relationships.containsKey(friend.getId()) && this.relationships.get(friend.getId()) == UserRelationship.OUTGOING) {
+            throw new UserException("Friend request already sent to this user");
+        }
         this.relationships.put(friend.getId(), UserRelationship.OUTGOING);
         friend.getRelationships().put(this.getId(), UserRelationship.INCOMING);
     }
