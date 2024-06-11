@@ -44,10 +44,7 @@ public class Experience {
 
         try (InputStream is = Experience.class.getResourceAsStream("/medicalexperiences.txt")) {
                 // Loads resource as stream from relative classpath
-            if (is == null) {
-
-                throw new AssertionException("Resource not found: medicalexperiences.txt");
-            }
+            Assertion.isNotNull(is, "is");
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
 

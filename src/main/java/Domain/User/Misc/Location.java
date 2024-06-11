@@ -1,5 +1,6 @@
 package Domain.User.Misc;
 
+import Foundation.Assertion.Assertion;
 import Foundation.Exception.AssertionException;
 
 import java.io.BufferedReader;
@@ -28,10 +29,7 @@ public class Location {
 
             try (InputStream is = getClass().getResourceAsStream("/cities.txt")) {
 
-                if (is == null) {
-
-                    throw new AssertionException("Resource not found: cities.txt");
-                }
+                Assertion.isNotNull(is, "is");
 
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
 

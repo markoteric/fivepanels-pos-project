@@ -1,5 +1,6 @@
 package Domain.User.Misc;
 
+import Foundation.Assertion.Assertion;
 import Foundation.Exception.AssertionException;
 
 import java.io.BufferedReader;
@@ -29,10 +30,7 @@ public class Language {
 
             try (InputStream is = getClass().getResourceAsStream("/languages.txt")) {
 
-                if (is == null) {
-
-                    throw new AssertionException("Resource not found: languages.txt");
-                }
+                Assertion.isNotNull(is, "is");
 
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
 

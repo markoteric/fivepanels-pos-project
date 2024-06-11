@@ -41,10 +41,7 @@ public class MedicalTitle {
         Set<String> validTitles = new HashSet<>();
         try (InputStream is = getClass().getResourceAsStream("/medicaltitles.txt")) {
 
-            if (is == null) {
-
-                throw new AssertionException("Resource not found: medicaltitles.txt");
-            }
+            Assertion.isNotNull(is, "is");
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
 
